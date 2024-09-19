@@ -4930,7 +4930,7 @@ GameObject:
   - component: {fileID: 198580574960934396}
   - component: {fileID: 199034144595388808}
   m_Layer: 0
-  m_Name: Flash 11
+  m_Name: BulletFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
