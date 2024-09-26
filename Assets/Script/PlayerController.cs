@@ -121,4 +121,14 @@ public class PlayerController : MonoBehaviour
             weapon.StartReload();
         }
     }
+
+    public void TakeDamage(float damage)
+    {
+        bool isDie = _status.DecreaseHP(damage);
+
+        if (isDie)
+        {
+            Debug.Log("GameOver");
+        }
+    }
 }

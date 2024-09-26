@@ -9,6 +9,9 @@ TagManager:
   - Concrete
   - Metal
   - ExplosiveBarrel
+  - ImpactNormal
+  - ImpactObstacle
+  - Enemy
   layers:
   - Default
   - TransparentFX

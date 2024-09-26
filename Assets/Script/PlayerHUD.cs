@@ -9,6 +9,8 @@ public class PlayerHUD : MonoBehaviour
     [Header("Compents")]
     [SerializeField]
     private WeaponAssaultRifle weapon;          // 현재 정보가 출력되는 무기
+    [SerializeField]
+    private Status status;                      // 플레이어의 상태 (이동속도, 체력)
 
     [Header("Weapon Base")]
     [SerializeField]
@@ -32,6 +34,16 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField]
     private List<GameObject> magazineList;        // 탄창 Ui 리스트
 
+    [Header("HP & BloodScreen UI")]
+    [SerializeField]
+    private TextMeshProUGUI textHP;                 // 플레이어의 체력을 출력하는 Text
+    [SerializeField]
+    private Slider sliderHP;                        // 플레이어의 체력을 출력하는 Slider
+    [SerializeField]
+    private Image imageBloodScreen;                 // 플레이어가 공격받았을 때 화면에 표시되는 Image
+    [SerializeField]
+    private AnimationCurve curveBloodScreen;
+
     private void Awake()
     {
         SetupWeapon();
@@ -41,6 +53,7 @@ public class PlayerHUD : MonoBehaviour
         // Invoke() 메소드가 호출될 때 등록된 메소드(매개변수)가 실행된다
         weapon.onAmmoEvent.AddListener(UpdateAmmoHUD);
         weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);
+        status.onHPEvent.AddListener(UpdateHPHUD);
     }
 
     private void SetupWeapon()
@@ -82,6 +95,34 @@ public class PlayerHUD : MonoBehaviour
         for (int i = 0; i < currentMagazine; ++i)
         {
             magazineList[i].SetActive(true);
+        }
+    }
+
+    private void UpdateHPHUD(float previous, float current)
+    {
+        textHP.text = $"{current}/{status.MaxHP}";
+        sliderHP.value = current / status.MaxHP;
+
+        if (previous - current > 0)
+        {
+            StopCoroutine("OnBloodScreen");
+            StartCoroutine("OnBloodScreen");
+        }
+    }
+
+    private IEnumerator OnBloodScreen()
+    {
+        float percent = 0;
+
+        while (percent < 1)
+        {
+            percent += Time.deltaTime;
+
+            Color color = imageBloodScreen.color;
+            color.a = Mathf.Lerp(1, 0, curveBloodScreen.Evaluate(percent));
+            imageBloodScreen.color = color;
+
+            yield return null;
         }
     }
 }
