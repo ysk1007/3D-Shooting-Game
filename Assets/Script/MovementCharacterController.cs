@@ -58,4 +58,12 @@ public class MovementCharacterController : MonoBehaviour
             _moveForce.y = jumpForce;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            other.GetComponent<ItemBase>().Use(gameObject);
+        }
+    }
 }

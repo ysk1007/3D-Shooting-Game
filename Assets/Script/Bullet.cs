@@ -53,6 +53,10 @@ public class Bullet : MonoBehaviour
         {
             other.transform.GetComponent<EnemyFSM>().TakeDamage(bulletSetting.bulletDamage);
         }
+        else if (other.transform.CompareTag("InteractionObject"))
+        {
+            other.transform.GetComponent<InteractionObject>().TakeDamage(bulletSetting.bulletDamage);
+        }
 
         // 충돌한 위치에 이펙트 생성
         memoryPool.SpawnImpact(0, transform.position, Quaternion.identity);

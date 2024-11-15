@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
+public enum ImpactType { Normal = 0, Obstacle, Enemy, InteractionObject, }
 
 public class ImpactMemoryPool : MonoBehaviour
 {

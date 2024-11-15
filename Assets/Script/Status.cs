@@ -53,4 +53,13 @@ public class Status : MonoBehaviour
 
         return false;
     }
+
+    public void IncreaseHp(float hp)
+    {
+        float previousHP = currentHP;
+
+        currentHP = CurrentHP + hp > maxHP ? maxHP : currentHP + hp;
+
+        onHPEvent.Invoke(previousHP, currentHP);
+    }
 }

@@ -251,4 +251,11 @@ public class WeaponAssaultRifle : MonoBehaviour
         _audioSource.clip = clip;   // 새로운 사운드 clip 교체
         _audioSource.Play();        // 사운드 재생
     }
+
+    public void IncreaseMagazine(int magazine)
+    {
+        weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
+
+        onMagazineEvent.Invoke(CurrentMagazine);
+    }
 }

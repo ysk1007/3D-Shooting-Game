@@ -103,6 +103,9 @@ public class PlayerHUD : MonoBehaviour
         textHP.text = $"{current}/{status.MaxHP}";
         sliderHP.value = current / status.MaxHP;
 
+        // 체력이 증가했을 때는 화면에 빨간색 이미지를 출력하지 않도록 return
+        if (previous <= current) return;
+
         if (previous - current > 0)
         {
             StopCoroutine("OnBloodScreen");
