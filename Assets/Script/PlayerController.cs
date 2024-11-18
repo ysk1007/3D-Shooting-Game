@@ -23,9 +23,11 @@ public class PlayerController : MonoBehaviour
     private RotateToMouse _rotateToMouse;           // 마우스 이동으로 카메라 회전
     private MovementCharacterController _movement;  // 키보드 입력으로 플레이어 이동, 점프
     private Status _status;                         // 이동속도 등의 플레이어 정보
-    private PlayerAnimatorController animator;      // 애니메이션 재생 제어
     private AudioSource audioSource;                // 사운드 재생 제어
-    private WeaponAssaultRifle weapon;              // 무기를 이용한 공격 제어
+    private WeaponBase weapon;                      // 모든 무기가 상속받는 기반 클래스
+
+    [SerializeField]
+    private PlayerAnimatorController playerAnimatorController;
 
 
     private void Awake()
@@ -37,9 +39,7 @@ public class PlayerController : MonoBehaviour
         _rotateToMouse = GetComponent<RotateToMouse>();
         _movement = GetComponent<MovementCharacterController>();
         _status = GetComponent<Status>();
-        animator = GetComponent<PlayerAnimatorController>();
         audioSource = GetComponent<AudioSource>();
-        weapon = GetComponentInChildren<WeaponAssaultRifle>();
     }
 
     private void Update()
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
             // 옆이나 뒤로 이동할 때는 달릴 수 없다
             if (z > 0) isRun = Input.GetKey(keyCodeRun);
             _movement.MoveSpeed = isRun == true ? _status.RunSpeed : _status.WalkSpeed;
-            animator.MoveSpeed = isRun == true ? 1 : 0.5f;
+            playerAnimatorController.MoveSpeed = isRun == true ? 1 : 0.5f;
             audioSource.clip = isRun == true ? audioClipRun : audioClipWalk;
 
             // 재생중일 때는 다시 재생하지 않도록 isPlayer으로 체크해서 재생
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             _movement.MoveSpeed = 0;
-            animator.MoveSpeed = 0;
+            playerAnimatorController.MoveSpeed = 0;
 
             // 사운드 재생 멈춤
             if (audioSource.isPlaying == true)
@@ -130,5 +130,11 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("GameOver");
         }
+    }
+
+    public void SwitcningWeapon(WeaponBase newWeapon)
+    {
+        weapon = newWeapon;
+        playerAnimatorController.ChangeAnimator(newWeapon.AnimatorController);
     }
 }

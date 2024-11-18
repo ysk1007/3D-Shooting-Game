@@ -13,7 +13,7 @@ public class EnemyMemoryPool : MonoBehaviour
     [SerializeField]
     private float enemySpawnTime = 1;                       // 적 생성 주기
     [SerializeField]
-    private float enemySpawnLatency = 1;                    // 타일 생성 ㅎ후 적이 등장하기까지 대기 시간
+    private float enemySpawnLatency = 1;                    // 타일 생성 후 적이 등장하기까지 대기 시간
 
     private MemoryPool spawnPointMemoryPool;                // 적 등장 알림 오브젝트 활성/비활성 관리
     private MemoryPool enemyMemoryPool;                     // 적 생성, 활성/비활성 관리

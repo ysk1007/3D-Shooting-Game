@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum ImpactType { Normal = 0, Obstacle, Enemy, InteractionObject, }
 
@@ -27,5 +28,10 @@ public class ImpactMemoryPool : MonoBehaviour
         item.transform.position = position;
         item.transform.rotation = rotation;
         item.GetComponent<Impact>().SetUp(memoryPool[(int)type]);
+    }
+
+    public void SpawnImpact(Collider other, Transform knifeTransform)
+    {
+
     }
 }

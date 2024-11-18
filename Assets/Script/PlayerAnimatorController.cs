@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class PlayerAnimatorController : MonoBehaviour
 {
+    [SerializeField]
     private Animator animator;
 
-    private void Awake()
-    {
-        animator = GetComponentInChildren<Animator>();
-    }
+    [SerializeField]
+    private WeaponKnife weaponKnife;
+
+    [SerializeField]
+    private WeaponGrenade weaponGrenade;
+
+    public Animator Animator { get { return animator; } }
 
     public float MoveSpeed
     {
@@ -31,5 +35,20 @@ public class PlayerAnimatorController : MonoBehaviour
     public bool CurrentAnimationIs(string name)
     {
         return animator.GetCurrentAnimatorStateInfo(0).IsName(name);
+    }
+
+    public void ChangeAnimator(AnimatorOverrideController newAnimator)
+    {
+        animator.runtimeAnimatorController = newAnimator;
+    }
+
+    public void StartWeaponKnfireCollider()
+    {
+        weaponKnife.StartWeaponKnfireCollider();
+    }
+
+    public void SpawnGrenadeProjectile()
+    {
+        weaponGrenade.SpawnGrenadeProjectile();
     }
 }

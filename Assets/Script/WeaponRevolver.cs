@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.Pool;
 
-public class WeaponAssaultRifle : WeaponBase
+public class WeaponRevolver : WeaponBase
 {
     [Header("Fire Effects")]
     [SerializeField]
@@ -11,44 +11,21 @@ public class WeaponAssaultRifle : WeaponBase
 
     [Header("Spawn Points")]
     [SerializeField]
-    private Transform casingSpawnPoint;         // 탄피 생성 위치
-    [SerializeField]
     private Transform bulletSpawnPoint;         // 총알 생성 위치
 
     [Header("Audio Clips")]
-    [SerializeField]
-    private AudioClip audioClipTakeOutWeapon;  // 무기 장착 사운드
     [SerializeField]
     private AudioClip audioClipFire;            // 공격 사운드
     [SerializeField]
     private AudioClip audioClipReload;          // 재장전 사운드
 
-    private CasingMemoryPool casingMemoryPool;  // 탄피 생성 후 활성/비활성 관리
     private ImpactMemoryPool impactMemoryPool;  // 공격 효과 생성 후 활성/비활성 관리
     private BulletMemoryPool bulletMemoryPool;  // 총알 생성 후 활성/비활성 관리
     private Camera mainCamera;                  // 광선 발사
 
-    private void Awake()
-    {
-        // 기반 클래스의 초기화를 위한 Setup() 메소드 호출
-        base.Setup();
-
-        casingMemoryPool = GetComponent<CasingMemoryPool>();
-        impactMemoryPool = GetComponent<ImpactMemoryPool>();
-        bulletMemoryPool = GetComponent<BulletMemoryPool>();
-        mainCamera = Camera.main;
-
-        // 처음 탄창 수는 최대로 설정
-        weaponSetting.currentMagazine = weaponSetting.maxMagazine;
-
-        // 처음 탄 수는 최대로 설정
-        weaponSetting.currentAmmo = weaponSetting.maxAmmo;
-    }
-
     private void OnEnable()
     {
-        // 무기 장착 사운드 재생
-        PlaySound(audioClipTakeOutWeapon);
+        // 총구 이펙트 오브젝트 비활성화
         muzzleFlashEffect.SetActive(false);
 
         // 무기가 활성화될 때 해당 무기의 탄창 정보를 갱신하다
@@ -56,62 +33,49 @@ public class WeaponAssaultRifle : WeaponBase
 
         // 무기가 활성화될 때 해당 무기의 탄 수 정보를 갱신하다
         onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+
+        ResetVariables();
+    }
+
+    private void Awake()
+    {
+        base.Setup();
+
+        impactMemoryPool = GetComponent<ImpactMemoryPool>();
+        bulletMemoryPool = GetComponent<BulletMemoryPool>();
+        mainCamera = Camera.main;
+
+        // 처음 탄창 수는 최대로 설정
+        weaponSetting.currentMagazine = weaponSetting.maxMagazine;
+        // 처음 탄 수는 최대로 설정
+        weaponSetting.currentAmmo = weaponSetting.maxAmmo;
     }
 
     public override void StartWeaponAction(int type = 0)
     {
-        // 재장전 중일 때는 무기 액션을 할 수 없음
-        if (isReload == true) return;
-
-        // 마우스 왼쪽 클릭 (공격 시작)
-        if(type == 0)
+        if( type == 0 && isAttack == false && isReload == false)
         {
-            // 연속 공격
-            if (weaponSetting.isAutomaticAttack == true)
-            {
-                StartCoroutine("OnAttackLoop");
-            }
-            // 단발 공격
-            else
-            {
-                OnAttack();
-            }
+            OnAttack();
         }
     }
-
     public override void StopWeaponAction(int type = 0)
     {
-        // 마우스 왼쪽 클릭 (공격 종료)
-        if (type == 0)
-        {
-            StopCoroutine("OnAttackLoop");
-        }
+        isAttack = false;
     }
-
     public override void StartReload()
     {
-        // 현재 재장전 중이면 재장전 불가능
+        // 현재 재장전 중이거나 탄창 수가 0이면 재장전 불가능
         if (isReload == true || weaponSetting.currentMagazine <= 0) return;
 
-        // 무기 액션 도중에 'R' 키를 눌러 재장전을 시도하여 무기 액션 종료 후 재장전
+        // 무기 액션 도중에 'R'키를 눌러 재장전을 시도하면 무기 액션 종료 후 재장전
         StopWeaponAction();
 
         StartCoroutine("OnReload");
     }
 
-    private IEnumerator OnAttackLoop()
-    {
-        while ( true )
-        {
-            OnAttack();
-
-            yield return null;
-        }
-    }
-
     public void OnAttack()
     {
-        if( Time.time - lastAttackTime > weaponSetting.attackRate)
+        if (Time.time - lastAttackTime > weaponSetting.attackRate)
         {
             // 뛰고있을 때는 공격할 수 없다.
             if (animator.MoveSpeed > 0.5f)
@@ -123,7 +87,7 @@ public class WeaponAssaultRifle : WeaponBase
             lastAttackTime = Time.time;
 
             // 탄 수가 없으면 공격 불가능
-            if( weaponSetting.currentAmmo <= 0)
+            if (weaponSetting.currentAmmo <= 0)
             {
                 return;
             }
@@ -139,8 +103,6 @@ public class WeaponAssaultRifle : WeaponBase
             StartCoroutine("OnMuzzleFlashEffect");
             // 공격 사운드 재생
             PlaySound(audioClipFire);
-            // 탄피 생성
-            casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
 
             // 광선을 발사해 원하는 위치 공격 (+Impact Effect)
             TwoStepRayCast();
@@ -168,7 +130,7 @@ public class WeaponAssaultRifle : WeaponBase
         {
             // 사운드가 재생중이 아니고, 현재 애니메이션이 Movement이면
             // 재장전 애니메이션(, 사운드) 재생이 종료되었다는 뜻
-            if(audioSource.isPlaying == false && animator.CurrentAnimationIs("Movement"))
+            if (audioSource.isPlaying == false && animator.CurrentAnimationIs("Movement"))
             {
                 isReload = false;
 
@@ -186,6 +148,7 @@ public class WeaponAssaultRifle : WeaponBase
             yield return null;
         }
     }
+
 
     private void TwoStepRayCast()
     {
@@ -211,7 +174,7 @@ public class WeaponAssaultRifle : WeaponBase
         // 첫번째 Raycast연산으로 얻어진 targetpoint를 목표지점으로 설정하고,
         // 총구를 시작지점으로 하여 Raycast 연산
         Vector3 attackDirection = (targetPoint - bulletSpawnPoint.position).normalized;
-        if (Physics.Raycast(bulletSpawnPoint.position,attackDirection,out hit, weaponSetting.attackDistance))
+        if (Physics.Raycast(bulletSpawnPoint.position, attackDirection, out hit, weaponSetting.attackDistance))
         {
             //impactMemoryPool.SpawnImpact(hit);
         }
@@ -220,10 +183,9 @@ public class WeaponAssaultRifle : WeaponBase
         bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation, attackDirection);
     }
 
-    public void IncreaseMagazine(int magazine)
+    private void ResetVariables()
     {
-        weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
-
-        onMagazineEvent.Invoke(CurrentMagazine);
+        isReload = false;
+        isAttack = false;
     }
 }
