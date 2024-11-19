@@ -219,11 +219,4 @@ public class WeaponAssaultRifle : WeaponBase
 
         bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation, attackDirection);
     }
-
-    public void IncreaseMagazine(int magazine)
-    {
-        weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
-
-        onMagazineEvent.Invoke(CurrentMagazine);
-    }
 }

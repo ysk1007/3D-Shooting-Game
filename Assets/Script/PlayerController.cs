@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private AudioClip audioClipRun;                 // 달리기 사운드
 
+    [SerializeField]
     private RotateToMouse _rotateToMouse;           // 마우스 이동으로 카메라 회전
     private MovementCharacterController _movement;  // 키보드 입력으로 플레이어 이동, 점프
     private Status _status;                         // 이동속도 등의 플레이어 정보
@@ -36,7 +37,6 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        _rotateToMouse = GetComponent<RotateToMouse>();
         _movement = GetComponent<MovementCharacterController>();
         _status = GetComponent<Status>();
         audioSource = GetComponent<AudioSource>();
@@ -54,8 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-
-        _rotateToMouse.UpdateRotate(mouseX, mouseY);
+        _rotateToMouse.UpdateRotate(this.transform,mouseX, mouseY);
     }
 
     private void UpdateMove()

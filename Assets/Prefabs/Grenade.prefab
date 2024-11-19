@@ -150,4 +150,4 @@ MonoBehaviour:
     type: 3}
   explosionRadius: 10
   explosionForce: 500
-  throwForce: 500
+  throwForce: 1000

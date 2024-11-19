@@ -22,6 +22,8 @@ public class MovementCharacterController : MonoBehaviour
         get => _moveSpeed;
     }
 
+    [SerializeField]
+    private Transform cameraTransform;  // 카메라 Transform 컴포넌트
     private CharacterController _characterController;       // 플레이어 이동 제어 컴포넌트
 
     void Awake()
@@ -44,7 +46,7 @@ public class MovementCharacterController : MonoBehaviour
     public void MoveTo(Vector3 direction)
     {
         // 이동 방향 = 캐릭터의 회전 값 * 방향 값
-        direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
+        direction = cameraTransform.rotation * direction;
 
         // 이동 힘 = 이동방향 * 속도
         _moveForce = new Vector3(direction.x * _moveSpeed, _moveForce.y, direction.z * _moveSpeed);

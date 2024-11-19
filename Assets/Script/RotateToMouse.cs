@@ -15,7 +15,7 @@ public class RotateToMouse : MonoBehaviour
     private float _eulerAngleX;
     private float _eulerAngleY;
 
-    public void UpdateRotate(float mouseX, float mouseY)
+    public void UpdateRotate(Transform player, float mouseX, float mouseY)
     {
         _eulerAngleY += mouseX * _rotCamYAxisSpeed;     // 마우스 좌/우 이동으로 카메라 y축 회전
         _eulerAngleX -= mouseY * _rotCamXAxisSpeed;     // 마우스 위/아래 이동으로 카메라 x축 회전
@@ -24,6 +24,7 @@ public class RotateToMouse : MonoBehaviour
         _eulerAngleX = ClampAngle(_eulerAngleX, _limitMinX, _limitMaxX);
 
         transform.rotation = Quaternion.Euler(_eulerAngleX, _eulerAngleY, 0);
+        player.rotation = Quaternion.Euler(0, _eulerAngleY, 0);
     }
 
     private float ClampAngle(float angle,float min, float max)

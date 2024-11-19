@@ -76,9 +76,18 @@ public class WeaponGrenade : WeaponBase
     public void SpawnGrenadeProjectile()
     {
         GameObject grenadeClone = Instantiate(grenadePrefab, grenadeSpawnPoint.position, Random.rotation);
-        grenadeClone.GetComponent<WeaponGrenadeProjectile>().Setup(weaponSetting.damage, transform.parent.forward);
+        grenadeClone.GetComponent<WeaponGrenadeProjectile>().Setup(weaponSetting.damage, grenadeSpawnPoint.forward);
 
         weaponSetting.currentAmmo--;
         onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+    }
+
+    public override void IncreaseMagazine(int ammo)
+    {
+        // 수류탄은 탄창이 따로 없고, 탄수 (Ammo)를 수류탄 개수로 사용하기 때문에 탄수를 증가시킨다.
+        weaponSetting.currentAmmo = weaponSetting.currentAmmo + ammo > weaponSetting.maxAmmo ?
+                                    weaponSetting.maxAmmo : weaponSetting.currentAmmo + ammo;
+
+        onAmmoEvent.Invoke(weaponSetting.currentAmmo,weaponSetting.maxAmmo);
     }
 }
