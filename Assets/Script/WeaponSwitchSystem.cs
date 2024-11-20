@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponSwitchSystem : MonoBehaviour
 {
     [SerializeField]
-    private PlayerController playerController;
+    private PlayerManager playerController;
     [SerializeField]
     private PlayerHUD playerHUD;
 

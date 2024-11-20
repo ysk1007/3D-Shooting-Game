@@ -166,9 +166,9 @@ public class WeaponAssaultRifle : WeaponBase
 
         while (true)
         {
-            // 사운드가 재생중이 아니고, 현재 애니메이션이 Movement이면
+            // 사운드가 재생중이 아니고, 현재 애니메이션이 Idle Walk Run Blend 이면
             // 재장전 애니메이션(, 사운드) 재생이 종료되었다는 뜻
-            if(audioSource.isPlaying == false && animator.CurrentAnimationIs("Movement"))
+            if(audioSource.isPlaying == false && animator.CurrentAnimationIs("Idle Walk Run Blend"))
             {
                 isReload = false;
 
