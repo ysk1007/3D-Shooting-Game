@@ -13,27 +13,34 @@ public class Bullet : MonoBehaviour
     {
         public BulletName BulletName;   // 총알 이름
         public float bulletDamage;      // 총알 대미지
+        public float bulletSpeed;       // 총알 속도
     }
 
     [SerializeField]
     BulletSetting bulletSetting;
 
-    [SerializeField]
-    private MovementTransform movementTransform;
-
-    private Rigidbody rigidbody3D;
+    private Rigidbody rigidbody;
     private AudioSource audioSource;
     private BulletMemoryPool memoryPool;
     private MemoryPool bulletMemoryPool;
     private MemoryPool impactMemoryPool;
 
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
     // 이동 방향 설정
-    public void Setup(BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool,Vector3 direction)
+    public void Setup(BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool)
     {
         memoryPool = BulletMemoryPool;
         bulletMemoryPool = bulletPool;
         impactMemoryPool = impactPool;
-        movementTransform.MoveTo(direction.normalized); // 방향을 정규화하여 속도를 일정하게 유지
+    }
+
+    private void Update()
+    {
+        BulletMove();
     }
 
     // 충돌 감지
@@ -63,5 +70,10 @@ public class Bullet : MonoBehaviour
 
         // 총알 오브젝트 제거
         bulletMemoryPool.DeactivatePoolItem(this.gameObject);
+    }
+
+    private void BulletMove()
+    {
+        rigidbody.velocity = transform.forward * bulletSetting.bulletSpeed;
     }
 }

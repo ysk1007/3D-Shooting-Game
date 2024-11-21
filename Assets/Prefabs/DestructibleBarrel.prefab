@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3658445918065629667}
   - component: {fileID: 2724189478527754498}
   - component: {fileID: -4730477640240628390}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DestructibleBarrel
   m_TagString: InteractionObject
   m_Icon: {fileID: 0}

@@ -143,7 +143,8 @@ public class WeaponAssaultRifle : WeaponBase
             casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
 
             // 광선을 발사해 원하는 위치 공격 (+Impact Effect)
-            TwoStepRayCast();
+            //TwoStepRayCast();
+            bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         }
     }
 
@@ -168,7 +169,7 @@ public class WeaponAssaultRifle : WeaponBase
         {
             // 사운드가 재생중이 아니고, 현재 애니메이션이 Idle Walk Run Blend 이면
             // 재장전 애니메이션(, 사운드) 재생이 종료되었다는 뜻
-            if(audioSource.isPlaying == false && animator.CurrentAnimationIs("Idle Walk Run Blend"))
+            if(audioSource.isPlaying == false && !animator.CurrentAnimationIs("Reloading"))
             {
                 isReload = false;
 
@@ -180,6 +181,7 @@ public class WeaponAssaultRifle : WeaponBase
                 weaponSetting.currentAmmo = weaponSetting.maxAmmo;
                 onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
 
+                //PlayerManager.instance.Reroad();
                 yield break;
             }
 
@@ -217,6 +219,6 @@ public class WeaponAssaultRifle : WeaponBase
         }
         Debug.DrawRay(bulletSpawnPoint.position, attackDirection * weaponSetting.attackDistance, Color.blue);
 
-        bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation, attackDirection);
+        bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 }

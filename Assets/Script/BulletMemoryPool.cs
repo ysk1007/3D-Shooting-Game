@@ -31,12 +31,12 @@ public class BulletMemoryPool : MonoBehaviour
         }
     }
 
-    public void SpawnBullet(WeaponName type, Vector3 position, Quaternion rotation, Vector3 direction)
+    public void SpawnBullet(WeaponName type, Vector3 position, Quaternion rotation)
     {
         GameObject bullet = bulletPool[(int)type].ActivatePoolItem();
         bullet.transform.position = position;
-        bullet.transform.rotation = rotation;
-        bullet.GetComponent<Bullet>().Setup(this,bulletPool[(int)type], impactPool[(int)type], direction);
+        bullet.transform.LookAt(PlayerManager.instance.TargetPosition);
+        bullet.GetComponent<Bullet>().Setup(this,bulletPool[(int)type], impactPool[(int)type]);
     }
 
     public void SpawnImpact(WeaponName type, Vector3 position, Quaternion rotation)

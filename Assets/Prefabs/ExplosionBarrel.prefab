@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 969521028298498410}
   - component: {fileID: 7756743503807608236}
   - component: {fileID: 4667801502748406685}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExplosionBarrel
   m_TagString: InteractionObject
   m_Icon: {fileID: 0}

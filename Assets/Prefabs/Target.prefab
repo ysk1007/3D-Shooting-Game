@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 787059370483729320}
   - component: {fileID: -464683477471351884}
   - component: {fileID: 4362033975359970399}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Target
   m_TagString: InteractionObject
   m_Icon: {fileID: 0}
@@ -254,6 +254,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4034688851619904253, guid: e0824ef0160adf940a8470ee4509b859,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -719896354242658558, guid: e0824ef0160adf940a8470ee4509b859,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e0824ef0160adf940a8470ee4509b859,
         type: 3}
       propertyPath: m_Name
@@ -261,8 +271,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e0824ef0160adf940a8470ee4509b859,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e0824ef0160adf940a8470ee4509b859,
+        type: 3}
       propertyPath: m_TagString
       value: InteractionObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387138317053204076, guid: e0824ef0160adf940a8470ee4509b859,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

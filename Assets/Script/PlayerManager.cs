@@ -7,6 +7,7 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager instance;
     private StarterAssetsInputs input;
     private ThirdPersonController controller;
     private Animator anim;
@@ -22,6 +23,7 @@ public class PlayerManager : MonoBehaviour
     private float aimObjDis = 10f;
     [SerializeField]
     private LayerMask targetLayer;
+    private Vector3 targetPosition;
 
     [Header("IK")]
     [SerializeField]
@@ -33,6 +35,21 @@ public class PlayerManager : MonoBehaviour
     private PlayerAnimatorController playerAnimatorController;
     private Status status;                         // 이동속도 등의 플레이어 정보
     private WeaponBase weapon;                      // 모든 무기가 상속받는 기반 클래스
+
+    public Transform AimObj
+    {
+        get => aimObj.transform;
+    }
+
+    public Vector3 TargetPosition
+    {
+        get => targetPosition;
+    }
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -78,11 +95,11 @@ public class PlayerManager : MonoBehaviour
 
             anim.SetLayerWeight(1, 1);
 
-            Vector3 targetPosition = Vector3.zero;
+            targetPosition = Vector3.zero;
             Transform camTransform = Camera.main.transform;
             RaycastHit hit;
 
-            if (Physics.Raycast(camTransform.position, camTransform.forward, out hit, Mathf.Infinity, targetLayer))
+            if (Physics.Raycast(camTransform.position, camTransform.forward, out hit, 50f, targetLayer))
             {
                 targetPosition = hit.point;
                 aimObj.transform.position = hit.point;

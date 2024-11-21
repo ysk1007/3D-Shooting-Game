@@ -26,9 +26,9 @@ TagManager:
   - Casing
   - Bullet
   - Grenade
-  - 
-  - 
-  - 
+  - InteractionObject
+  - Enemy
+  - Item
   - 
   - 
   - 
