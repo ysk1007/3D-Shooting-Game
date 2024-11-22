@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44824904, g: 0.49827605, b: 0.5755831, a: 1}
+  m_IndirectSpecularColor: {r: 0.44824833, g: 0.49827534, b: 0.57558256, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1066,7 +1066,7 @@ MonoBehaviour:
     attackDistance: 30
     isAutomaticAttack: 1
   animator: {fileID: 1899646740}
-  animatorController: {fileID: 22100000, guid: e6ba38fb91ebe9c43ae835552dc214a2, type: 2}
+  animatorController: {fileID: 22100000, guid: b2c593e04f974d244837722e3f5c8e40, type: 2}
   onAmmoEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -8545,13 +8545,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1124748735}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5585537, y: -0.6052988, z: -0.41678864, w: 0.38460147}
-  m_LocalPosition: {x: 0.25, y: 0, z: 0.07}
+  m_LocalRotation: {x: -0.63507694, y: -0.5244485, z: -0.36111778, w: 0.43729284}
+  m_LocalPosition: {x: 1.72, y: -0.19, z: 1.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 129571857}
-  m_LocalEulerAnglesHint: {x: -110.9, y: 0, z: -94.6}
+  m_LocalEulerAnglesHint: {x: -110.9, y: 0, z: -79.1}
 --- !u!1 &1140392858
 GameObject:
   m_ObjectHideFlags: 0
@@ -9647,11 +9647,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Data:
-    m_ConstrainedObject: {fileID: 258759063}
+    m_ConstrainedObject: {fileID: 1208429286}
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 0}
+        transform: {fileID: 258759063}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -9674,7 +9674,7 @@ MonoBehaviour:
       m_Item7:
         transform: {fileID: 0}
         weight: 0
-    m_Offset: {x: 16, y: -27, z: 0}
+    m_Offset: {x: 30, y: -27, z: 0}
     m_MinLimit: -180
     m_MaxLimit: 180
     m_AimAxis: 5
@@ -10062,7 +10062,7 @@ PrefabInstance:
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.20000005
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
@@ -10117,7 +10117,7 @@ PrefabInstance:
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
       propertyPath: m_Lens.FieldOfView
-      value: 45
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10315,7 +10315,7 @@ MonoBehaviour:
     attackDistance: 20
     isAutomaticAttack: 0
   animator: {fileID: 1899646740}
-  animatorController: {fileID: 22100000, guid: 3b17219d4da2c9545bc1aafda69287be, type: 2}
+  animatorController: {fileID: 22100000, guid: b76afc4a917d9b447b975a8a17612174, type: 2}
   onAmmoEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -10323,7 +10323,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   muzzleFlashEffect: {fileID: 853172590}
-  bulletSpawnPoint: {fileID: 1203471412}
+  bulletSpawnPoint: {fileID: 2099213003}
   audioClipFire: {fileID: 8300000, guid: 9e9480b4d07646942b555fd43f2a0f71, type: 3}
   audioClipReload: {fileID: 8300000, guid: 125edb9e36f963249bc792cca38492b1, type: 3}
 --- !u!23 &1351415007
@@ -17740,8 +17740,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185171458659952469}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27135,9 +27135,10 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 7176
+  playerCameraRoot: {fileID: 1185171458659952466}
   handRig: {fileID: 604271847}
   aimRig: {fileID: 1193196065}
-  playerAnimatorController: {fileID: 0}
+  weaponAnimatorController: {fileID: 229530079999549134}
 --- !u!114 &7073702768417473140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27659,7 +27660,7 @@ Transform:
   m_GameObject: {fileID: 8944336655559401660}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.20000005, y: 1.7, z: -4}
+  m_LocalPosition: {x: 1.2, y: 1.7, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27718,7 +27719,7 @@ Camera:
     height: 1
   near clip plane: 0.2
   far clip plane: 500
-  field of view: 45
+  field of view: 50
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -27886,7 +27887,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 1185171458659952466}
   m_Lens:
-    FieldOfView: 30
+    FieldOfView: 35
     OrthographicSize: 10
     NearClipPlane: 0.2
     FarClipPlane: 500

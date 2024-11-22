@@ -24,6 +24,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private LayerMask targetLayer;
     private Vector3 targetPosition;
+    [SerializeField]
+    private Transform playerCameraRoot;
+    Vector3 defPos = new Vector3(0, 1.7f, 0);
+    Vector3 aimPos = new Vector3(1, 1.7f, 0);
 
     [Header("IK")]
     [SerializeField]
@@ -32,7 +36,7 @@ public class PlayerManager : MonoBehaviour
     private Rig aimRig;
 
     [SerializeField]
-    private PlayerAnimatorController playerAnimatorController;
+    private Animator weaponAnimatorController;      // 무기 별 애니메이터
     private Status status;                         // 이동속도 등의 플레이어 정보
     private WeaponBase weapon;                      // 모든 무기가 상속받는 기반 클래스
 
@@ -69,19 +73,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (input.reroad)
         {
-            input.reroad = false;
-
-            if (controller.isReroad)
-            {
-                return;
-            }
-
-            AimControll(false);
-            SetRigWeight(0);
-            anim.SetLayerWeight(1, 1);
-            anim.SetTrigger("Reroad");
-            weapon.StartReload();
-            controller.isReroad = true;
+            StartReroad();
         }
 
         if (controller.isReroad)
@@ -91,6 +83,7 @@ public class PlayerManager : MonoBehaviour
 
         if (input.aim)
         {
+            playerCameraRoot.localPosition = aimPos;
             AimControll(true);
 
             anim.SetLayerWeight(1, 1);
@@ -131,6 +124,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            playerCameraRoot.localPosition = defPos;
             AimControll(false);
             SetRigWeight(0);
             anim.SetLayerWeight(1, 0);
@@ -143,6 +137,23 @@ public class PlayerManager : MonoBehaviour
         aimCam.gameObject.SetActive(isCheck);
         aimImage.SetActive(isCheck);
         controller.isAimMove = isCheck;
+    }
+
+    public void StartReroad()
+    {
+        input.reroad = false;
+
+        if (controller.isReroad || weapon.CurrentMagazine <= 0)
+        {
+            return;
+        }
+
+        AimControll(false);
+        SetRigWeight(0);
+        anim.SetLayerWeight(1, 1);
+        anim.SetTrigger("Reroad");
+        weapon.StartReload();
+        controller.isReroad = true;
     }
 
     public void Reroad()
@@ -172,6 +183,6 @@ public class PlayerManager : MonoBehaviour
     public void SwitcningWeapon(WeaponBase newWeapon)
     {
         weapon = newWeapon;
-        //playerAnimatorController.ChangeAnimator(newWeapon.AnimatorController);
+        weaponAnimatorController.runtimeAnimatorController = newWeapon.AnimatorController;
     }
 }
