@@ -1,37 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Bullet;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    private MovementTransform movement;
+    [SerializeField] private float projectileSpeed = 30f;
     private float projectileDistance = 30;  // 발사체 최대 발사거리
     private float damage = 5;
 
-    public void Setup(Vector3 position)
-    {
-        movement = GetComponent<MovementTransform>();
+    private Rigidbody rigidbody;
 
-        StartCoroutine("OnMove", position);
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
     }
 
-    private IEnumerator OnMove(Vector3 targetPosition)
+    private void Update()
     {
-        Vector3 start = transform.position;
-
-        movement.MoveTo((targetPosition - transform.position).normalized);
-
-        while (true)
-        {
-            if(Vector3.Distance(transform.position, start) >= projectileDistance)
-            {
-                Destroy(gameObject);
-
-                yield break;
-            }
-
-            yield return null;
-        }
+        BulletMove();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,9 +26,14 @@ public class EnemyProjectile : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //Debug.Log("Player Hit");
-            other.GetComponent<PlayerController>().TakeDamage(damage);
+            other.GetComponent<PlayerManager>().TakeDamage(damage);
 
             Destroy(gameObject);
         }
+    }
+
+    private void BulletMove()
+    {
+        rigidbody.velocity = transform.forward * projectileSpeed;
     }
 }

@@ -27,7 +27,6 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField]
     protected AnimatorOverrideController animatorController; // 무기별 애니메이터 컨트롤러
 
-
     // 외부에서 이벤트 함수 등록을 할 수 있도록 public 선언
     [HideInInspector]
     public AmmoEvent onAmmoEvent = new AmmoEvent();
@@ -40,6 +39,7 @@ public abstract class WeaponBase : MonoBehaviour
     public WeaponName WeaponName => weaponSetting.WeaponName;
     public int CurrentMagazine => weaponSetting.currentMagazine;
     public int MaxMagazine => weaponSetting.maxMagazine;
+
 
     public abstract void StartWeaponAction(int type = 0);
     public abstract void StopWeaponAction(int type = 0);

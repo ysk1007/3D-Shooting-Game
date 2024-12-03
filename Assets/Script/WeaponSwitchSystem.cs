@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class WeaponSwitchSystem : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class WeaponSwitchSystem : MonoBehaviour
     private WeaponBase currentWeapon;   // 현재 사용중인 무기
     [SerializeField]
     private WeaponBase previousWeapon;  // 직전에 사용했던 무기
-
 
     private void Awake()
     {

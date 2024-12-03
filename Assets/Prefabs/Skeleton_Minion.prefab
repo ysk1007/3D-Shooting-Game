@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2529214866096534137}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: foot.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2093462457445698573}
   - component: {fileID: 5617667277167008133}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_LegRight
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 370816886153961494}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: hand.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7580293283114355473}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: upperleg.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4870966621884019251}
   - component: {fileID: 1047734041988337163}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_Eyes
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3464254484302782101}
   - component: {fileID: 6197412197400136616}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_ArmLeft
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -483,7 +483,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3366849822968816724}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: lowerarm.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8558898231526674188}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: toes.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4905179189382317582}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rig
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 7002007872514370455}
   - component: {fileID: 1851871458629598809}
   - component: {fileID: 3272241878849435919}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AttackCollider
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -647,7 +647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8472538303380954192}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: wrist.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -679,7 +679,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5230109996381162999}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -713,7 +713,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5333158518080078979}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: lowerarm.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -745,7 +745,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7976993778076406200}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: upperarm.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -777,7 +777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3387879942244821048}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: upperarm.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -809,7 +809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9173333050620007028}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: lowerleg.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -841,7 +841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3044976100340557419}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -873,7 +873,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4333448484404702324}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: wrist.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -905,7 +905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7453396065359643456}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: handslot.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -937,7 +937,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1863484724072830403}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: toes.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -969,7 +969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2110271784520761611}
   - component: {fileID: 833882182133523487}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_ArmRight
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1094,7 +1094,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8565777966054103908}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: lowerleg.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1127,7 +1127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3483877819159565501}
   - component: {fileID: 3714010672873886012}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_Head
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1252,7 +1252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 363960548804715287}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: foot.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1285,7 +1285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5212127510412215009}
   - component: {fileID: 1835302667564485325}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_LegLeft
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5840945684664167352}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: upperleg.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1442,7 +1442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5152531064981370897}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1476,7 +1476,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7602076725479348169}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: hand.l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1508,7 +1508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3686544681675589240}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: handslot.r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1541,7 +1541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4067060859984083200}
   - component: {fileID: 4894362114383464111}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_Body
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1666,7 +1666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8271571614524562840}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AttackPoint
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1682,7 +1682,7 @@ Transform:
   m_GameObject: {fileID: 7815112648463051970}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.044, z: 1.121}
+  m_LocalPosition: {x: 0, y: 1.044, z: 1.655}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1698,7 +1698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 566154086001243006}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1730,7 +1730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8414931558472726050}
   - component: {fileID: 6498374988518247143}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_Cloak
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1856,7 +1856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7290915467635262677}
   - component: {fileID: 287027122959141731}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion_Jaw
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1981,7 +1981,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855982021566019199}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2020,7 +2020,7 @@ GameObject:
   - component: {fileID: 8552094609145884497}
   - component: {fileID: 1225343582706808920}
   - component: {fileID: 537290288045969772}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Skeleton_Minion
   m_TagString: Enemy
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -2254,6 +2254,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton_Shield_Small_A
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 777ee67bcf119c841add80eda8dd345b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2280,13 +2285,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 784590738308661314, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 784590738308661314, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 913214141300241354, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 913214141300241354, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111202077786471932, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826451176026022197, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1826451176026022197, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
@@ -2305,8 +2330,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3318290726054616012, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318290726054616012, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374295727359297957, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409899889429655121, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3676520275494958775, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
@@ -2322,6 +2362,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4993290584213969026, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4993290584213969026, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
@@ -2435,6 +2480,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8752223362621707895, guid: 8acd8afe104751f4085ad2e35f01c18a,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752223362621707895, guid: 8acd8afe104751f4085ad2e35f01c18a,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -2523,6 +2573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Skeleton_Blade
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6028f5ddcde2fb54eb003c87fe1830be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

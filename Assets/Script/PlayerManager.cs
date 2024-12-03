@@ -39,6 +39,8 @@ public class PlayerManager : MonoBehaviour
     private Animator weaponAnimatorController;      // 무기 별 애니메이터
     private Status status;                         // 이동속도 등의 플레이어 정보
     private WeaponBase weapon;                      // 모든 무기가 상속받는 기반 클래스
+    [SerializeField]
+    private WeaponGrenade weaponGrenade;
 
     public Transform AimObj
     {
@@ -58,6 +60,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        status = GetComponent<Status>();
         input = GetComponent<StarterAssetsInputs>();
         controller = GetComponent<ThirdPersonController>();
         anim = GetComponent<Animator>();
@@ -184,5 +187,18 @@ public class PlayerManager : MonoBehaviour
     {
         weapon = newWeapon;
         weaponAnimatorController.runtimeAnimatorController = newWeapon.AnimatorController;
+    }
+
+    public void SpawnGrenadeProjectile()
+    {
+        weaponGrenade.SpawnGrenadeProjectile();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            other.GetComponent<ItemBase>().Use(gameObject);
+        }
     }
 }

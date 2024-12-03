@@ -281,8 +281,7 @@ public class EnemyFSM : MonoBehaviour
                 break;
             case EnemyType.archor:
                 // 발사체 생성
-                GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-                projectile.GetComponent<EnemyProjectile>().Setup(target.position);
+                Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
                 break;
         }
 

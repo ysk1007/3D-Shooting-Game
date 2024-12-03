@@ -42,7 +42,7 @@ public class ExplosionBarrel : InteractionObject
         foreach (Collider hit in colliders)
         {
             // 폭발 범위에 부딪힌 오브젝트가 플레이어일 때 처리
-            PlayerController player = hit.GetComponent<PlayerController>();
+            PlayerManager player = hit.GetComponent<PlayerManager>();
             if(player != null)
             {
                 player.TakeDamage(50);
