@@ -18,9 +18,7 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField]
     private Image imageWeaponIcon;              // 무기 아이콘
     [SerializeField]
-    private Sprite[] spriteWeaponIcons;         // 무기 아이콘에 사용되는 sprite 배열
-    [SerializeField]
-    private Vector2[] sizeWeaponIcons;          // 무기 아이콘의 UI 크기 배열
+    private Vector2 sizeWeaponIcons;          // 무기 아이콘의 UI 크기
 
     [Header("Ammo")]
     [SerializeField]
@@ -76,9 +74,9 @@ public class PlayerHUD : MonoBehaviour
 
     private void SetupWeapon()
     {
-        textWeaponName.text = weapon.WeaponName.ToString();
-        imageWeaponIcon.sprite = spriteWeaponIcons[(int)weapon.WeaponName];
-        imageWeaponIcon.rectTransform.sizeDelta = sizeWeaponIcons[(int)weapon.WeaponName];
+        textWeaponName.text = weapon.WeaponSetting.weaponName;
+        imageWeaponIcon.sprite = weapon.WeaponSetting.weaponSprite;
+        imageWeaponIcon.rectTransform.sizeDelta = sizeWeaponIcons;
     }
     private void UpdateAmmoHUD(int currentAmmo, int maxAmmo)
     {

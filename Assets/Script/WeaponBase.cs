@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType { Main = 0, Sub, Melee, Throw }
+public enum WeaponType { Main = 0, Sub = 2, Melee, Throw }
 
 [Serializable]
 public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
@@ -39,7 +39,7 @@ public abstract class WeaponBase : MonoBehaviour
     public WeaponName WeaponName => weaponSetting.WeaponName;
     public int CurrentMagazine => weaponSetting.currentMagazine;
     public int MaxMagazine => weaponSetting.maxMagazine;
-
+    public WeaponSetting WeaponSetting => weaponSetting;
 
     public abstract void StartWeaponAction(int type = 0);
     public abstract void StopWeaponAction(int type = 0);

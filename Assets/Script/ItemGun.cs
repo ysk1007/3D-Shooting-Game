@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Bullet;
 
 public class ItemGun : ItemBase
 {
-    [SerializeField]
-    private float moveDistance = 0.2f;
-    [SerializeField]
-    private float pinpongSpeed = 0.5f;
-    [SerializeField]
-    private float rotateSpeed = 50;
+    [Header("아이템 세팅")]
+    [SerializeField] private WeaponSetting weapon;
+
+    [Header("아이템 회전 속도")]
+    [SerializeField] private float moveDistance = 0.2f;
+    [SerializeField] private float pinpongSpeed = 0.5f;
+    [SerializeField] private float rotateSpeed = 50;
+
+    [Header("아이템 세팅")]
+    [SerializeField] private WeaponInfoPopup weaponInfoPopup;
+
+    WeaponSwitchSystem weaponSwitchSystem;
 
     private IEnumerator Start()
     {
+        weaponSwitchSystem = WeaponSwitchSystem.instance;
+
         float y = transform.position.y;
 
         while (true)
@@ -32,5 +41,26 @@ public class ItemGun : ItemBase
     public override void Use(GameObject entity)
     {
 
+    }
+
+    public override void PickUp(int index)
+    {
+        weaponSwitchSystem.PickUpWeapon(weapon.WeaponName, index);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Player"))
+        {
+            weaponInfoPopup.SetUp(weapon, this);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.CompareTag("Player"))
+        {
+            weaponInfoPopup.init();
+        }
     }
 }

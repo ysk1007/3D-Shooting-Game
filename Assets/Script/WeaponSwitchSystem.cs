@@ -5,13 +5,17 @@ using UnityEngine.Animations.Rigging;
 
 public class WeaponSwitchSystem : MonoBehaviour
 {
+    public static WeaponSwitchSystem instance;
+
     [SerializeField]
     private PlayerManager playerController;
     [SerializeField]
     private PlayerHUD playerHUD;
 
     [SerializeField]
-    private WeaponBase[] weapons;        // 소지중인 무기 4종류
+    private WeaponBase[] weapons;        // 사용가능한 무기들
+
+    [SerializeField] private List<WeaponBase> playerWeapons;    // 소지중인 무기 3종류
 
     [SerializeField]
     private WeaponBase currentWeapon;   // 현재 사용중인 무기
@@ -20,6 +24,8 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         // 무기 정보 출력을 위해 현재 소지중인 모든 무기 이벤트 등록
         playerHUD.SetupAllWeapons(weapons);
 
@@ -33,7 +39,7 @@ public class WeaponSwitchSystem : MonoBehaviour
         }
 
         // Main 무기를 현재 사용 무기로 설정
-        SwitchingWeapon(WeaponType.Main);
+        SwitchingWeapon(WeaponType.Sub);
     }
 
     private void Update()
@@ -53,10 +59,16 @@ public class WeaponSwitchSystem : MonoBehaviour
         }
     }
 
+    public void PickUpWeapon(WeaponName weapon,int index)
+    {
+        Debug.Log(weapon.GetHashCode());
+        playerWeapons[index] = weapons[(int)weapon];
+    }
+
     private void SwitchingWeapon(WeaponType weaponType)
     {
         // 교체 가능한 무기가 없으면 종료
-        if (weapons[(int)weaponType] == null)
+        if (playerWeapons[(int)weaponType] == null)
         {
             return;
         }
@@ -68,7 +80,7 @@ public class WeaponSwitchSystem : MonoBehaviour
         }
 
         // 무기 교체
-        currentWeapon = weapons[(int)weaponType];
+        currentWeapon = playerWeapons[(int)weaponType];
 
         // 현재 사용중인 무기로 교체하려고 할 때 종료
         if (currentWeapon == previousWeapon)
@@ -96,10 +108,10 @@ public class WeaponSwitchSystem : MonoBehaviour
     public void IncreaseMagazine(WeaponType weaponType, int magazine)
     {
         // 해당 무기가 있는지 검사
-        if (weapons[(int)weaponType] != null)
+        if (playerWeapons[(int)weaponType] != null)
         {
             // 해당 무기의 탄창 수를 magazine만큼 증가
-            weapons[(int)weaponType].IncreaseMagazine(magazine);
+            playerWeapons[(int)weaponType].IncreaseMagazine(magazine);
         }
     }
 
@@ -110,9 +122,9 @@ public class WeaponSwitchSystem : MonoBehaviour
     {
         for (int i = 0; i < weapons.Length; ++i)
         {
-            if (weapons[i] != null)
+            if (playerWeapons[i] != null)
             {
-                weapons[i].IncreaseMagazine(magazine);
+                playerWeapons[i].IncreaseMagazine(magazine);
             }
         }
     }

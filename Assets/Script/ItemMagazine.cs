@@ -34,4 +34,9 @@ public class ItemMagazine : ItemBase
 
         Destroy(gameObject);
     }
+
+    public override void PickUp(int index)
+    {
+        
+    }
 }

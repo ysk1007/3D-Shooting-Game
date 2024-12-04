@@ -42,4 +42,9 @@ public class ItemMedicBag : ItemBase
 
         Destroy(gameObject);
     }
+
+    public override void PickUp(int index)
+    {
+
+    }
 }
