@@ -21,6 +21,8 @@ public class EnemyMemoryPool : MonoBehaviour
     private int numberOfEnemiesSpawnedAtOnce = 1;           // 동시에 생성되는 적의 숫자
     private Vector2Int mapSize = new Vector2Int(100, 100);  // 맵 크기
 
+    [SerializeField] private Transform enemys; // 관리할 부모 오브젝트
+
     private void Awake()
     {
         spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab);
@@ -65,6 +67,7 @@ public class EnemyMemoryPool : MonoBehaviour
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
         GameObject enemy = enemyMemoryPool.ActivatePoolItem();
+        enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
 
         enemy.GetComponent<EnemyFSM>().Setup(target, this);

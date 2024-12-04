@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BulletMemoryPool : MonoBehaviour
 {
+    public static BulletMemoryPool instance;
+
     [SerializeField]
     private GameObject[] bulletPrefab;      // 총알 이펙트
     private MemoryPool[] bulletPool;        // 총알 이펙트 메모리 풀
@@ -13,9 +15,13 @@ public class BulletMemoryPool : MonoBehaviour
     private GameObject[] impactPrefab;      // 피격 이펙트
     private MemoryPool[] impactPool;        // 피격 이펙트 메모리 풀
 
+    [SerializeField] private Transform bullets; // 관리할 부모 오브젝트
+    [SerializeField] private Transform impacts; // 관리할 부모 오브젝트
 
     private void Awake()
     {
+        instance = this;
+
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
         bulletPool = new MemoryPool[bulletPrefab.Length];
         for (int i = 0; i < bulletPrefab.Length; ++i)
@@ -34,6 +40,7 @@ public class BulletMemoryPool : MonoBehaviour
     public void SpawnBullet(WeaponName type, Vector3 position, Quaternion rotation)
     {
         GameObject bullet = bulletPool[(int)type].ActivatePoolItem();
+        bullet.transform.SetParent(bullets);
         bullet.transform.position = position;
         bullet.transform.LookAt(PlayerManager.instance.TargetPosition);
         bullet.GetComponent<Bullet>().Setup(this,bulletPool[(int)type], impactPool[(int)type]);
@@ -42,6 +49,7 @@ public class BulletMemoryPool : MonoBehaviour
     public void SpawnImpact(WeaponName type, Vector3 position, Quaternion rotation)
     {
         GameObject impact = impactPool[(int)type].ActivatePoolItem();
+        impact.transform.SetParent(impacts);
         impact.transform.position = position;
         impact.transform.rotation = rotation;
         impact.GetComponent<Impact>().SetUp(impactPool[(int)type]);

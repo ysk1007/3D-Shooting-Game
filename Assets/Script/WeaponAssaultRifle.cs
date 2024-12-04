@@ -23,9 +23,6 @@ public class WeaponAssaultRifle : WeaponBase
     [SerializeField]
     private AudioClip audioClipReload;          // 재장전 사운드
 
-    private CasingMemoryPool casingMemoryPool;  // 탄피 생성 후 활성/비활성 관리
-    private ImpactMemoryPool impactMemoryPool;  // 공격 효과 생성 후 활성/비활성 관리
-    private BulletMemoryPool bulletMemoryPool;  // 총알 생성 후 활성/비활성 관리
     private Camera mainCamera;                  // 광선 발사
 
     private void Awake()
@@ -33,9 +30,6 @@ public class WeaponAssaultRifle : WeaponBase
         // 기반 클래스의 초기화를 위한 Setup() 메소드 호출
         base.Setup();
 
-        casingMemoryPool = GetComponent<CasingMemoryPool>();
-        impactMemoryPool = GetComponent<ImpactMemoryPool>();
-        bulletMemoryPool = GetComponent<BulletMemoryPool>();
         mainCamera = Camera.main;
 
         // 처음 탄창 수는 최대로 설정
@@ -140,11 +134,11 @@ public class WeaponAssaultRifle : WeaponBase
             // 공격 사운드 재생
             PlaySound(audioClipFire);
             // 탄피 생성
-            casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
+            CasingMemoryPool.instance.SpawnCasing(casingSpawnPoint.position, transform.right);
 
             // 광선을 발사해 원하는 위치 공격 (+Impact Effect)
             //TwoStepRayCast();
-            bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            BulletMemoryPool.instance.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         }
     }
 
@@ -189,7 +183,7 @@ public class WeaponAssaultRifle : WeaponBase
         }
     }
 
-    private void TwoStepRayCast()
+    /*private void TwoStepRayCast()
     {
         Ray ray;
         RaycastHit hit;
@@ -220,5 +214,5 @@ public class WeaponAssaultRifle : WeaponBase
         Debug.DrawRay(bulletSpawnPoint.position, attackDirection * weaponSetting.attackDistance, Color.blue);
 
         bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-    }
+    }*/
 }
