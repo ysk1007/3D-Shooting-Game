@@ -63,7 +63,7 @@ public class WeaponAssaultRifle : WeaponBase
             // 연속 공격
             if (weaponSetting.isAutomaticAttack == true)
             {
-                StartCoroutine("OnAttackLoop");
+                StartCoroutine("OnAttackLoop"); 
             }
             // 단발 공격
             else

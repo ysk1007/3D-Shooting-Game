@@ -5,6 +5,8 @@ using static Bullet;
 
 public class ItemGun : ItemBase
 {
+    [SerializeField] private WeaponBase weaponBase;
+
     [Header("아이템 세팅")]
     [SerializeField] private WeaponSetting weapon;
 

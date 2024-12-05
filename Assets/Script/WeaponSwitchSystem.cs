@@ -22,6 +22,11 @@ public class WeaponSwitchSystem : MonoBehaviour
     [SerializeField]
     private WeaponBase previousWeapon;  // 직전에 사용했던 무기
 
+    [SerializeField]
+    private Transform playerHand;       // 플레이어 손
+
+    public List<WeaponBase> PlayerWeapons => playerWeapons;
+
     private void Awake()
     {
         instance = this;
@@ -61,8 +66,9 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     public void PickUpWeapon(WeaponName weapon,int index)
     {
-        Debug.Log(weapon.GetHashCode());
-        playerWeapons[index] = weapons[(int)weapon];
+        GameObject gun =  GunMemoryPool.instance.SpawnGun(weapon);
+        PlayerHUD.instance.WeaponAddListener(gun.GetComponent<WeaponBase>());
+        playerWeapons[index] = gun.GetComponent<WeaponBase>();
     }
 
     private void SwitchingWeapon(WeaponType weaponType)

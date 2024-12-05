@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
+    public static PlayerHUD instance;
     [Header("Compents")]
     [SerializeField]
     private WeaponBase weapon;                  // 현재 정보가 출력되는 무기
@@ -48,6 +49,7 @@ public class PlayerHUD : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         // 메소드가 등록되어 있는 이벤트 클래스(weapon.xx)의
         // Invoke() 메소드가 호출될 때 등록된 메소드(매개변수)가 실행된다
         status.onHPEvent.AddListener(UpdateHPHUD);
@@ -65,6 +67,12 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
+    public void WeaponAddListener(WeaponBase weapon)
+    {
+        weapon.onAmmoEvent.AddListener(UpdateAmmoHUD);
+        weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);
+    }
+
     public void SwtchingWeapon(WeaponBase newWeapon)
     {
         weapon = newWeapon;
@@ -77,6 +85,8 @@ public class PlayerHUD : MonoBehaviour
         textWeaponName.text = weapon.WeaponSetting.weaponName;
         imageWeaponIcon.sprite = weapon.WeaponSetting.weaponSprite;
         imageWeaponIcon.rectTransform.sizeDelta = sizeWeaponIcons;
+        UpdateAmmoHUD(weapon.WeaponSetting.currentAmmo, weapon.WeaponSetting.maxAmmo);
+        UpdateMagazineHUD(weapon.WeaponSetting.currentMagazine);
     }
     private void UpdateAmmoHUD(int currentAmmo, int maxAmmo)
     {

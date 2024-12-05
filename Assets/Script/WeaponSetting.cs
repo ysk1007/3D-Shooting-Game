@@ -4,9 +4,8 @@ using UnityEngine;
 // 변수가 추가/삭제될 때 구조체에 선언하기 대문에 추가/삭제에 대한 관리가 용이함
 public enum WeaponName { AssaultRifle = 0, SawGun, Revolver ,CombatKnife, HandGrenade}
 
-[CreateAssetMenu(fileName = "Weapon", menuName = "ScriptableObjects/WeaponScriptableObject", order = 1)]
 [Serializable]
-public class WeaponSetting : ScriptableObject
+public struct WeaponSetting
 {
     public WeaponName WeaponName;   // 무기 이름
     public string weaponName;       // 무기 이름

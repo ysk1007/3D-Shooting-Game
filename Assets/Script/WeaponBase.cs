@@ -55,7 +55,7 @@ public abstract class WeaponBase : MonoBehaviour
     protected void Setup()
     {
         audioSource = GetComponent<AudioSource>();
-        //animator = GetComponent<PlayerAnimatorController>();
+        animator = PlayerManager.instance.PlayerAnimatorController;
     }
 
     public virtual void IncreaseMagazine(int magazine)

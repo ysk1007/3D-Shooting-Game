@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +22,10 @@ public class WeaponInfoPopup : MonoBehaviour
 
     [SerializeField] private ItemBase item;
 
-    [SerializeField] private bool popupActive;
+    [SerializeField] private Transform uiSet;
+
+    [SerializeField] private bool isPickupPopup;
+    [SerializeField] private bool pickupPopupActive;
 
     void Start()
     {
@@ -35,15 +39,16 @@ public class WeaponInfoPopup : MonoBehaviour
 
     private void UpdateSwitch()
     {
-        if (!popupActive) return;
+        if (!pickupPopupActive) return;
         if (!Input.anyKeyDown) return;
 
         if (Input.GetKey(KeyCode.Q)) PickUpGun(0);
         if (Input.GetKey(KeyCode.E)) PickUpGun(1);
     }
 
-    public void SetUp(WeaponSetting weapon, ItemBase item)
+    public void SetUp(WeaponSetting weapon, ItemBase item = null)
     {
+        uiSet.localScale = Vector3.one;
         weaponNameText.text = weapon.weaponName;
         weaponDamageText.text = weapon.damage.ToString();
         weaponCriticalText.text = "x"+weapon.critical.ToString();
@@ -54,14 +59,21 @@ public class WeaponInfoPopup : MonoBehaviour
         this.item = item;
 
         transform.localScale = Vector3.one;
-        popupActive = true;
+
+
+        if(isPickupPopup) pickupPopupActive = true;
+    }
+
+    public void SetUpEmpty()
+    {
+        uiSet.localScale = Vector3.zero;
     }
 
     public void init()
     {
         this.item = null;
         transform.localScale = Vector3.zero;
-        popupActive = false;
+        pickupPopupActive = false;
     }
 
     public void PickUpGun(int index)

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4233112883645224}
   - component: {fileID: 198375846102343790}
   - component: {fileID: 199208911497290468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4911,7 +4911,7 @@ GameObject:
   - component: {fileID: 4761235654287462}
   - component: {fileID: 198148331767866702}
   - component: {fileID: 199781911144099612}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9763,7 +9763,7 @@ GameObject:
   - component: {fileID: 3391398651899119429}
   - component: {fileID: 135224436757174648}
   - component: {fileID: 5427801634542536349}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9856,7 +9856,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7287799410709283391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9891,7 +9891,7 @@ GameObject:
   - component: {fileID: 448563260293322282}
   - component: {fileID: 1778089589070535909}
   - component: {fileID: 3837797214611401471}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

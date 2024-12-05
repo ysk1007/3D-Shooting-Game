@@ -23,6 +23,13 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+		private void Update()
+		{
+			SetCursorState(Input.GetKey(KeyCode.LeftControl) ? false : true);
+            cursorInputForLook = (Input.GetKey(KeyCode.LeftControl) ? false : true);
+
+        }
+
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
 		{
@@ -61,6 +68,7 @@ namespace StarterAssets
         {
             ReroadInput(value.isPressed);
         }
+
 #endif
 
 
