@@ -25,8 +25,8 @@ public class EnemyMemoryPool : MonoBehaviour
 
     private void Awake()
     {
-        spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab);
-        enemyMemoryPool = new MemoryPool(enemyPrefab);
+        spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab, enemys);
+        enemyMemoryPool = new MemoryPool(enemyPrefab, enemys);
 
         StartCoroutine("SpawnTile");
     }
@@ -45,7 +45,7 @@ public class EnemyMemoryPool : MonoBehaviour
 
                 enemy.transform.position = new Vector3(Random.Range(-mapSize.x * 0.49f, mapSize.x * 0.49f), 1,
                                                         Random.Range(-mapSize.y * 0.49f, mapSize.y * 0.49f));
-
+                enemy.transform.SetParent(enemys);
                 StartCoroutine("SpawnEnemy", enemy);
             }
 

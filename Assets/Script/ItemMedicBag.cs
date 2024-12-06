@@ -16,6 +16,8 @@ public class ItemMedicBag : ItemBase
     [SerializeField]
     private float rotateSpeed = 50;
 
+    private MemoryPool itemMemoryPool;
+
     private IEnumerator Start()
     {
         float y = transform.position.y;
@@ -40,7 +42,13 @@ public class ItemMedicBag : ItemBase
 
         Instantiate(hpEffectPrefab, transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+        itemMemoryPool.DeactivatePoolItem(this.gameObject);
+        //Destroy(gameObject);
+    }
+
+    public override void SetUp(MemoryPool itemMemoryPool)
+    {
+        this.itemMemoryPool = itemMemoryPool;
     }
 
     public override void PickUp(int index)

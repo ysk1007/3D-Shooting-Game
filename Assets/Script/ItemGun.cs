@@ -5,10 +5,8 @@ using static Bullet;
 
 public class ItemGun : ItemBase
 {
-    [SerializeField] private WeaponBase weaponBase;
-
     [Header("아이템 세팅")]
-    [SerializeField] private WeaponSetting weapon;
+    [SerializeField] private WeaponSetting weaponSetting;
 
     [Header("아이템 회전 속도")]
     [SerializeField] private float moveDistance = 0.2f;
@@ -16,9 +14,11 @@ public class ItemGun : ItemBase
     [SerializeField] private float rotateSpeed = 50;
 
     [Header("아이템 세팅")]
-    [SerializeField] private WeaponInfoPopup weaponInfoPopup;
+    //[SerializeField] private WeaponInfoPopup weaponInfoPopup;
 
     WeaponSwitchSystem weaponSwitchSystem;
+
+    private MemoryPool itemMemoryPool;
 
     private IEnumerator Start()
     {
@@ -45,16 +45,32 @@ public class ItemGun : ItemBase
 
     }
 
+    public override void SetUp(MemoryPool itemMemoryPool)
+    {
+        this.itemMemoryPool = itemMemoryPool;
+
+        //int weaponCount = System.Enum.GetNames(typeof(WeaponName)).Length;
+        //int randomIndex = Random.Range(0, weaponCount); // 0부터 weaponCount - 1까지의 랜덤 정수
+
+        weaponSetting = GunMemoryPool.instance.SpawnGun(/*(WeaponName)Random.Range(0, 2)*/(WeaponName)1, this.transform);
+    }
+
     public override void PickUp(int index)
     {
-        weaponSwitchSystem.PickUpWeapon(weapon.WeaponName, index);
+        if(weaponSwitchSystem.PickUpWeapon(weaponSetting.WeaponName, index))
+        {
+            itemMemoryPool.DeactivatePoolItem(this.gameObject);
+            GameObject gun = transform.GetComponentInChildren<WeaponBase>().gameObject;
+            gun.GetComponent<WeaponBase>().MemoryPool.DeactivatePoolItem(gun);
+            WeaponInfoPopup.instance.init();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Player"))
         {
-            weaponInfoPopup.SetUp(weapon, this);
+            WeaponInfoPopup.instance.SetUp(weaponSetting, this);
         }
     }
 
@@ -62,7 +78,7 @@ public class ItemGun : ItemBase
     {
         if (other.transform.CompareTag("Player"))
         {
-            weaponInfoPopup.init();
+            WeaponInfoPopup.instance.init();
         }
     }
 }

@@ -20,12 +20,15 @@ public class WeaponKnife : WeaponBase
 
     private void Awake()
     {
-        base.Setup();
-
         // 처음 탄창 수는 최대로 설정
         weaponSetting.currentMagazine = weaponSetting.maxMagazine;
         // 처음 탄 수는 최대로 설정
         weaponSetting.currentAmmo = weaponSetting.maxAmmo;
+    }
+
+    private void Start()
+    {
+        base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
     }
 
     public override void StartWeaponAction(int type = 0)

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class WeaponInfoPopup : MonoBehaviour
 {
+    public static WeaponInfoPopup instance;
     [Header("무기 스크립트")]
     [SerializeField] private WeaponSetting weapon;
 
@@ -27,9 +28,9 @@ public class WeaponInfoPopup : MonoBehaviour
     [SerializeField] private bool isPickupPopup;
     [SerializeField] private bool pickupPopupActive;
 
-    void Start()
+    private void Awake()
     {
-
+        if (isPickupPopup) instance = this;
     }
 
     private void Update()
@@ -49,6 +50,7 @@ public class WeaponInfoPopup : MonoBehaviour
     public void SetUp(WeaponSetting weapon, ItemBase item = null)
     {
         uiSet.localScale = Vector3.one;
+        this.weapon = weapon;
         weaponNameText.text = weapon.weaponName;
         weaponDamageText.text = weapon.damage.ToString();
         weaponCriticalText.text = "x"+weapon.critical.ToString();

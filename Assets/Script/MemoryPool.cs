@@ -12,7 +12,7 @@ public class MemoryPool : MonoBehaviour
         public GameObject gameObject;       // 화면에 보이는 실제 게임 오브젝트
     }
 
-    private int increaseCount = 5;          // 오브젝트가 부족할 때 Instantiate()로 추가 생성되는 오브젝트 개수
+    private int increaseCount = 2;          // 오브젝트가 부족할 때 Instantiate()로 추가 생성되는 오브젝트 개수
     private int maxCount;                   // 현재 리스트에 등록되어 있는 오브젝트 개수
     private int activeCount;                // 현재 게임에 사용되고 있는(활성화) 오브젝트 개수
 
@@ -26,7 +26,9 @@ public class MemoryPool : MonoBehaviour
     // 오브젝트가 임시로 보관되는 위치
     private Vector3 tempPosition = new Vector3(48, 1, 48);
 
-    public MemoryPool(GameObject poolObject)
+    private Transform parentTransform;
+
+    public MemoryPool(GameObject poolObject, Transform pool)
     {
         maxCount = 0;
         activeCount = 0;
@@ -34,13 +36,15 @@ public class MemoryPool : MonoBehaviour
 
         poolItemList = new List<PoolItem>();
 
-        InstantiateObjects();
+        parentTransform = pool;
+
+        InstantiateObjects(parentTransform);
     }
 
     /// <summary>
     /// increaseCount 단위로 오브젝트를 생성
     /// </summary>
-    public void InstantiateObjects()
+    public void InstantiateObjects(Transform pool)
     {
         maxCount += increaseCount;
 
@@ -51,6 +55,8 @@ public class MemoryPool : MonoBehaviour
             poolItem.isActive = false;
             poolItem.gameObject = GameObject.Instantiate(poolObject);
             poolItem.gameObject.transform.position = tempPosition;
+            poolItem.gameObject.transform.SetParent(pool);
+
             poolItem.gameObject.SetActive(false);
 
             poolItemList.Add(poolItem);
@@ -86,7 +92,7 @@ public class MemoryPool : MonoBehaviour
         // 모든 오브젝트가 활성화 상태이면 새로운 오브젝트 필요
         if( maxCount == activeCount)
         {
-            InstantiateObjects();
+            InstantiateObjects(parentTransform);
         }
 
         int count = poolItemList.Count;
@@ -127,6 +133,7 @@ public class MemoryPool : MonoBehaviour
 
                 poolItem.isActive = false;
                 poolItem.gameObject.SetActive(false);
+                poolItem.gameObject.transform.SetParent(parentTransform);
 
                 return;
             }

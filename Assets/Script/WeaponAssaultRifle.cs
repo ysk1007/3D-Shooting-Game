@@ -27,9 +27,6 @@ public class WeaponAssaultRifle : WeaponBase
 
     private void Awake()
     {
-        // 기반 클래스의 초기화를 위한 Setup() 메소드 호출
-        base.Setup();
-
         mainCamera = Camera.main;
 
         // 처음 탄창 수는 최대로 설정
@@ -38,6 +35,12 @@ public class WeaponAssaultRifle : WeaponBase
         // 처음 탄 수는 최대로 설정
         weaponSetting.currentAmmo = weaponSetting.maxAmmo;
     }
+
+    private void Start()
+    {
+        base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+    }
+
 
     private void OnEnable()
     {

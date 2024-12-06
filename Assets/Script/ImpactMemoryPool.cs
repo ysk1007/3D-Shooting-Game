@@ -18,7 +18,7 @@ public class ImpactMemoryPool : MonoBehaviour
         memoryPool = new MemoryPool[impactPrefab.Length];
         for (int i = 0; i < impactPrefab.Length; ++i)
         {
-            memoryPool[i] = new MemoryPool(impactPrefab[i]);
+            //memoryPool[i] = new MemoryPool(impactPrefab[i]);
         }
     }
 

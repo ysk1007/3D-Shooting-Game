@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,9 @@ public abstract class WeaponBase : MonoBehaviour
     protected bool isReload = false;              // 재장전 중인지 체크
     protected bool isAttack = false;              // 공격 여부 체크용
     protected AudioSource audioSource;           // 사운드 재생 컴포넌트
+
+    protected MemoryPool memoryPool;            // 무기 풀링
+
     [SerializeField]
     protected PlayerAnimatorController animator;  // 애니메이션 재생 제어
     [SerializeField]
@@ -41,19 +45,23 @@ public abstract class WeaponBase : MonoBehaviour
     public int MaxMagazine => weaponSetting.maxMagazine;
     public WeaponSetting WeaponSetting => weaponSetting;
 
+    public MemoryPool MemoryPool => memoryPool;
+
     public abstract void StartWeaponAction(int type = 0);
     public abstract void StopWeaponAction(int type = 0);
     public abstract void StartReload();
 
     protected void PlaySound(AudioClip clip)
     {
+        if (!audioSource) return;
         audioSource.Stop();         // 기존에 재생중인 사운드를 정지하고,
         audioSource.clip = clip;    // 새로운 사운드 clip으로 교체 후
         audioSource.Play();         // 사운드 재생
     }
 
-    protected void Setup()
+    public void Setup(MemoryPool memoryPool)
     {
+        this.memoryPool = memoryPool;
         audioSource = GetComponent<AudioSource>();
         animator = PlayerManager.instance.PlayerAnimatorController;
     }

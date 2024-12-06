@@ -12,6 +12,8 @@ public class ItemMagazine : ItemBase
     [SerializeField]
     private float rotateSpeed = 50;
 
+    private MemoryPool itemMemoryPool;
+
     private IEnumerator Start()
     {
         while (true)
@@ -32,7 +34,13 @@ public class ItemMagazine : ItemBase
 
         Instantiate(magazineEffectPrefab, transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+        itemMemoryPool.DeactivatePoolItem(this.gameObject);
+        //Destroy(gameObject);
+    }
+
+    public override void SetUp(MemoryPool itemMemoryPool)
+    {
+        this.itemMemoryPool = itemMemoryPool;
     }
 
     public override void PickUp(int index)

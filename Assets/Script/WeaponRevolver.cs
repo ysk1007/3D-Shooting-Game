@@ -46,8 +46,9 @@ public class WeaponRevolver : WeaponBase
 
     private void Start()
     {
-        base.Setup();
+        base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
     }
+
 
     public override void StartWeaponAction(int type = 0)
     {
