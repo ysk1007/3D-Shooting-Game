@@ -17,6 +17,7 @@ public struct WeaponSetting
     public int maxAmmo;             // 최대 탄약 수
     public float attackRate;        // 공격 속도
     public float attackDistance;    // 공격 사거리
+    public float bulletSpeed;       // 총알 속도
     public bool isAutomaticAttack;  // 연속 공격 여부
     public Sprite weaponSprite;     // 무기 이미지
 }

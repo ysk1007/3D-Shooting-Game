@@ -19,6 +19,7 @@ public class Status : MonoBehaviour
     [Header("HP")]
     [SerializeField]
     private float maxHP = 100;
+    [SerializeField]
     private float currentHP;
 
     [Header("Attack")]
@@ -34,6 +35,11 @@ public class Status : MonoBehaviour
     public float Damage => damage;
 
     private void Awake()
+    {
+        currentHP = maxHP;
+    }
+
+    private void OnEnable()
     {
         currentHP = maxHP;
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, }
+public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death }
 public enum EnemyType { minion, archor }
 
 /// <summary>
@@ -209,10 +209,18 @@ public class EnemyFSM : MonoBehaviour
         }
     }
 
+    private IEnumerator Death()
+    {
+        // 죽을때 이동을 멈춤
+        navMeshAgent.speed = 0;
+        animator.SetTrigger("Death");
+        yield return null;
+    }
+
     private IEnumerator Attack()
     {
         // 공격할 때는 이동을 멈추도록 설정
-        navMeshAgent.ResetPath();
+        navMeshAgent.speed = 0;
 
         while (true)
         {
@@ -313,7 +321,12 @@ public class EnemyFSM : MonoBehaviour
         enemyHpBar.takeDamage(damage);
         if (isDie)
         {
-            enemyMemoryPool.DeactivateEnemy(gameObject);
+            ChangeState(EnemyState.Death);
         }
+    }
+
+    public void Destory()
+    {
+        enemyMemoryPool.DeactivateEnemy(gameObject);
     }
 }

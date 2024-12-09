@@ -890,6 +890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4814537730646654032}
   - component: {fileID: 3625400623181117722}
+  - component: {fileID: 946813877050916414}
   m_Layer: 11
   m_Name: Skeleton_Rogue_Body
   m_TagString: Enemy
@@ -1006,6 +1007,27 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.005131036, y: 0.8976847, z: -0.010277152}
     m_Extent: {x: 0.39025036, y: 0.5212852, z: 0.3325666}
   m_DirtyAABB: 0
+--- !u!65 &946813877050916414
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4713416675339208334}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.7805009, y: 1.3123711, z: 0.6651335}
+  m_Center: {x: -0.0051310384, y: 0.6633834, z: -0.010277195}
 --- !u!1 &4909224525697603942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,8 +1708,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3156541756234531360}
   - component: {fileID: 6741936367390874670}
+  - component: {fileID: 2254871431968603289}
   m_Layer: 11
-  m_Name: Skeleton_Rogue_Head
+  m_Name: Weakness
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1802,6 +1825,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 1.7413026, z: -0.0023028553}
     m_Extent: {x: 0.43542883, y: 0.42478478, z: 0.45611683}
   m_DirtyAABB: 0
+--- !u!65 &2254871431968603289
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6834802906368756656}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.87085795, y: 0.8495697, z: 0.91223395}
+  m_Center: {x: 5.490434e-10, y: 0.525429, z: -0.0023028783}
 --- !u!1 &7334555888380746303
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,7 +2102,6 @@ GameObject:
   - component: {fileID: 3410693085510285758}
   - component: {fileID: 4805704276413666715}
   - component: {fileID: 4280419353507221127}
-  - component: {fileID: 8552094609145884497}
   - component: {fileID: 1225343582706808920}
   - component: {fileID: 537290288045969772}
   m_Layer: 11
@@ -2104,7 +2147,7 @@ Animator:
   m_GameObject: {fileID: 9171325950884888224}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0b3da1f3c3be7b14bbbc3e7c0295b0b4, type: 2}
-  m_Controller: {fileID: 9100000, guid: c20a8509d6d612e43800eecbbb9800fa, type: 2}
+  m_Controller: {fileID: 22100000, guid: f9c299bc8353f084e86b194a99f9b8c2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2133,6 +2176,7 @@ MonoBehaviour:
   walkSpeed: 1.5
   runSpeed: 3
   maxHP: 100
+  currentHP: 0
   damage: 20
 --- !u!114 &4280419353507221127
 MonoBehaviour:
@@ -2159,29 +2203,6 @@ MonoBehaviour:
   enemyHpBar: {fileID: 2344692092815820700}
   navMeshAgent: {fileID: 537290288045969772}
   animator: {fileID: 3410693085510285758}
---- !u!136 &8552094609145884497
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9171325950884888224}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.52
-  m_Height: 2.26
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.12, z: 0}
 --- !u!54 &1225343582706808920
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -49,8 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSetting:
     BulletName: 0
-    bulletDamage: 50
-    bulletSpeed: 40
+    bulletDamage: 0
+    bulletSpeed: 0
 --- !u!54 &6557723660640879568
 Rigidbody:
   m_ObjectHideFlags: 0

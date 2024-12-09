@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     {
         public BulletName BulletName;   // 총알 이름
         public float bulletDamage;      // 총알 대미지
+        public float criticalPercent;   // 치명타 배율
         public float bulletSpeed;       // 총알 속도
     }
 
@@ -31,8 +32,12 @@ public class Bullet : MonoBehaviour
     }
 
     // 이동 방향 설정
-    public void Setup(BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool)
+    public void Setup(WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool)
     {
+        bulletSetting.bulletDamage = weaponSetting.damage;
+        bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
+        bulletSetting.criticalPercent = weaponSetting.critical;
+
         memoryPool = BulletMemoryPool;
         bulletMemoryPool = bulletPool;
         impactMemoryPool = impactPool;
@@ -56,9 +61,17 @@ public class Bullet : MonoBehaviour
     // 트리거 충돌 감지
     void OnTriggerEnter(Collider other)
     {
+        bool critical = false;
         if (other.transform.CompareTag("Enemy"))
         {
-            other.transform.GetComponent<EnemyFSM>().TakeDamage(bulletSetting.bulletDamage);
+            if (other.gameObject.name == "Weakness") critical = true;
+
+            float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
+
+            other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage);
+
+            // 충돌한 위치에 텍스트 생성
+            DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
         }
         else if (other.transform.CompareTag("InteractionObject"))
         {
