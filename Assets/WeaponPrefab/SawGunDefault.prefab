@@ -55,9 +55,9 @@ MonoBehaviour:
     weaponName: "\uB4DC\uB9B4 \uAC74"
     damage: 50
     critical: 1
-    currentMagazine: 0
+    currentMagazine: 6
     maxMagazine: 6
-    currentAmmo: 0
+    currentAmmo: 30
     maxAmmo: 30
     attackRate: 0.1
     attackDistance: 30

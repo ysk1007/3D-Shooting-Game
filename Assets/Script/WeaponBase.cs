@@ -43,7 +43,7 @@ public abstract class WeaponBase : MonoBehaviour
     public WeaponName WeaponName => weaponSetting.WeaponName;
     public int CurrentMagazine => weaponSetting.currentMagazine;
     public int MaxMagazine => weaponSetting.maxMagazine;
-    public WeaponSetting WeaponSetting => weaponSetting;
+    public WeaponSetting WeaponSetting { get => weaponSetting; set => weaponSetting = value; }
 
     public MemoryPool MemoryPool => memoryPool;
 

@@ -20,10 +20,13 @@ public class ItemGun : ItemBase
 
     private MemoryPool itemMemoryPool;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        weaponSwitchSystem = WeaponSwitchSystem.instance;
+        
+    }
 
+    private IEnumerator Rotate()
+    { 
         float y = transform.position.y;
 
         while (true)
@@ -45,19 +48,26 @@ public class ItemGun : ItemBase
 
     }
 
-    public override void SetUp(MemoryPool itemMemoryPool)
+    public override void SetUp(MemoryPool itemMemoryPool, WeaponBase weaponBase)
     {
+        weaponSwitchSystem = WeaponSwitchSystem.instance;
         this.itemMemoryPool = itemMemoryPool;
 
         //int weaponCount = System.Enum.GetNames(typeof(WeaponName)).Length;
         //int randomIndex = Random.Range(0, weaponCount); // 0부터 weaponCount - 1까지의 랜덤 정수
+        if (weaponBase != null) { 
+            weaponSetting = weaponBase.WeaponSetting;
+            GunMemoryPool.instance.SpawnGun(weaponBase.WeaponSetting.WeaponName, this.transform);
+        }
+        else
+            weaponSetting = GunMemoryPool.instance.SpawnGun((WeaponName)Random.Range(0, 2), this.transform);
 
-        weaponSetting = GunMemoryPool.instance.SpawnGun(/*(WeaponName)Random.Range(0, 2)*/(WeaponName)1, this.transform);
+        StartCoroutine("Rotate");
     }
 
     public override void PickUp(int index)
     {
-        if(weaponSwitchSystem.PickUpWeapon(weaponSetting.WeaponName, index))
+        if(weaponSwitchSystem.PickUpWeapon(weaponSetting, index))
         {
             itemMemoryPool.DeactivatePoolItem(this.gameObject);
             GameObject gun = transform.GetComponentInChildren<WeaponBase>().gameObject;

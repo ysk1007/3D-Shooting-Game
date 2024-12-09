@@ -46,7 +46,7 @@ public class ItemMedicBag : ItemBase
         //Destroy(gameObject);
     }
 
-    public override void SetUp(MemoryPool itemMemoryPool)
+    public override void SetUp(MemoryPool itemMemoryPool, WeaponBase weaponBas)
     {
         this.itemMemoryPool = itemMemoryPool;
     }

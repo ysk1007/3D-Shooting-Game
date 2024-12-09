@@ -64,17 +64,22 @@ public class WeaponSwitchSystem : MonoBehaviour
         }
     }
 
-    public bool PickUpWeapon(WeaponName weapon,int index)
+    public bool PickUpWeapon(WeaponSetting weaponSetting, int index)
     {
-        GameObject gun =  GunMemoryPool.instance.SpawnGun(weapon);
+        if (playerWeapons[index] != null) ThrowOutWeapon(index);
+
+        GameObject gun =  GunMemoryPool.instance.SpawnGun(weaponSetting);
         PlayerHUD.instance.WeaponAddListener(gun.GetComponent<WeaponBase>());
         playerWeapons[index] = gun.GetComponent<WeaponBase>();
+        gun.GetComponent<WeaponBase>().WeaponSetting = weaponSetting;
+        SwitchingWeapon((WeaponType)index);
 
         return true;
     }
 
     public void ThrowOutWeapon(int index)
     {
+        ItemMemoryPool.instance.SpawnDropGun(this.transform.position,playerWeapons[index]);
         playerWeapons[index].MemoryPool.DeactivatePoolItem(playerWeapons[index].gameObject);
         playerWeapons[index] = null;
         SwitchingWeapon(WeaponType.Sub);

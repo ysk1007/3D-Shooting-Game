@@ -31,14 +31,14 @@ public class GunMemoryPool : MonoBehaviour
     }
 
     // 플레이어 손 무기 생성
-    public GameObject SpawnGun(WeaponName type)
+    public GameObject SpawnGun(WeaponSetting weaponSetting)
     {
-        GameObject gun = gunPool[(int)type].ActivatePoolItem();
+        GameObject gun = gunPool[(int)weaponSetting.WeaponName].ActivatePoolItem();
         gun.gameObject.SetActive(false);
         gun.transform.SetParent(playerHand);
-        gun.transform.localPosition = gunPos[(int)type];
+        gun.transform.localPosition = gunPos[(int)weaponSetting.WeaponName];
         gun.transform.localEulerAngles = gunRotation;
-        gun.GetComponent<WeaponBase>().Setup(gunPool[(int)type]);
+        gun.GetComponent<WeaponBase>().Setup(gunPool[(int)weaponSetting.WeaponName]);
         return gun;
     }
 

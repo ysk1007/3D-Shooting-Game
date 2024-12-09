@@ -151,9 +151,9 @@ MonoBehaviour:
     weaponName: "\uAE30\uBCF8 \uAD8C\uCD1D"
     damage: 30
     critical: 1
-    currentMagazine: 0
+    currentMagazine: 6
     maxMagazine: 6
-    currentAmmo: 0
+    currentAmmo: 8
     maxAmmo: 8
     attackRate: 0.3
     attackDistance: 8

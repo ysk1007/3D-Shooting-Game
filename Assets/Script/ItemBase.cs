@@ -8,5 +8,5 @@ public abstract class ItemBase : MonoBehaviour
 
     public abstract void PickUp(int index);
 
-    public abstract void SetUp(MemoryPool itemMemoryPool);
+    public abstract void SetUp(MemoryPool itemMemoryPool, WeaponBase weaponBase = null);
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
+public enum ItemType { HealthItem = 0, MagazineItem = 1, DropGun = 2}
+
 public class ItemMemoryPool : MonoBehaviour
 {
     public static ItemMemoryPool instance;
@@ -28,19 +30,29 @@ public class ItemMemoryPool : MonoBehaviour
 
     private void Start()
     {
-        SpawnItem(new Vector3(0, 0.3f, 3),2);
-        SpawnItem(new Vector3(0, 0.3f, 3), 2);
-        SpawnItem(new Vector3(0, 0.3f, 3), 2);
-        SpawnItem(new Vector3(2, 0.3f, 3), 1);
-        SpawnItem(new Vector3(-2, 0.3f, 3), 0);
+        SpawnItem(new Vector3(4, 0.5f, 3),ItemType.DropGun);
+        SpawnItem(new Vector3(3, 0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(2,  0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(1,  0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(2, 0.5f, 3), ItemType.MagazineItem);
+        SpawnItem(new Vector3(-2, 0.5f, 3), ItemType.HealthItem);
     }
 
-    public void SpawnItem(Vector3 position, int i)
+    public void SpawnItem(Vector3 pos, ItemType itemType)
     {
-        GameObject item = itemPool[i].ActivatePoolItem();
+        GameObject item = itemPool[(int)itemType].ActivatePoolItem();
+        item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.SetParent(items);
-        item.transform.position = position;
-        item.GetComponent<ItemBase>().SetUp(itemPool[i]);
+        item.GetComponent<ItemBase>().SetUp(itemPool[(int)itemType]);
+        //item.GetComponent<Bullet>().Setup(this, bulletPool[(int)type], impactPool[(int)type]);
+    }
+
+    public void SpawnDropGun(Vector3 pos, WeaponBase weaponBase)
+    {
+        GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem();
+        item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
+        item.transform.SetParent(items);
+        item.GetComponent<ItemBase>().SetUp(itemPool[(int)ItemType.DropGun], weaponBase);
         //item.GetComponent<Bullet>().Setup(this, bulletPool[(int)type], impactPool[(int)type]);
     }
 }
