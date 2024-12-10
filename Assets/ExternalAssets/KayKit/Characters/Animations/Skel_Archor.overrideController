@@ -7,7 +7,7 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Skel_Archor
-  m_Controller: {fileID: 9100000, guid: d1f189e1a1c90854c822999b1378176f, type: 2}
+  m_Controller: {fileID: 9100000, guid: c20a8509d6d612e43800eecbbb9800fa, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 6ad12e1c226ac984ea9ad896e7023002, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: bfb1dc16ed43bd643811e3770f579568, type: 2}

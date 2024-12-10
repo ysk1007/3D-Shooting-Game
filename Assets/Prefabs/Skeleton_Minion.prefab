@@ -2107,7 +2107,7 @@ Animator:
   m_GameObject: {fileID: 9171325950884888224}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0b3da1f3c3be7b14bbbc3e7c0295b0b4, type: 2}
-  m_Controller: {fileID: 9100000, guid: d1f189e1a1c90854c822999b1378176f, type: 2}
+  m_Controller: {fileID: 9100000, guid: c20a8509d6d612e43800eecbbb9800fa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2136,6 +2136,7 @@ MonoBehaviour:
   walkSpeed: 1.5
   runSpeed: 3
   maxHP: 100
+  currentHP: 0
   damage: 20
 --- !u!114 &4280419353507221127
 MonoBehaviour:

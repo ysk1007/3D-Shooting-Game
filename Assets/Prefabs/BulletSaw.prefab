@@ -101,6 +101,7 @@ MonoBehaviour:
   bulletSetting:
     BulletName: 0
     bulletDamage: 0
+    criticalPercent: 0
     bulletSpeed: 0
 --- !u!54 &9163462885022575606
 Rigidbody:

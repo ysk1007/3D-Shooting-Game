@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death }
-public enum EnemyType { minion, archor }
+public enum EnemyType { minion, archor , warrior}
 
 /// <summary>
 /// Enemy 배회 스크립트
@@ -120,6 +120,11 @@ public class EnemyFSM : MonoBehaviour
         float currentTime = 0;
         float maxTime = 10;
 
+        if(enemyType == EnemyType.warrior)
+        {
+            animator.SetLayerWeight(1, 0);
+        }
+
         // 애니메이션을 걷기로 설정
         animator.SetFloat("Movement", 0.5f);
 
@@ -188,6 +193,12 @@ public class EnemyFSM : MonoBehaviour
 
     private IEnumerator Pursuit()
     {
+        if (enemyType == EnemyType.warrior)
+        {
+            animator.SetLayerWeight(1, 1);
+            animator.SetTrigger("Block");
+        }
+
         while (true)
         {
             // 이동 속도 설정 (배회할 때는 걷는 속도로 이동. 추적할 때는 뛰는 속도로 이동)
@@ -250,12 +261,17 @@ public class EnemyFSM : MonoBehaviour
         // 내 위치
         Vector3 from = new Vector3(transform.position.x, 0, transform.position.z);
 
-        // 바로 돌기
-        transform.rotation = Quaternion.LookRotation(to - from);
-
-        // 서서히 돌기
-        //Quaternion rotation = Quaternion.LookRotation(to - from);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.01f);
+        if(enemyType != EnemyType.warrior)
+        {
+            // 바로 돌기
+            transform.rotation = Quaternion.LookRotation(to - from);
+        }
+        else
+        {
+            // 서서히 돌기
+            Quaternion rotation = Quaternion.LookRotation(to - from);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.01f);
+        }
     }
 
     private void CalculateDistanceToTargetAndSelectState()
