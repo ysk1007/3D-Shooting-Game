@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2093462457445698573}
   - component: {fileID: 5617667277167008133}
+  - component: {fileID: 8311118873190607632}
   m_Layer: 11
   m_Name: Skeleton_Minion_LegRight
   m_TagString: Enemy
@@ -158,6 +159,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16864997, y: 0.1794579, z: 0.046369635}
     m_Extent: {x: 0.11910683, y: 0.35789394, z: 0.23724392}
   m_DirtyAABB: 0
+--- !u!64 &8311118873190607632
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154295618957631459}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2858251758043495176, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &568801055365004480
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4870966621884019251}
   - component: {fileID: 1047734041988337163}
+  - component: {fileID: 7565086347623174678}
   m_Layer: 11
   m_Name: Skeleton_Minion_Eyes
   m_TagString: Enemy
@@ -348,6 +372,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000949204, y: 1.6409333, z: 0.26019937}
     m_Extent: {x: 0.22978659, y: 0.063201904, z: 0.03776092}
   m_DirtyAABB: 0
+--- !u!64 &7565086347623174678
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961860736726322193}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9132547166503204892, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &1062994659579435676
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3464254484302782101}
   - component: {fileID: 6197412197400136616}
+  - component: {fileID: 7309848754517253706}
   m_Layer: 11
   m_Name: Skeleton_Minion_ArmLeft
   m_TagString: Enemy
@@ -474,6 +521,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.5498781, y: 1.1035438, z: 0.0030376092}
     m_Extent: {x: 0.41921368, y: 0.09862065, z: 0.10219433}
   m_DirtyAABB: 0
+--- !u!64 &7309848754517253706
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062994659579435676}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4719054782277189154, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &1074603218889461814
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,6 +1038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2110271784520761611}
   - component: {fileID: 833882182133523487}
+  - component: {fileID: 6224080735972432740}
   m_Layer: 11
   m_Name: Skeleton_Minion_ArmRight
   m_TagString: Enemy
@@ -1085,6 +1155,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.549878, y: 1.1035445, z: 0.0030372888}
     m_Extent: {x: 0.41921347, y: 0.09862065, z: 0.102194235}
   m_DirtyAABB: 0
+--- !u!64 &6224080735972432740
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4900484765966132621}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2730190896859426079, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &4926874049062382187
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,7 +1219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3483877819159565501}
   - component: {fileID: 3714010672873886012}
-  - component: {fileID: 884565684886698826}
+  - component: {fileID: 674011827712616080}
   m_Layer: 11
   m_Name: Weakness
   m_TagString: Enemy
@@ -1244,8 +1336,8 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 1.7399652, z: -0.0023028553}
     m_Extent: {x: 0.43542883, y: 0.4261222, z: 0.45611683}
   m_DirtyAABB: 0
---- !u!65 &884565684886698826
-BoxCollider:
+--- !u!64 &674011827712616080
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1262,9 +1354,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.87085795, y: 0.8522445, z: 0.91223395}
-  m_Center: {x: 5.490434e-10, y: 0.5240916, z: -0.0023027423}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 427240782589863006, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &6363647474795795671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,6 +1400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5212127510412215009}
   - component: {fileID: 1835302667564485325}
+  - component: {fileID: 406464170486294336}
   m_Layer: 11
   m_Name: Skeleton_Minion_LegLeft
   m_TagString: Enemy
@@ -1423,6 +1517,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16865, y: 0.17945778, z: 0.04636971}
     m_Extent: {x: 0.11910686, y: 0.35789406, z: 0.23724404}
   m_DirtyAABB: 0
+--- !u!64 &406464170486294336
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6420404507883968440}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4683227298853060704, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &6577286993405418351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,7 +1679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4067060859984083200}
   - component: {fileID: 4894362114383464111}
-  - component: {fileID: 6595415698949869650}
+  - component: {fileID: 252886238486009797}
   m_Layer: 11
   m_Name: Skeleton_Minion_Body
   m_TagString: Enemy
@@ -1680,8 +1796,8 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00004002452, y: 0.9005158, z: 0.002573818}
     m_Extent: {x: 0.36881453, y: 0.5241163, z: 0.344004}
   m_DirtyAABB: 0
---- !u!65 &6595415698949869650
-BoxCollider:
+--- !u!64 &252886238486009797
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1698,9 +1814,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.73762923, y: 1.2991279, z: 0.68800825}
-  m_Center: {x: -0.000040016388, y: 0.6558928, z: 0.0025737826}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7853326263187088738, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &7815112648463051970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1774,6 +1891,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8414931558472726050}
   - component: {fileID: 6498374988518247143}
+  - component: {fileID: 8700279379816324023}
   m_Layer: 11
   m_Name: Skeleton_Minion_Cloak
   m_TagString: Enemy
@@ -1890,6 +2008,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000834465, y: 1.0546455, z: 0.014189869}
     m_Extent: {x: 0.43566138, y: 0.25708342, z: 0.3724229}
   m_DirtyAABB: 0
+--- !u!64 &8700279379816324023
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7919329457224617579}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2310423537383259098, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &8776314055717122842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1900,6 +2040,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7290915467635262677}
   - component: {fileID: 287027122959141731}
+  - component: {fileID: 2443112403151497153}
   m_Layer: 11
   m_Name: Skeleton_Minion_Jaw
   m_TagString: Enemy
@@ -2016,6 +2157,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000009506941, y: 1.3548601, z: 0.11543773}
     m_Extent: {x: 0.22748968, y: 0.16156507, z: 0.1992817}
   m_DirtyAABB: 0
+--- !u!64 &2443112403151497153
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8776314055717122842}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3691673146213615478, guid: 848dfc516ba73984fa4efc5bc85d5e68, type: 3}
 --- !u!1 &9161405949059253436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,7 +2270,7 @@ Animator:
   m_GameObject: {fileID: 9171325950884888224}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0b3da1f3c3be7b14bbbc3e7c0295b0b4, type: 2}
-  m_Controller: {fileID: 9100000, guid: c20a8509d6d612e43800eecbbb9800fa, type: 2}
+  m_Controller: {fileID: 9100000, guid: d1f189e1a1c90854c822999b1378176f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2153,14 +2316,28 @@ MonoBehaviour:
   enemyType: 0
   targetRecognitionRange: 8
   pursuitLimitRange: 10
+  skillRange: 0
   projectilePrefab: {fileID: 1835938022181820, guid: 79ff1cd966e6f114b92fcabbd0f9f78f,
     type: 3}
   projectileSpawnPoint: {fileID: 8271571614524562840}
   attackCollider: {fileID: 3272241878849435919}
   attackRange: 2
-  attackRate: 1
+  attackRate: 1.5
+  skillRate: 10
   enemyState: -1
+  lastAttackTime: 0
+  lastSkillTime: 0
   enemyHpBar: {fileID: 6723931199755930887}
+  colliders:
+  - {fileID: 7309848754517253706}
+  - {fileID: 6224080735972432740}
+  - {fileID: 252886238486009797}
+  - {fileID: 8700279379816324023}
+  - {fileID: 7565086347623174678}
+  - {fileID: 674011827712616080}
+  - {fileID: 2443112403151497153}
+  - {fileID: 406464170486294336}
+  - {fileID: 8311118873190607632}
   navMeshAgent: {fileID: 537290288045969772}
   animator: {fileID: 3410693085510285758}
 --- !u!54 &1225343582706808920

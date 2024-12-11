@@ -15,6 +15,7 @@ TagManager:
   - InteractionObject
   - Item
   - CinemachineTarget
+  - Shield
   layers:
   - Default
   - TransparentFX

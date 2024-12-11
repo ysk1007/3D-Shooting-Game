@@ -68,10 +68,9 @@ public class Bullet : MonoBehaviour
 
             float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
 
-            other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage);
-
-            // 충돌한 위치에 텍스트 생성
-            DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
+            if(other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
+                // 충돌한 위치에 텍스트 생성
+                DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
         }
         else if (other.transform.CompareTag("InteractionObject"))
         {

@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3243625796664835001}
   - component: {fileID: 4075522488303912738}
+  - component: {fileID: 2926608043608448737}
   m_Layer: 11
   m_Name: Skeleton_Rogue_Eyes
   m_TagString: Enemy
@@ -158,6 +159,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000056773424, y: 1.6409333, z: 0.26019937}
     m_Extent: {x: 0.22978659, y: 0.063201904, z: 0.03776092}
   m_DirtyAABB: 0
+--- !u!64 &2926608043608448737
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276738631704862967}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6198906313763841654, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &619017793187206759
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6910814845763909684}
   - component: {fileID: 8053971813254240190}
+  - component: {fileID: 8107301091514201411}
   m_Layer: 11
   m_Name: Skeleton_Rogue_ArmRight
   m_TagString: Enemy
@@ -594,6 +618,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.55054724, y: 1.1007048, z: -0.0061447024}
     m_Extent: {x: 0.4207059, y: 0.11615506, z: 0.13109186}
   m_DirtyAABB: 0
+--- !u!64 &8107301091514201411
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137132345691874164}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7899652447604561854, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &3243141031305181690
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,6 +810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5935961824272653338}
   - component: {fileID: 3856988111278225634}
+  - component: {fileID: 7371614770117959732}
   m_Layer: 11
   m_Name: Skeleton_Rogue_Jaw
   m_TagString: Enemy
@@ -880,6 +927,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000056922436, y: 1.3548601, z: 0.11976354}
     m_Extent: {x: 0.22748968, y: 0.16156507, z: 0.20360751}
   m_DirtyAABB: 0
+--- !u!64 &7371614770117959732
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456616359739460718}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1138243361108649023, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &4713416675339208334
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +959,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4814537730646654032}
   - component: {fileID: 3625400623181117722}
-  - component: {fileID: 946813877050916414}
+  - component: {fileID: 7304378061002270586}
   m_Layer: 11
   m_Name: Skeleton_Rogue_Body
   m_TagString: Enemy
@@ -1007,8 +1076,8 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.005131036, y: 0.8976847, z: -0.010277152}
     m_Extent: {x: 0.39025036, y: 0.5212852, z: 0.3325666}
   m_DirtyAABB: 0
---- !u!65 &946813877050916414
-BoxCollider:
+--- !u!64 &7304378061002270586
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1025,9 +1094,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.7805009, y: 1.3123711, z: 0.6651335}
-  m_Center: {x: -0.0051310384, y: 0.6633834, z: -0.010277195}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3465671500138671952, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &4909224525697603942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,6 +1203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8890170454561766303}
   - component: {fileID: 415130439688832717}
+  - component: {fileID: 5320922174227661739}
   m_Layer: 11
   m_Name: Skeleton_Rogue_ArmLeft
   m_TagString: Enemy
@@ -1249,6 +1320,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.55054736, y: 1.1007044, z: -0.0061443746}
     m_Extent: {x: 0.4207061, y: 0.116155535, z: 0.13109197}
   m_DirtyAABB: 0
+--- !u!64 &5320922174227661739
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5340676758901736494}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1267527682260398228, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &5539821585460489131
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8956768435317576108}
   - component: {fileID: 8722652662838082254}
+  - component: {fileID: 8296756322976157005}
   m_Layer: 11
   m_Name: Skeleton_Rogue_LegRight
   m_TagString: Enemy
@@ -1505,6 +1599,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16784406, y: 0.16256851, z: 0.07535858}
     m_Extent: {x: 0.13092446, y: 0.3747834, z: 0.29330665}
   m_DirtyAABB: 0
+--- !u!64 &8296756322976157005
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6322635134688016390}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7795427817919744074, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &6583756747506641758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,6 +1698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1280126575582867229}
   - component: {fileID: 5563947088145375270}
+  - component: {fileID: 252792949609901761}
   m_Layer: 11
   m_Name: Skeleton_Rogue_LegLeft
   m_TagString: Enemy
@@ -1698,6 +1815,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.167844, y: 0.16256839, z: 0.07535869}
     m_Extent: {x: 0.1309245, y: 0.37478346, z: 0.29330677}
   m_DirtyAABB: 0
+--- !u!64 &252792949609901761
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6828515238316666842}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2979936350486113118, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &6834802906368756656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,7 +1847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3156541756234531360}
   - component: {fileID: 6741936367390874670}
-  - component: {fileID: 2254871431968603289}
+  - component: {fileID: 3260016160656266813}
   m_Layer: 11
   m_Name: Weakness
   m_TagString: Enemy
@@ -1825,8 +1964,8 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 1.7413026, z: -0.0023028553}
     m_Extent: {x: 0.43542883, y: 0.42478478, z: 0.45611683}
   m_DirtyAABB: 0
---- !u!65 &2254871431968603289
-BoxCollider:
+--- !u!64 &3260016160656266813
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1843,9 +1982,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.87085795, y: 0.8495697, z: 0.91223395}
-  m_Center: {x: 5.490434e-10, y: 0.525429, z: -0.0023028783}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8745038683474382566, guid: 909ea9d14d1c72a44ad4c7f2887cc68b, type: 3}
 --- !u!1 &7334555888380746303
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,14 +2333,27 @@ MonoBehaviour:
   enemyType: 1
   targetRecognitionRange: 8
   pursuitLimitRange: 10
+  skillRange: 0
   projectilePrefab: {fileID: 1835938022181820, guid: 79ff1cd966e6f114b92fcabbd0f9f78f,
     type: 3}
   projectileSpawnPoint: {fileID: 8271571614524562840}
   attackCollider: {fileID: 3272241878849435919}
   attackRange: 6
-  attackRate: 1
+  attackRate: 1.4
+  skillRate: 10
   enemyState: -1
+  lastAttackTime: 0
+  lastSkillTime: 0
   enemyHpBar: {fileID: 2344692092815820700}
+  colliders:
+  - {fileID: 5320922174227661739}
+  - {fileID: 2926608043608448737}
+  - {fileID: 8107301091514201411}
+  - {fileID: 3260016160656266813}
+  - {fileID: 7371614770117959732}
+  - {fileID: 8296756322976157005}
+  - {fileID: 7304378061002270586}
+  - {fileID: 252792949609901761}
   navMeshAgent: {fileID: 537290288045969772}
   animator: {fileID: 3410693085510285758}
 --- !u!54 &1225343582706808920

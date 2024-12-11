@@ -22,6 +22,8 @@ public class HealthBar : MonoBehaviour
     {
         maxValue = maxHP;
         hpValue = maxValue;
+        hpSlider.maxValue = maxValue;
+        easeHpSlider.maxValue = maxValue;
     }
 
     // Update is called once per frame

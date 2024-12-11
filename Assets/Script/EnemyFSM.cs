@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death }
+public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death, Skill }
 public enum EnemyType { minion, archor , warrior}
 
 /// <summary>
@@ -19,6 +19,8 @@ public class EnemyFSM : MonoBehaviour
     private float targetRecognitionRange = 8;           // 인식 범위 (이 범위 안에 들어오면 "Pursuit" 상태로 변경)
     [SerializeField]
     private float pursuitLimitRange = 10;               // 추적 범위 (이 범위 바깥으로 나가면 "Wander" 상태로 변경)
+    [SerializeField]
+    private float skillRange = 6;                       // 스킬 범위
 
     [Header("Attack")]
     [SerializeField]
@@ -31,14 +33,21 @@ public class EnemyFSM : MonoBehaviour
     private float attackRange = 5;                      // 공격 범위 (이 범위 안에 들어오면 "Attack" 상태로 변경) 
     [SerializeField]
     private float attackRate = 1;                       // 공격 속도
+    [SerializeField]
+    private float skillRate = 10;                       // 스킬 주기
 
     [SerializeField]
     private EnemyState enemyState = EnemyState.None;    // 현재 적 행동
-    private float lastAttackTime = 0;                   // 공격 주기 계산용 변수
+
+    [SerializeField]  private float lastAttackTime = 0; // 공격 주기 계산용 변수
+    [SerializeField]  private float lastSkillTime = 0;  // 특수 공격 주기 계산용 변수
 
     [SerializeField]
     private HealthBar enemyHpBar;
     private Status status;                              // 이동속도 등의 정보
+
+    [SerializeField] private Collider[] colliders;       // 히트 콜라이더
+
     [SerializeField]
     private NavMeshAgent navMeshAgent;                  // 이동 제어를 위한 NavMeshAgent
     [SerializeField]
@@ -56,6 +65,9 @@ public class EnemyFSM : MonoBehaviour
 
         // NavMeshAgent 컴포넌트에서 회전을 업데이트하지 않도록 설정
         navMeshAgent.updateRotation = false;
+
+        CollidersAble(true);
+
         enemyHpBar.Setup(status.MaxHP);
     }
 
@@ -119,11 +131,6 @@ public class EnemyFSM : MonoBehaviour
     {
         float currentTime = 0;
         float maxTime = 10;
-
-        if(enemyType == EnemyType.warrior)
-        {
-            animator.SetLayerWeight(1, 0);
-        }
 
         // 애니메이션을 걷기로 설정
         animator.SetFloat("Movement", 0.5f);
@@ -193,11 +200,7 @@ public class EnemyFSM : MonoBehaviour
 
     private IEnumerator Pursuit()
     {
-        if (enemyType == EnemyType.warrior)
-        {
-            animator.SetLayerWeight(1, 1);
-            animator.SetTrigger("Block");
-        }
+        targetRecognitionRange = 64;
 
         while (true)
         {
@@ -230,6 +233,10 @@ public class EnemyFSM : MonoBehaviour
 
     private IEnumerator Attack()
     {
+        if (enemyType != EnemyType.warrior)
+        // 애니메이션을 대기로 설정
+        animator.SetFloat("Movement", 0);
+
         // 공격할 때는 이동을 멈추도록 설정
         navMeshAgent.speed = 0;
 
@@ -240,18 +247,71 @@ public class EnemyFSM : MonoBehaviour
 
             // 타겟과의 거리에 따라 행동 선택 (배회, 추격, 원거리 공격)
             CalculateDistanceToTargetAndSelectState();
-
             if (Time.time - lastAttackTime > attackRate)
             {
                 // 공격주기가 되어야 공격할 수 있도록 하기 위해 현재 시간 저장
                 lastAttackTime = Time.time;
 
                 // 공격 애니메이션 재생
+                animator.SetFloat("AttackStrategy", 0f);
                 animator.Play("Attack", -1, 0);
             }
 
             yield return null;
         }
+    }
+
+    private IEnumerator Skill()
+    {
+        if (enemyType != EnemyType.warrior)
+            // 애니메이션을 대기로 설정
+            animator.SetFloat("Movement", 0);
+
+        // 공격할 때는 이동을 멈추도록 설정
+        navMeshAgent.speed = 0;
+        while (true)
+        {
+            // 타겟 방향 주시
+            LookRotationToTarget();
+
+            // 타겟과의 거리에 따라 행동 선택 (배회, 추격, 원거리 공격)
+            CalculateDistanceToTargetAndSelectState();
+
+            // 공격 애니메이션 재생
+            animator.SetFloat("AttackStrategy", 1f);
+            animator.Play("Attack", -1, 0);
+            StartCoroutine(JumpToTarget(1f, 2f));
+
+            yield return null;
+        }
+    }
+
+    // 점프 코루틴
+    private IEnumerator JumpToTarget(float duration, float height)
+    {
+        Vector3 startPosition = transform.position; // 시작 위치
+        Vector3 endPosition = target.position;
+        float elapsedTime = 0f; // 경과 시간
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration; // 0에서 1로 변하는 비율
+
+            // 포물선 경로 계산
+            float heightOffset = height * Mathf.Sin(Mathf.PI * t); // 포물선 높이
+            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, t); // 선형 보간
+            currentPosition.y += heightOffset; // y값에 높이 추가
+
+            transform.position = currentPosition; // 오브젝트 위치 설정
+
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        transform.position = endPosition; // 최종 위치 고정
+        
+        // 타겟과의 거리에 따라 행동 선택 (배회, 추격, 원거리 공격)
+        CalculateDistanceToTargetAndSelectState();
     }
 
     private void LookRotationToTarget()
@@ -276,12 +336,19 @@ public class EnemyFSM : MonoBehaviour
 
     private void CalculateDistanceToTargetAndSelectState()
     {
-        if (target == null) return;
+        if (target == null || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) return;
 
         // 플레이어(Target)와 적의 거리 계산 후 거리에 따라 행동 선택
         float distance = Vector3.Distance(target.position, transform.position);
 
-        if (distance <= attackRange)
+        if(distance <= skillRange && (Time.time - lastSkillTime > skillRate))
+        {   
+            // 공격주기가 되어야 공격할 수 있도록 하기 위해 현재 시간 저장
+            lastSkillTime = Time.time;
+
+            ChangeState(EnemyState.Skill);
+        }
+        else if (distance <= attackRange)
         {
             ChangeState(EnemyState.Attack);
         }
@@ -301,6 +368,7 @@ public class EnemyFSM : MonoBehaviour
         switch (enemyType)
         {
             case EnemyType.minion:
+            case EnemyType.warrior:
                 attackCollider.StartCollider(status.Damage);
                 break;
             case EnemyType.archor:
@@ -329,20 +397,36 @@ public class EnemyFSM : MonoBehaviour
         // 공격 범위
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        // 스킬 범위
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, skillRange);
     }
 
-    public void TakeDamage(float damage)
+    public bool TakeDamage(float damage)
     {
+        targetRecognitionRange = 64;
         bool isDie = status.DecreaseHP(damage);
         enemyHpBar.takeDamage(damage);
         if (isDie)
         {
+            CollidersAble(false);
             ChangeState(EnemyState.Death);
+            return false;
         }
+        return true;
     }
 
     public void Destory()
     {
         enemyMemoryPool.DeactivateEnemy(gameObject);
+    }
+
+    private void CollidersAble(bool b)
+    {
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            colliders[i].enabled = b;
+        }
     }
 }
