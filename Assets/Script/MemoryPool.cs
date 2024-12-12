@@ -12,7 +12,7 @@ public class MemoryPool : MonoBehaviour
         public GameObject gameObject;       // 화면에 보이는 실제 게임 오브젝트
     }
 
-    private int increaseCount = 2;          // 오브젝트가 부족할 때 Instantiate()로 추가 생성되는 오브젝트 개수
+    private int increaseCount = 1;          // 오브젝트가 부족할 때 Instantiate()로 추가 생성되는 오브젝트 개수
     private int maxCount;                   // 현재 리스트에 등록되어 있는 오브젝트 개수
     private int activeCount;                // 현재 게임에 사용되고 있는(활성화) 오브젝트 개수
 

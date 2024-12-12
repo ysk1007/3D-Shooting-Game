@@ -55,6 +55,8 @@ public class EnemyFSM : MonoBehaviour
     private Transform target;                           // 적의 공격 대상 (플레이어)
     private EnemyMemoryPool enemyMemoryPool;            // 적 메모리 풀 (적 오브젝트 비활성화에 사용)
 
+    public EnemyType EnemyType => enemyType;
+
     public void Setup(Transform target, EnemyMemoryPool enemyMemoryPool)
     {
         status = GetComponent<Status>();

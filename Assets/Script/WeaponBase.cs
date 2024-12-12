@@ -64,6 +64,7 @@ public abstract class WeaponBase : MonoBehaviour
         this.memoryPool = memoryPool;
         audioSource = GetComponent<AudioSource>();
         animator = PlayerManager.instance.PlayerAnimatorController;
+        PlayerHUD.instance.WeaponAddListener(this);
     }
 
     public virtual void IncreaseMagazine(int magazine)

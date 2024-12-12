@@ -9,24 +9,30 @@ public class EnemyMemoryPool : MonoBehaviour
     [SerializeField]
     private GameObject enemySpawnPointPrefab;               // 적이 등장하기 전 적의 등장 위치를 알려주는 프리팹
     [SerializeField]
-    private GameObject enemyPrefab;                         // 생성되는 적 프리팹
+    private GameObject[] enemyPrefab;                       // 생성되는 적 프리팹
     [SerializeField]
     private float enemySpawnTime = 1;                       // 적 생성 주기
     [SerializeField]
     private float enemySpawnLatency = 1;                    // 타일 생성 후 적이 등장하기까지 대기 시간
 
     private MemoryPool spawnPointMemoryPool;                // 적 등장 알림 오브젝트 활성/비활성 관리
-    private MemoryPool enemyMemoryPool;                     // 적 생성, 활성/비활성 관리
+    private MemoryPool[] enemyMemoryPool;                     // 적 생성, 활성/비활성 관리
 
     private int numberOfEnemiesSpawnedAtOnce = 1;           // 동시에 생성되는 적의 숫자
-    private Vector2Int mapSize = new Vector2Int(100, 100);  // 맵 크기
+    [SerializeField] private Vector2Int mapSize = new Vector2Int(100, 100);  // 맵 크기
 
     [SerializeField] private Transform enemys; // 관리할 부모 오브젝트
 
     private void Awake()
     {
         spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab, enemys);
-        enemyMemoryPool = new MemoryPool(enemyPrefab, enemys);
+
+        // Enemy 가 여러 종류이면 종류별로 memoryPool 생성
+        enemyMemoryPool = new MemoryPool[enemyPrefab.Length];
+        for (int i = 0; i < enemyPrefab.Length; ++i)
+        {
+            enemyMemoryPool[i] = new MemoryPool(enemyPrefab[i], enemys);
+        }
 
         StartCoroutine("SpawnTile");
     }
@@ -66,7 +72,7 @@ public class EnemyMemoryPool : MonoBehaviour
         yield return new WaitForSeconds(enemySpawnTime);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
-        GameObject enemy = enemyMemoryPool.ActivatePoolItem();
+        GameObject enemy = enemyMemoryPool[(int)(WeaponName)Random.Range(0, enemyPrefab.Length)].ActivatePoolItem();
         enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
 
@@ -78,6 +84,6 @@ public class EnemyMemoryPool : MonoBehaviour
 
     public void DeactivateEnemy(GameObject enemy)
     {
-        enemyMemoryPool.DeactivatePoolItem(enemy);
+        enemyMemoryPool[(int)enemy.GetComponent<EnemyFSM>().EnemyType].DeactivatePoolItem(enemy);
     }
 }
