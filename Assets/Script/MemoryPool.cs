@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using Photon.Pun;
 
-public class MemoryPool : MonoBehaviour
+public class MemoryPool : MonoBehaviourPunCallbacks
 {
     // 메모리 풀로 관리되는 오브젝트 정보
     private class PoolItem
@@ -38,29 +39,31 @@ public class MemoryPool : MonoBehaviour
 
         parentTransform = pool;
 
-        InstantiateObjects(parentTransform);
+        InstantiateObjects();
     }
 
     /// <summary>
     /// increaseCount 단위로 오브젝트를 생성
     /// </summary>
-    public void InstantiateObjects(Transform pool)
+    public void InstantiateObjects()
     {
         maxCount += increaseCount;
 
         for (int i = 0; i < increaseCount; ++i)
         {
-            PoolItem poolItem = new PoolItem();
+            GameObject obj = PhotonNetwork.Instantiate(poolObject.name, tempPosition, Quaternion.identity);
+            obj.transform.SetParent(parentTransform);
 
-            poolItem.isActive = false;
-            poolItem.gameObject = GameObject.Instantiate(poolObject);
-            poolItem.gameObject.transform.position = tempPosition;
-            poolItem.gameObject.transform.SetParent(pool);
+            PoolItem poolItem = new PoolItem
+            {
+                isActive = false,
+                gameObject = obj
+            };
 
-            poolItem.gameObject.SetActive(false);
-
+            obj.SetActive(false); // 비활성화
             poolItemList.Add(poolItem);
         }
+        
     }
 
     /// <summary>
@@ -92,7 +95,7 @@ public class MemoryPool : MonoBehaviour
         // 모든 오브젝트가 활성화 상태이면 새로운 오브젝트 필요
         if( maxCount == activeCount)
         {
-            InstantiateObjects(parentTransform);
+            InstantiateObjects();
         }
 
         int count = poolItemList.Count;
@@ -135,6 +138,16 @@ public class MemoryPool : MonoBehaviour
                 poolItem.gameObject.SetActive(false);
                 poolItem.gameObject.transform.SetParent(parentTransform);
 
+                // 네트워크 상의 다른 클라이언트에게 비활성화 동기화
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    PhotonView photonView = removeObject.GetComponent<PhotonView>();
+                    if (photonView != null)
+                    {
+                        photonView.RPC("DeactivateObjectRPC", RpcTarget.OthersBuffered);
+                    }
+                }
+
                 return;
             }
         }
@@ -161,5 +174,13 @@ public class MemoryPool : MonoBehaviour
         }
 
         activeCount = 0;
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void DeactivateObjectRPC()
+    {
+        //PhotonNetwork.Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

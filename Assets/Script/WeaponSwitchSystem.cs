@@ -68,7 +68,7 @@ public class WeaponSwitchSystem : MonoBehaviour
     {
         if (playerWeapons[index] != null) ThrowOutWeapon(index);
 
-        GameObject gun =  GunMemoryPool.instance.SpawnGun(weaponSetting);
+        GameObject gun =  GunMemoryPool.instance.SpawnGun(weaponSetting, playerHand);
         PlayerHUD.instance.WeaponAddListener(gun.GetComponent<WeaponBase>());
         playerWeapons[index] = gun.GetComponent<WeaponBase>();
         gun.GetComponent<WeaponBase>().WeaponSetting = weaponSetting;

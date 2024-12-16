@@ -38,6 +38,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private Animator weaponAnimatorController;      // 무기 별 애니메이터
     [SerializeField]
+    private WeaponInfoPopup weaponInfoPopup;
+
+    [SerializeField]
     private PlayerAnimatorController playerAnimatorController; // 플레이어 애니메이터 컨트롤러
     private Status status;                         // 이동속도 등의 플레이어 정보
     private WeaponBase weapon;                      // 모든 무기가 상속받는 기반 클래스
@@ -49,7 +52,7 @@ public class PlayerManager : MonoBehaviour
     public Vector3 TargetPosition => targetPosition;
 
     public PlayerAnimatorController PlayerAnimatorController => playerAnimatorController;
-
+    public WeaponInfoPopup WeaponInfoPopup => weaponInfoPopup;
     private void Awake()
     {
         instance = this;

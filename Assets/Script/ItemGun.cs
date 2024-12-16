@@ -72,7 +72,6 @@ public class ItemGun : ItemBase
             itemMemoryPool.DeactivatePoolItem(this.gameObject);
             GameObject gun = transform.GetComponentInChildren<WeaponBase>().gameObject;
             gun.GetComponent<WeaponBase>().MemoryPool.DeactivatePoolItem(gun);
-            WeaponInfoPopup.instance.init();
         }
     }
 
@@ -80,7 +79,7 @@ public class ItemGun : ItemBase
     {
         if (other.transform.CompareTag("Player"))
         {
-            WeaponInfoPopup.instance.SetUp(weaponSetting, this);
+            other.GetComponent<PlayerManager>().WeaponInfoPopup.SetUp(weaponSetting, this);
         }
     }
 
@@ -88,7 +87,7 @@ public class ItemGun : ItemBase
     {
         if (other.transform.CompareTag("Player"))
         {
-            WeaponInfoPopup.instance.init();
+            other.GetComponent<PlayerManager>().WeaponInfoPopup.init();
         }
     }
 }

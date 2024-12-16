@@ -6,6 +6,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private WeaponInfoPopup[] weaponInfoPopups;
+    [SerializeField] private WeaponSwitchSystem weaponSwitchSystem;
 
     [SerializeField] private bool inventoryIsOpen = false;
 
@@ -29,11 +30,11 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < weaponInfoPopups.Length; i++)
         {
-            if (WeaponSwitchSystem.instance.PlayerWeapons[i] == null){
+            if (weaponSwitchSystem.PlayerWeapons[i] == null){
                 weaponInfoPopups[i].SetUpEmpty();
                 continue;
             }
-            weaponInfoPopups[i].SetUp(WeaponSwitchSystem.instance.PlayerWeapons[i].WeaponSetting,null);
+            weaponInfoPopups[i].SetUp(weaponSwitchSystem.PlayerWeapons[i].WeaponSetting,null);
         }
     }
 }

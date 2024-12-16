@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death, Skill }
 public enum EnemyType { minion, archor , warrior}
@@ -9,7 +10,7 @@ public enum EnemyType { minion, archor , warrior}
 /// <summary>
 /// Enemy 배회 스크립트
 /// </summary>
-public class EnemyFSM : MonoBehaviour
+public class EnemyFSM : MonoBehaviourPun
 {
     [SerializeField]
     private EnemyType enemyType = EnemyType.minion;

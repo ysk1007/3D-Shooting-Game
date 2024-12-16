@@ -30,12 +30,7 @@ public class ItemMemoryPool : MonoBehaviour
 
     private void Start()
     {
-        SpawnItem(new Vector3(4, 0.5f, 3),ItemType.DropGun);
-        SpawnItem(new Vector3(3, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(2,  0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(1,  0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(2, 0.5f, 3), ItemType.MagazineItem);
-        SpawnItem(new Vector3(-2, 0.5f, 3), ItemType.HealthItem);
+
     }
 
     public void SpawnItem(Vector3 pos, ItemType itemType)
@@ -50,9 +45,20 @@ public class ItemMemoryPool : MonoBehaviour
     public void SpawnDropGun(Vector3 pos, WeaponBase weaponBase)
     {
         GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem();
-        item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
+        //item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
+        item.transform.position = pos;
         item.transform.SetParent(items);
         item.GetComponent<ItemBase>().SetUp(itemPool[(int)ItemType.DropGun], weaponBase);
         //item.GetComponent<Bullet>().Setup(this, bulletPool[(int)type], impactPool[(int)type]);
+    }
+
+    public void TestSpawn()
+    {
+        SpawnItem(new Vector3(4, 0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(3, 0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(2, 0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(1, 0.5f, 3), ItemType.DropGun);
+        SpawnItem(new Vector3(2, 0.5f, 3), ItemType.MagazineItem);
+        SpawnItem(new Vector3(-2, 0.5f, 3), ItemType.HealthItem);
     }
 }

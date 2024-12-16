@@ -44,7 +44,8 @@ public class MapObject : MonoBehaviour {
 	}
 
 	void SetPositionAndRotation(){
-		transform.SetParent (panelGO.transform, false);
+		if(panelGO == null) Destroy(this.gameObject);
+        transform.SetParent (panelGO.transform, false);
 
 		SetPosition ();
 		SetRotation ();

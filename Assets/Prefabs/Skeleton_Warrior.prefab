@@ -865,7 +865,6 @@ GameObject:
   - component: {fileID: 3185825082489515276}
   - component: {fileID: 4451926320551440618}
   - component: {fileID: 3756435111329043676}
-  - component: {fileID: 1206233491906638722}
   m_Layer: 11
   m_Name: Skeleton_Warrior
   m_TagString: Enemy
@@ -1030,25 +1029,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1206233491906638722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2384884184112096675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbf9db670c1df4bb2843b82560ce5409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 0c07d055a28e0544b84be7f4027768dc, type: 3}
-  size: {x: 6, y: 6}
-  rotateWithObject: 0
-  upAxis: {x: 0, y: 1, z: 0}
-  initialIconRotation: 0
-  clampIconInBorder: 1
-  clampDistance: 100
 --- !u!1 &2910221618307621725
 GameObject:
   m_ObjectHideFlags: 0

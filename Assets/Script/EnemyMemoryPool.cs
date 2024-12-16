@@ -23,7 +23,7 @@ public class EnemyMemoryPool : MonoBehaviour
 
     [SerializeField] private Transform enemys; // 관리할 부모 오브젝트
 
-    private void Awake()
+    private void Start()
     {
         spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab, enemys);
 

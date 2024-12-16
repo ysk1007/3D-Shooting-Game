@@ -13,7 +13,7 @@ public class GunMemoryPool : MonoBehaviour
     [SerializeField] private Vector3 gunRotation;       // 총 각도
 
     [SerializeField] private Transform guns;
-    [SerializeField] private Transform playerHand; // 관리할 부모 오브젝트
+    //[SerializeField] private Transform playerHand; // 관리할 부모 오브젝트
 
     public WeaponBase[] Weapons => weapons;
     public MemoryPool[] GunPool => gunPool;
@@ -31,11 +31,11 @@ public class GunMemoryPool : MonoBehaviour
     }
 
     // 플레이어 손 무기 생성
-    public GameObject SpawnGun(WeaponSetting weaponSetting)
+    public GameObject SpawnGun(WeaponSetting weaponSetting, Transform playerHnad)
     {
         GameObject gun = gunPool[(int)weaponSetting.WeaponName].ActivatePoolItem();
         gun.gameObject.SetActive(false);
-        gun.transform.SetParent(playerHand);
+        gun.transform.SetParent(playerHnad);
         gun.transform.localPosition = gunPos[(int)weaponSetting.WeaponName];
         gun.transform.localEulerAngles = gunRotation;
         gun.GetComponent<WeaponBase>().Setup(gunPool[(int)weaponSetting.WeaponName]);

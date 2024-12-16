@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class WeaponInfoPopup : MonoBehaviour
 {
-    public static WeaponInfoPopup instance;
     [Header("무기 스크립트")]
     [SerializeField] private WeaponSetting weapon;
 
@@ -30,7 +29,7 @@ public class WeaponInfoPopup : MonoBehaviour
 
     private void Awake()
     {
-        if (isPickupPopup) instance = this;
+
     }
 
     private void Update()
@@ -81,5 +80,6 @@ public class WeaponInfoPopup : MonoBehaviour
     public void PickUpGun(int index)
     {
         item.PickUp(index);
+        init();
     }
 }
