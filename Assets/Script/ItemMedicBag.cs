@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -17,7 +18,7 @@ public class ItemMedicBag : ItemBase
     private float rotateSpeed = 50;
 
     private MemoryPool itemMemoryPool;
-
+    private PhotonView photonView;
     private IEnumerator Start()
     {
         float y = transform.position.y;
@@ -39,7 +40,7 @@ public class ItemMedicBag : ItemBase
     public override void Use(GameObject entity)
     {
         entity.GetComponent<Status>().IncreaseHp(increaseHP);
-
+        photonView = GetComponent<PhotonView>();
         Instantiate(hpEffectPrefab, transform.position, Quaternion.identity);
 
         itemMemoryPool.DeactivatePoolItem(this.gameObject);
@@ -54,5 +55,13 @@ public class ItemMedicBag : ItemBase
     public override void PickUp(int index)
     {
 
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void DeactivateObjectRPC()
+    {
+        gameObject.SetActive(false);
+        gameObject.transform.SetParent(itemMemoryPool.ParentTransform);
     }
 }

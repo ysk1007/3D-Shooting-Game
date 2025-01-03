@@ -1,3 +1,5 @@
+using Photon.Pun;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +15,7 @@ public class ItemMagazine : ItemBase
     private float rotateSpeed = 50;
 
     private MemoryPool itemMemoryPool;
+    private PhotonView photonView;
 
     private IEnumerator Start()
     {
@@ -41,10 +44,19 @@ public class ItemMagazine : ItemBase
     public override void SetUp(MemoryPool itemMemoryPool, WeaponBase weaponBase)
     {
         this.itemMemoryPool = itemMemoryPool;
+        photonView = GetComponent<PhotonView>();
     }
 
     public override void PickUp(int index)
     {
         
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void DeactivateObjectRPC()
+    {
+        gameObject.SetActive(false);
+        gameObject.transform.SetParent(itemMemoryPool.ParentTransform);
     }
 }

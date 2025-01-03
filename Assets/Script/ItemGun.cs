@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class ItemGun : ItemBase
     WeaponSwitchSystem weaponSwitchSystem;
 
     private MemoryPool itemMemoryPool;
+    private PhotonView photonView;
 
     private void Start()
     {
@@ -52,6 +54,7 @@ public class ItemGun : ItemBase
     {
         weaponSwitchSystem = WeaponSwitchSystem.instance;
         this.itemMemoryPool = itemMemoryPool;
+        photonView = GetComponent<PhotonView>();
 
         //int weaponCount = System.Enum.GetNames(typeof(WeaponName)).Length;
         //int randomIndex = Random.Range(0, weaponCount); // 0부터 weaponCount - 1까지의 랜덤 정수
@@ -89,5 +92,13 @@ public class ItemGun : ItemBase
         {
             other.GetComponent<PlayerManager>().WeaponInfoPopup.init();
         }
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void DeactivateObjectRPC()
+    {
+        gameObject.SetActive(false);
+        gameObject.transform.SetParent(itemMemoryPool.ParentTransform);
     }
 }

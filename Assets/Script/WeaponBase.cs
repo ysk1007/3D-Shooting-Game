@@ -18,13 +18,15 @@ public abstract class WeaponBase : MonoBehaviour
     protected WeaponType weaponType;            // 무기 종류
     [SerializeField]
     protected WeaponSetting weaponSetting;        // 무기 설정
+    [SerializeReference]
+    protected PlayerManager playerManager;        // 무기 주인
 
     protected float lastAttackTime = 0;           // 마지막 발사시간 체크용
     protected bool isReload = false;              // 재장전 중인지 체크
     protected bool isAttack = false;              // 공격 여부 체크용
     protected AudioSource audioSource;           // 사운드 재생 컴포넌트
 
-    protected MemoryPool memoryPool;            // 무기 풀링
+    [SerializeField] protected MemoryPool memoryPool;            // 무기 풀링
 
     [SerializeField]
     protected PlayerAnimatorController animator;  // 애니메이션 재생 제어
@@ -44,6 +46,8 @@ public abstract class WeaponBase : MonoBehaviour
     public int CurrentMagazine => weaponSetting.currentMagazine;
     public int MaxMagazine => weaponSetting.maxMagazine;
     public WeaponSetting WeaponSetting { get => weaponSetting; set => weaponSetting = value; }
+
+    public PlayerManager PlayerManager { get => playerManager; set => playerManager = value; }
 
     public MemoryPool MemoryPool => memoryPool;
 

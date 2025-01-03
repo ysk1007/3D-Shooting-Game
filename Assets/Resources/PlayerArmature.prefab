@@ -13168,6 +13168,11 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 3211350608864378017}
+    - target: {fileID: 243673933698066459, guid: 96f2537ef33f099498386f9342c87fb0,
+        type: 3}
+      propertyPath: playerManager
+      value: 
+      objectReference: {fileID: 217229793536342461}
     - target: {fileID: 8140809023566927140, guid: 96f2537ef33f099498386f9342c87fb0,
         type: 3}
       propertyPath: m_Name

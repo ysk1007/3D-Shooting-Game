@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,6 @@ public class BulletMemoryPool : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
         bulletPool = new MemoryPool[bulletPrefab.Length];
         for (int i = 0; i < bulletPrefab.Length; ++i)
@@ -37,13 +37,13 @@ public class BulletMemoryPool : MonoBehaviour
         }
     }
 
-    public void SpawnBullet(WeaponSetting weaponSetting, Vector3 position, Quaternion rotation)
+    public void SpawnBullet(WeaponSetting weaponSetting, Vector3 position, Quaternion rotation, Vector3 LookAt)
     {
         GameObject bullet = bulletPool[(int)weaponSetting.WeaponName].ActivatePoolItem();
         bullet.transform.SetParent(bullets);
         bullet.transform.position = position;
-        bullet.transform.LookAt(PlayerManager.instance.TargetPosition);
-        bullet.GetComponent<Bullet>().Setup(weaponSetting, this, bulletPool[(int)weaponSetting.WeaponName], impactPool[(int)weaponSetting.WeaponName]);
+        bullet.transform.LookAt(LookAt);
+        bullet.GetComponent<Bullet>().Setup(weaponSetting, this, bulletPool[(int)weaponSetting.WeaponName], impactPool[(int)weaponSetting.WeaponName], bullets);
     }
 
     public void SpawnImpact(WeaponName type, Vector3 position, Quaternion rotation)

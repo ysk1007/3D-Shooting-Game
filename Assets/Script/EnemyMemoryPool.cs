@@ -1,5 +1,7 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyMemoryPool : MonoBehaviour
@@ -22,9 +24,17 @@ public class EnemyMemoryPool : MonoBehaviour
     [SerializeField] private Vector2Int mapSize = new Vector2Int(100, 100);  // 맵 크기
 
     [SerializeField] private Transform enemys; // 관리할 부모 오브젝트
+    private PhotonView photonView;
+
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
 
     private void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab, enemys);
 
         // Enemy 가 여러 종류이면 종류별로 memoryPool 생성
@@ -69,6 +79,7 @@ public class EnemyMemoryPool : MonoBehaviour
 
     private IEnumerator SpawnEnemy(GameObject point)
     {
+
         yield return new WaitForSeconds(enemySpawnTime);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
@@ -85,5 +96,13 @@ public class EnemyMemoryPool : MonoBehaviour
     public void DeactivateEnemy(GameObject enemy)
     {
         enemyMemoryPool[(int)enemy.GetComponent<EnemyFSM>().EnemyType].DeactivatePoolItem(enemy);
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void DeactivateObjectRPC()
+    {
+        gameObject.SetActive(false);
+        //gameObject.transform.SetParent(enemyMemoryPool.ParentTransform);
     }
 }

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ public class ItemMemoryPool : MonoBehaviour
 
     private void Awake()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         instance = this;
 
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
@@ -35,6 +38,8 @@ public class ItemMemoryPool : MonoBehaviour
 
     public void SpawnItem(Vector3 pos, ItemType itemType)
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         GameObject item = itemPool[(int)itemType].ActivatePoolItem();
         item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.SetParent(items);
@@ -44,6 +49,8 @@ public class ItemMemoryPool : MonoBehaviour
 
     public void SpawnDropGun(Vector3 pos, WeaponBase weaponBase)
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem();
         //item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.position = pos;

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,16 @@ public class CasingMemoryPool : MonoBehaviour
 
     private void Awake()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         instance = this;
         memoryPool = new MemoryPool(casingPrefab, casings);
     }
 
     public void SpawnCasing(Vector3 position, Vector3 direction)
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         GameObject item = memoryPool.ActivatePoolItem();
         item.transform.SetParent(casings);
         item.transform.position = position;

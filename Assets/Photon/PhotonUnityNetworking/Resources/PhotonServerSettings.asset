@@ -40,6 +40,10 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - DeactivateObjectRPC
+  - InstantiateObjects
+  - Create
+  - DeactivatePoolItem
+  - ActivateObjectRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

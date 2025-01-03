@@ -28,6 +28,7 @@ public class MemoryPool : MonoBehaviourPunCallbacks
     private Vector3 tempPosition = new Vector3(48, 1, 48);
 
     private Transform parentTransform;
+    public Transform ParentTransform => parentTransform;
 
     public MemoryPool(GameObject poolObject, Transform pool)
     {
@@ -39,7 +40,7 @@ public class MemoryPool : MonoBehaviourPunCallbacks
 
         parentTransform = pool;
 
-        InstantiateObjects();
+        //InstantiateObjects();
     }
 
     /// <summary>
@@ -121,6 +122,7 @@ public class MemoryPool : MonoBehaviourPunCallbacks
     /// <summary>
     /// 현재 사용이 완료된 오브젝트를 비활성화 상태로 결정
     /// </summary>
+    [PunRPC]
     public void DeactivatePoolItem(GameObject removeObject)
     {
         if (poolItemList == null || removeObject == null) return;
@@ -137,16 +139,6 @@ public class MemoryPool : MonoBehaviourPunCallbacks
                 poolItem.isActive = false;
                 poolItem.gameObject.SetActive(false);
                 poolItem.gameObject.transform.SetParent(parentTransform);
-
-                // 네트워크 상의 다른 클라이언트에게 비활성화 동기화
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    PhotonView photonView = removeObject.GetComponent<PhotonView>();
-                    if (photonView != null)
-                    {
-                        photonView.RPC("DeactivateObjectRPC", RpcTarget.OthersBuffered);
-                    }
-                }
 
                 return;
             }
@@ -178,9 +170,10 @@ public class MemoryPool : MonoBehaviourPunCallbacks
 
     // RPC를 통해 네트워크에서 비활성화 동기화
     [PunRPC]
-    private void DeactivateObjectRPC()
+    private void DeactivateObjectRPC(GameObject obj)
     {
         //PhotonNetwork.Destroy(gameObject);
-        gameObject.SetActive(false);
+        obj.SetActive(false);
+        obj.transform.SetParent(parentTransform);
     }
 }

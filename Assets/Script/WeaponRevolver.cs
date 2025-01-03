@@ -105,7 +105,7 @@ public class WeaponRevolver : WeaponBase
 
             // 광선을 발사해 원하는 위치 공격 (+Impact Effect)
             //TwoStepRayCast();
-            BulletMemoryPool.instance.SpawnBullet(weaponSetting, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            BulletMemoryPool.instance.SpawnBullet(weaponSetting, bulletSpawnPoint.position, bulletSpawnPoint.rotation, playerManager.TargetPosition);
         }
     }
 

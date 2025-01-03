@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,9 +28,13 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     public List<WeaponBase> PlayerWeapons => playerWeapons;
 
+    private PhotonView photonView;
+
     private void Awake()
     {
         instance = this;
+
+        photonView = GetComponent<PhotonView>();
 
         // 무기 정보 출력을 위해 현재 소지중인 모든 무기 이벤트 등록
         playerHUD.SetupAllWeapons(weapons);
@@ -72,6 +77,7 @@ public class WeaponSwitchSystem : MonoBehaviour
         PlayerHUD.instance.WeaponAddListener(gun.GetComponent<WeaponBase>());
         playerWeapons[index] = gun.GetComponent<WeaponBase>();
         gun.GetComponent<WeaponBase>().WeaponSetting = weaponSetting;
+        gun.GetComponent<WeaponBase>().PlayerManager = playerController;
         SwitchingWeapon((WeaponType)index);
 
         return true;

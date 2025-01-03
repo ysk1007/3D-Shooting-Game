@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -15,9 +16,11 @@ public class Casing : MonoBehaviour
     private Rigidbody rigidbody3D;
     private AudioSource audioSource;
     private MemoryPool memoryPool;
+    private PhotonView photonView;
 
     public void Setup(MemoryPool pool, Vector3 direction)
     {
+        photonView = GetComponent<PhotonView>();
         rigidbody3D = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         memoryPool = pool;
@@ -46,5 +49,13 @@ public class Casing : MonoBehaviour
         yield return new WaitForSeconds(deactivateTime);
 
         memoryPool.DeactivatePoolItem(this.gameObject);
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void DeactivateObjectRPC()
+    {
+        gameObject.SetActive(false);
+        gameObject.transform.SetParent(memoryPool.ParentTransform);
     }
 }
