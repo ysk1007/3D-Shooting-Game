@@ -15,16 +15,12 @@ public class DamageTextMemoryPool : MonoBehaviour
 
     private void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         instance = this;
         textPool = new MemoryPool(textPrefab, texts);
     }
 
     public void SpawnText(float Damage, bool critical, Vector3 position)
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         GameObject Text = textPool.ActivatePoolItem();
         Text.transform.SetParent(texts);
         Text.transform.position = position;

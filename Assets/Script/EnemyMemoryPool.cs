@@ -17,6 +17,11 @@ public class EnemyMemoryPool : MonoBehaviour
     [SerializeField]
     private float enemySpawnLatency = 1;                    // 타일 생성 후 적이 등장하기까지 대기 시간
 
+    [SerializeField]
+    private int currentEnemy = 0;                           // 생성된 적의 숫자
+    [SerializeField]
+    private int maximumEnemy = 5;                           // 최대 생성할 수 
+
     private MemoryPool spawnPointMemoryPool;                // 적 등장 알림 오브젝트 활성/비활성 관리
     private MemoryPool[] enemyMemoryPool;                     // 적 생성, 활성/비활성 관리
 
@@ -50,7 +55,7 @@ public class EnemyMemoryPool : MonoBehaviour
     private IEnumerator SpawnTile()
     {
         int currentNumber = 0;
-        int maximumNumber = 50;
+        int maximumNumber = 5;
 
         while (true)
         {
@@ -80,10 +85,10 @@ public class EnemyMemoryPool : MonoBehaviour
     private IEnumerator SpawnEnemy(GameObject point)
     {
 
-        yield return new WaitForSeconds(enemySpawnTime);
+        yield return new WaitForSeconds(enemySpawnLatency);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
-        GameObject enemy = enemyMemoryPool[(int)(WeaponName)Random.Range(0, enemyPrefab.Length)].ActivatePoolItem();
+        GameObject enemy = enemyMemoryPool[(int)(EnemyType)Random.Range(0, enemyPrefab.Length)].ActivatePoolItem();
         enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
 

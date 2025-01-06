@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class HealthBar : MonoBehaviourPun
 {
     [SerializeField]
     private Slider hpSlider;
@@ -17,6 +18,7 @@ public class HealthBar : MonoBehaviour
 
     [SerializeField]
     private float lerpSpeed = 0.05f;
+    [SerializeField] private PhotonView photonView;
 
     public void Setup(float maxHP)
     {
@@ -38,10 +40,26 @@ public class HealthBar : MonoBehaviour
         {
             easeHpSlider.value = Mathf.Lerp(easeHpSlider.value, hpValue, lerpSpeed);
         }
+        //photonView.RPC("SliderUpdate", RpcTarget.AllBuffered);
     }
 
     public void takeDamage(float damage)
     {
         hpValue -= damage;
+    }
+
+    // RPC를 통해 네트워크에서 동기화
+    [PunRPC]
+    void SliderUpdate()
+    {
+        if (hpSlider.value != hpValue)
+        {
+            hpSlider.value = hpValue;
+        }
+
+        if (hpSlider.value != easeHpSlider.value)
+        {
+            easeHpSlider.value = Mathf.Lerp(easeHpSlider.value, hpValue, lerpSpeed);
+        }
     }
 }

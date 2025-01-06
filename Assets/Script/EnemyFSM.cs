@@ -43,9 +43,9 @@ public class EnemyFSM : MonoBehaviourPun
     [SerializeField]  private float lastAttackTime = 0; // 공격 주기 계산용 변수
     [SerializeField]  private float lastSkillTime = 0;  // 특수 공격 주기 계산용 변수
 
-    [SerializeField]
-    private HealthBar enemyHpBar;
-    private Status status;                              // 이동속도 등의 정보
+
+    [SerializeField] private HealthBar enemyHpBar;
+    [SerializeField] private Status status;             // 이동속도 등의 정보
 
     [SerializeField] private Collider[] colliders;       // 히트 콜라이더
 
@@ -60,9 +60,6 @@ public class EnemyFSM : MonoBehaviourPun
 
     public void Setup(Transform target, EnemyMemoryPool enemyMemoryPool)
     {
-        status = GetComponent<Status>();
-        //navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
-        //animator = GetComponent<Animator>();
         this.target = target;
         this.enemyMemoryPool = enemyMemoryPool;
 

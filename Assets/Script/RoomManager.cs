@@ -3,30 +3,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager instance;
 
+    [SerializeField] private List<string> playerNickNames = new List<string>();
+    [SerializeField] private List<TextMeshProUGUI> playerNickNameTexts = new List<TextMeshProUGUI>();
+
     [SerializeField] private GameObject player;
+
+    [Space]
     [SerializeField] private Transform spawnPosition;
+
+    [Space]
     [SerializeField] private GameObject poolSet;
 
+    [Space]
     [SerializeField] private GameObject roomCam;
+
+    [Space]
+    [SerializeField] private GameObject roomUi;
+    [SerializeField] private GameObject connectingUi;
+
+    [SerializeField] private string nickname = "unnamed";
+    [SerializeField] private string roomNameToJoin = "test";
+
+    int playerCount = 0;
+    public string RoomNameToJoin { 
+        get => roomNameToJoin;
+        set => roomNameToJoin = value; 
+    }
 
     private void Awake()
     {
         instance = this;
+        PhotonNetwork.SendRate = 30;         // 초당 송신 횟수
+        PhotonNetwork.SerializationRate = 30; // 초당 동기화 횟수
+        PhotonNetwork.ConnectToRegion("kr"); // 한국 서버
     }
 
-    void Start()
+    public void ChangeRoomName(string name)
+    {
+        nickname = name;
+    }
+
+    public void JoinRoomButtonPressed()
     {
         Debug.Log("서버에 연결 중...");
 
-        PhotonNetwork.ConnectUsingSettings();
+        RoomOptions roomOptions = new RoomOptions
+        {
+            MaxPlayers = 4, // 최대 4명의 플레이어 허용
+            IsVisible = true, // 다른 플레이어에게 공개
+            IsOpen = true // 룸에 참가 가능 여부
+        };
+
+        roomNameToJoin = nickname + "님의 방";
+
+        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, roomOptions, TypedLobby.Default);
+
+        //roomUi.SetActive(false);
+        //connectingUi.SetActive(true);
     }
 
-    public override void OnConnectedToMaster()
+/*    public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
 
@@ -48,29 +90,33 @@ public class RoomManager : MonoBehaviourPunCallbacks
             IsOpen = true // 룸에 참가 가능 여부
         };
 
-        PhotonNetwork.JoinOrCreateRoom("test", roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, roomOptions, TypedLobby.Default);
 
-    }
+    }*/
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
 
         Debug.Log("룸에 연결 됨");
+        playerCount++;
+        //roomCam.SetActive(false);
 
-        roomCam.SetActive(false);
+        //RespawnPlayer();
 
-        GameObject _player = PhotonNetwork.Instantiate(player.name, spawnPosition.position, Quaternion.identity);
-        _player.GetComponent<PlayerSetUp>().InLocalPlayer();
-
-
-        poolSet.SetActive(true);
+        //poolSet.SetActive(true);
         //ItemMemoryPool.instance.TestSpawn();
+
+        for (int i = 0; i < playerCount; i++)
+        {
+            playerNickNameTexts[i].text = nickname;
+        }
     }
 
     public void RespawnPlayer()
     {
         GameObject _player = PhotonNetwork.Instantiate(player.name, spawnPosition.position, Quaternion.identity);
         _player.GetComponent<PlayerSetUp>().InLocalPlayer();
+        _player.GetComponent<PhotonView>().RPC("SetNickName",RpcTarget.AllBuffered, nickname);
     }
 }
