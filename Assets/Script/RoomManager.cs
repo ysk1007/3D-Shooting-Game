@@ -39,9 +39,27 @@ public class RoomManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         instance = this;
-        PhotonNetwork.SendRate = 30;         // 초당 송신 횟수
-        PhotonNetwork.SerializationRate = 30; // 초당 동기화 횟수
-        PhotonNetwork.ConnectToRegion("kr"); // 한국 서버
+        //PhotonNetwork.SendRate = 30;         // 초당 송신 횟수
+        //PhotonNetwork.SerializationRate = 30; // 초당 동기화 횟수
+        //PhotonNetwork.ConnectToRegion("kr"); // 한국 서버
+    }
+    void Start()
+    {
+        Debug.Log("Connecting to Master");
+        PhotonNetwork.ConnectUsingSettings();
+    }
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to Master");
+        PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
+    public override void OnJoinedLobby()
+    {
+        //MenuManager.Instance.OpenMenu("title");
+        Debug.Log("Joined Lobby");
+        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, null, TypedLobby.Default);
     }
 
     public void ChangeRoomName(string name)
@@ -63,36 +81,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
         roomNameToJoin = nickname + "님의 방";
 
         PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, roomOptions, TypedLobby.Default);
-
         //roomUi.SetActive(false);
         //connectingUi.SetActive(true);
     }
 
-/*    public override void OnConnectedToMaster()
-    {
-        base.OnConnectedToMaster();
 
-        Debug.Log("서버에 연결 됨");
-
-        PhotonNetwork.JoinLobby();
-    }
-
-    public override void OnJoinedLobby()
-    {
-        base.OnJoinedLobby();
-
-        Debug.Log("로비에 연결 됨");
-
-        RoomOptions roomOptions = new RoomOptions
-        {
-            MaxPlayers = 4, // 최대 4명의 플레이어 허용
-            IsVisible = true, // 다른 플레이어에게 공개
-            IsOpen = true // 룸에 참가 가능 여부
-        };
-
-        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, roomOptions, TypedLobby.Default);
-
-    }*/
 
     public override void OnJoinedRoom()
     {
@@ -102,15 +95,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
         playerCount++;
         //roomCam.SetActive(false);
 
-        //RespawnPlayer();
+        RespawnPlayer();
 
-        //poolSet.SetActive(true);
+        poolSet.SetActive(true);
         //ItemMemoryPool.instance.TestSpawn();
-
-        for (int i = 0; i < playerCount; i++)
-        {
-            playerNickNameTexts[i].text = nickname;
-        }
     }
 
     public void RespawnPlayer()
