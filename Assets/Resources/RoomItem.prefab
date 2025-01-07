@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomName: 
+  roomNameText: {fileID: 2122827637600090247}
+  playerCount: {fileID: 162379115223653428}
 --- !u!1 &2151408739444468971
 GameObject:
   m_ObjectHideFlags: 0
