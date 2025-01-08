@@ -86,7 +86,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
 
         // 충돌한 위치에 이펙트 생성
-        memoryPool.SpawnImpact(0, transform.position, Quaternion.identity);
+        memoryPool?.SpawnImpact(0, transform.position, Quaternion.identity); 
 
         // 총알 오브젝트 제거
         bulletMemoryPool?.DeactivatePoolItem(this.gameObject);

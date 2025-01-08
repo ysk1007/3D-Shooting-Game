@@ -17,12 +17,13 @@ public class ItemMemoryPool : MonoBehaviour
 
     [SerializeField] private Transform items;              // 관리할 부모 오브젝트
 
+    [SerializeField] private PhotonView photonView;
+
     private void Awake()
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
         instance = this;
-
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
         itemPool = new MemoryPool[itemPrefab.Length];
         for (int i = 0; i < itemPrefab.Length; ++i)
@@ -33,7 +34,7 @@ public class ItemMemoryPool : MonoBehaviour
 
     private void Start()
     {
-
+        TestSpawn();
     }
 
     public void SpawnItem(Vector3 pos, ItemType itemType)
@@ -43,8 +44,8 @@ public class ItemMemoryPool : MonoBehaviour
         GameObject item = itemPool[(int)itemType].ActivatePoolItem();
         item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.SetParent(items);
-        item.GetComponent<ItemBase>().SetUp(itemPool[(int)itemType]);
-        //item.GetComponent<Bullet>().Setup(this, bulletPool[(int)type], impactPool[(int)type]);
+        //item.GetComponent<ItemBase>().SetUp(itemPool[(int)itemType].GetComponent<PhotonView>().ViewID);
+        item.GetComponent<PhotonView>().RPC("ItemSetUp", RpcTarget.AllBuffered, photonView.ViewID, null);//itemPool[(int)itemType].GetComponent<PhotonView>().ViewID);
     }
 
     public void SpawnDropGun(Vector3 pos, WeaponBase weaponBase)
@@ -55,8 +56,9 @@ public class ItemMemoryPool : MonoBehaviour
         //item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.position = pos;
         item.transform.SetParent(items);
-        item.GetComponent<ItemBase>().SetUp(itemPool[(int)ItemType.DropGun], weaponBase);
-        //item.GetComponent<Bullet>().Setup(this, bulletPool[(int)type], impactPool[(int)type]);
+        //item.GetComponent<ItemBase>().SetUp(itemPool[(int)ItemType.DropGun], weaponBase);
+        string weaponBaseJson = JsonUtility.ToJson(weaponBase.ToData());
+        item.GetComponent<PhotonView>().RPC("ItemSetUp", RpcTarget.AllBuffered, photonView.ViewID, weaponBaseJson);
     }
 
     public void TestSpawn()
@@ -65,7 +67,12 @@ public class ItemMemoryPool : MonoBehaviour
         SpawnItem(new Vector3(3, 0.5f, 3), ItemType.DropGun);
         SpawnItem(new Vector3(2, 0.5f, 3), ItemType.DropGun);
         SpawnItem(new Vector3(1, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(2, 0.5f, 3), ItemType.MagazineItem);
-        SpawnItem(new Vector3(-2, 0.5f, 3), ItemType.HealthItem);
+        //SpawnItem(new Vector3(2, 0.5f, 3), ItemType.MagazineItem);
+        //SpawnItem(new Vector3(-2, 0.5f, 3), ItemType.HealthItem);
+    }
+
+    public void DeactivateItem(GameObject Item)
+    {
+        itemPool[(int)Item.GetComponent<ItemBase>().itemType].DeactivatePoolItem(Item);
     }
 }

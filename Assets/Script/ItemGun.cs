@@ -19,8 +19,11 @@ public class ItemGun : ItemBase
 
     WeaponSwitchSystem weaponSwitchSystem;
 
-    private MemoryPool itemMemoryPool;
+    private ItemMemoryPool itemMemoryPool;
     private PhotonView photonView;
+
+    WeaponBase weaponBase;
+    WeaponBaseData data;
 
     private void Start()
     {
@@ -50,17 +53,22 @@ public class ItemGun : ItemBase
 
     }
 
-    public override void SetUp(MemoryPool itemMemoryPool, WeaponBase weaponBase)
+    [PunRPC]
+    public override void ItemSetUp(int callerViewID, string weaponBaseJson)
     {
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.itemMemoryPool = callerView.GetComponent<ItemMemoryPool>();
+
         weaponSwitchSystem = WeaponSwitchSystem.instance;
-        this.itemMemoryPool = itemMemoryPool;
         photonView = GetComponent<PhotonView>();
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
 
         //int weaponCount = System.Enum.GetNames(typeof(WeaponName)).Length;
         //int randomIndex = Random.Range(0, weaponCount); // 0부터 weaponCount - 1까지의 랜덤 정수
-        if (weaponBase != null) { 
-            weaponSetting = weaponBase.WeaponSetting;
-            GunMemoryPool.instance.SpawnGun(weaponBase.WeaponSetting.WeaponName, this.transform);
+        if (weaponBaseJson != null) {
+            data = JsonUtility.FromJson<WeaponBaseData>(weaponBaseJson);
+            weaponSetting = data.weaponSetting;
+            GunMemoryPool.instance.SpawnGun(weaponSetting.WeaponName, this.transform);
         }
         else
             weaponSetting = GunMemoryPool.instance.SpawnGun((WeaponName)Random.Range(0, 2), this.transform);
@@ -72,9 +80,10 @@ public class ItemGun : ItemBase
     {
         if(weaponSwitchSystem.PickUpWeapon(weaponSetting, index))
         {
-            itemMemoryPool.DeactivatePoolItem(this.gameObject);
+            itemMemoryPool.DeactivateItem(this.gameObject);
             GameObject gun = transform.GetComponentInChildren<WeaponBase>().gameObject;
-            gun.GetComponent<WeaponBase>().MemoryPool.DeactivatePoolItem(gun);
+            gun.GetComponent<WeaponBase>().MemoryPool?.DeactivatePoolItem(gun);
+            photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
         }
     }
 
@@ -96,9 +105,8 @@ public class ItemGun : ItemBase
 
     // RPC를 통해 네트워크에서 비활성화 동기화
     [PunRPC]
-    private void DeactivateObjectRPC()
+    private void ActivateObjectRPC(bool isActive)
     {
-        gameObject.SetActive(false);
-        gameObject.transform.SetParent(itemMemoryPool.ParentTransform);
+        gameObject.SetActive(isActive);
     }
 }

@@ -37,14 +37,18 @@ public class ItemMagazine : ItemBase
 
         Instantiate(magazineEffectPrefab, transform.position, Quaternion.identity);
 
-        itemMemoryPool.DeactivatePoolItem(this.gameObject);
+        itemMemoryPool?.DeactivatePoolItem(this.gameObject);
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
         //Destroy(gameObject);
     }
 
-    public override void SetUp(MemoryPool itemMemoryPool, WeaponBase weaponBase)
+    public override void ItemSetUp(int callerViewID, string weaponBaseJson)
     {
-        this.itemMemoryPool = itemMemoryPool;
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.itemMemoryPool = callerView.GetComponent<MemoryPool>();
+
         photonView = GetComponent<PhotonView>();
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
     }
 
     public override void PickUp(int index)
@@ -54,9 +58,8 @@ public class ItemMagazine : ItemBase
 
     // RPC를 통해 네트워크에서 비활성화 동기화
     [PunRPC]
-    private void DeactivateObjectRPC()
+    private void ActivateObjectRPC(bool isActive)
     {
-        gameObject.SetActive(false);
-        gameObject.transform.SetParent(itemMemoryPool.ParentTransform);
+        gameObject.SetActive(isActive);
     }
 }

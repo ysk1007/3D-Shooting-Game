@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810beea509f99c04c9d959c045b402b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 1
   magazineEffectPrefab: {fileID: 961337922261853681, guid: c9c7fa59f2281074781985914645c56a,
     type: 3}
   increaseMagazine: 2

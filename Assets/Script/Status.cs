@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class HPEvent : UnityEngine.Events.UnityEvent<float, float> { }
-public class Status : MonoBehaviour
+public class Status : MonoBehaviourPun
 {
     [HideInInspector]
     public HPEvent onHPEvent = new HPEvent();
@@ -44,22 +45,17 @@ public class Status : MonoBehaviour
         currentHP = maxHP;
     }
 
-    public bool DecreaseHP(float damage)
+    [PunRPC]
+    public void DecreaseHP(float damage)
     {
         float previousHP = currentHP;
 
         currentHP = CurrentHP - damage > 0 ? currentHP - damage : 0;
 
         onHPEvent.Invoke(previousHP, currentHP);
-
-        if(currentHP == 0)
-        {
-            return true;
-        }
-
-        return false;
     }
 
+    [PunRPC]
     public void IncreaseHp(float hp)
     {
         float previousHP = currentHP;
@@ -67,5 +63,15 @@ public class Status : MonoBehaviour
         currentHP = CurrentHP + hp > maxHP ? maxHP : currentHP + hp;
 
         onHPEvent.Invoke(previousHP, currentHP);
+    }
+
+    public bool isDie()
+    {
+        if (currentHP <= 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

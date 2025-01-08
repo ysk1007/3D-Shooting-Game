@@ -2,109 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+using System.IO;
 using Photon.Realtime;
-using TMPro;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    public static RoomManager instance;
-
-    [SerializeField] private List<string> playerNickNames = new List<string>();
-    [SerializeField] private List<TextMeshProUGUI> playerNickNameTexts = new List<TextMeshProUGUI>();
-
-    [SerializeField] private GameObject player;
-
-    [Space]
-    [SerializeField] private Transform spawnPosition;
-
-    [Space]
-    [SerializeField] private GameObject poolSet;
-
-    [Space]
-    [SerializeField] private GameObject roomCam;
-
-    [Space]
-    [SerializeField] private GameObject roomUi;
-    [SerializeField] private GameObject connectingUi;
-
-    [SerializeField] private string nickname = "unnamed";
-    [SerializeField] private string roomNameToJoin = "test";
-
-    int playerCount = 0;
-    public string RoomNameToJoin { 
-        get => roomNameToJoin;
-        set => roomNameToJoin = value; 
-    }
+    public static RoomManager Instance;
+    [SerializeField] private GameObject roomScreen;
 
     private void Awake()
     {
-        instance = this;
-        //PhotonNetwork.SendRate = 30;         // 초당 송신 횟수
-        //PhotonNetwork.SerializationRate = 30; // 초당 동기화 횟수
-        //PhotonNetwork.ConnectToRegion("kr"); // 한국 서버
-    }
-    void Start()
-    {
-        Debug.Log("Connecting to Master");
-        PhotonNetwork.ConnectUsingSettings();
-    }
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Connected to Master");
-        PhotonNetwork.JoinLobby();
-        PhotonNetwork.AutomaticallySyncScene = true;
-    }
-
-    public override void OnJoinedLobby()
-    {
-        //MenuManager.Instance.OpenMenu("title");
-        Debug.Log("Joined Lobby");
-        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, null, TypedLobby.Default);
-    }
-
-    public void ChangeRoomName(string name)
-    {
-        nickname = name;
-    }
-
-    public void JoinRoomButtonPressed()
-    {
-        Debug.Log("서버에 연결 중...");
-
-        RoomOptions roomOptions = new RoomOptions
+        if (Instance)
         {
-            MaxPlayers = 4, // 최대 4명의 플레이어 허용
-            IsVisible = true, // 다른 플레이어에게 공개
-            IsOpen = true // 룸에 참가 가능 여부
-        };
-
-        roomNameToJoin = nickname + "님의 방";
-
-        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, roomOptions, TypedLobby.Default);
-        //roomUi.SetActive(false);
-        //connectingUi.SetActive(true);
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+        Instance = this;
     }
 
-
-
-    public override void OnJoinedRoom()
+    public override void OnEnable()
     {
-        base.OnJoinedRoom();
-
-        Debug.Log("룸에 연결 됨");
-        playerCount++;
-        //roomCam.SetActive(false);
-
-        RespawnPlayer();
-
-        poolSet.SetActive(true);
-        //ItemMemoryPool.instance.TestSpawn();
+        base.OnEnable();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    public void RespawnPlayer()
+    public override void OnDisable()
     {
-        GameObject _player = PhotonNetwork.Instantiate(player.name, spawnPosition.position, Quaternion.identity);
-        _player.GetComponent<PlayerSetUp>().InLocalPlayer();
-        _player.GetComponent<PhotonView>().RPC("SetNickName",RpcTarget.AllBuffered, nickname);
+        base.OnDisable();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (scene.buildIndex == 1)  // 인게임 씬에 있음
+        {
+            roomScreen.SetActive(false);
+            GameObject _player = PhotonNetwork.Instantiate(Path.Combine("PlayerArmature"), Vector3.zero, Quaternion.identity);
+            _player.GetComponent<PlayerSetUp>().InLocalPlayer();
+            _player.GetComponent<PhotonView>().RPC("SetNickName", RpcTarget.AllBuffered, PhotonNetwork.NickName);
+        }
     }
 }

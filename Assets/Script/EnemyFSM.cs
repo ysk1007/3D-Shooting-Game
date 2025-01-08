@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death, Skill }
 public enum EnemyType { minion, archor , warrior}
@@ -53,15 +54,18 @@ public class EnemyFSM : MonoBehaviourPun
     private NavMeshAgent navMeshAgent;                  // 이동 제어를 위한 NavMeshAgent
     [SerializeField]
     private Animator animator;                          // 애니메이션 제어를 위한 Animator
-    private Transform target;                           // 적의 공격 대상 (플레이어)
+    [SerializeField]  private Transform target;         // 적의 공격 대상 (플레이어)
     private EnemyMemoryPool enemyMemoryPool;            // 적 메모리 풀 (적 오브젝트 비활성화에 사용)
 
     public EnemyType EnemyType => enemyType;
 
-    public void Setup(Transform target, EnemyMemoryPool enemyMemoryPool)
+    [PunRPC]
+    public void Setup(int targetViewID, int callerViewID)// EnemyMemoryPool enemyMemoryPool)
     {
-        this.target = target;
-        this.enemyMemoryPool = enemyMemoryPool;
+        PhotonView targetView = PhotonView.Find(targetViewID);
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.target = targetView.GetComponent<Transform>();
+        this.enemyMemoryPool = callerView.GetComponent<EnemyMemoryPool>();
 
         // NavMeshAgent 컴포넌트에서 회전을 업데이트하지 않도록 설정
         navMeshAgent.updateRotation = false;
@@ -85,6 +89,7 @@ public class EnemyFSM : MonoBehaviourPun
         enemyState = EnemyState.None;
     }
 
+    [PunRPC]
     public void ChangeState(EnemyState newState)
     {
         // 현재 재생중인 상태와 바꾸려고 하는 상태가 같으면 바꿀 필요가 없기 때문에 return
@@ -346,18 +351,22 @@ public class EnemyFSM : MonoBehaviourPun
             // 공격주기가 되어야 공격할 수 있도록 하기 위해 현재 시간 저장
             lastSkillTime = Time.time;
 
+            //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Skill);
             ChangeState(EnemyState.Skill);
         }
         else if (distance <= attackRange)
         {
+            //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Attack);
             ChangeState(EnemyState.Attack);
         }
         else if( distance <= targetRecognitionRange)
         {
+            //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Pursuit);
             ChangeState(EnemyState.Pursuit);
         }
         else if  (distance >= targetRecognitionRange)
         {
+            //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Wander);
             ChangeState(EnemyState.Wander);
         }
 
@@ -406,8 +415,12 @@ public class EnemyFSM : MonoBehaviourPun
     public bool TakeDamage(float damage)
     {
         targetRecognitionRange = 64;
-        bool isDie = status.DecreaseHP(damage);
-        enemyHpBar.takeDamage(damage);
+
+        photonView.RPC("DecreaseHP", RpcTarget.AllBuffered, damage);
+        enemyHpBar.photonView.RPC("takeDamage", RpcTarget.AllBuffered, damage);
+
+        bool isDie = status.isDie();
+
         if (isDie)
         {
             CollidersAble(false);
@@ -419,7 +432,15 @@ public class EnemyFSM : MonoBehaviourPun
 
     public void Destory()
     {
-        enemyMemoryPool.DeactivateEnemy(gameObject);
+        enemyMemoryPool?.DeactivateEnemy(gameObject);
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
+    }
+
+    // RPC를 통해 네트워크에서 비활성화 동기화
+    [PunRPC]
+    private void ActivateObjectRPC(bool isActive)
+    {
+        gameObject.SetActive(isActive);
     }
 
     private void CollidersAble(bool b)

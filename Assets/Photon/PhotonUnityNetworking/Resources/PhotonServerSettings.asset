@@ -46,6 +46,14 @@ MonoBehaviour:
   - ActivateObjectRPC
   - SliderUpdate
   - SetNickName
+  - ChangeState
+  - CalculateDistanceToTargetAndSelectState
+  - Setup
+  - DecreaseHP
+  - IncreaseHp
+  - takeDamage
+  - SetUp
+  - ItemSetUp
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

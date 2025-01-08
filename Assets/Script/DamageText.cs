@@ -24,15 +24,16 @@ public class DamageText : MonoBehaviour
     public void Destroy()
     {
         // 텍스트 제거
-        memoryPool.DeactivatePoolItem(this.gameObject);
+        memoryPool?.DeactivatePoolItem(this.gameObject);
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
     }
 
     // RPC를 통해 네트워크에서 비활성화 동기화
     [PunRPC]
-    private void DeactivateObjectRPC()
+    private void ActivateObjectRPC(bool isActive)
     {
-        gameObject.SetActive(false);
-        gameObject.transform.SetParent(memoryPool.ParentTransform);
+        gameObject.SetActive(isActive);
+        //gameObject.transform.SetParent(memoryPool.ParentTransform);
     }
 
 }

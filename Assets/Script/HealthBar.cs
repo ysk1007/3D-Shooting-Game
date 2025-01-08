@@ -18,7 +18,9 @@ public class HealthBar : MonoBehaviourPun
 
     [SerializeField]
     private float lerpSpeed = 0.05f;
-    [SerializeField] private PhotonView photonView;
+
+    public PhotonView photonView;
+
 
     public void Setup(float maxHP)
     {
@@ -43,6 +45,7 @@ public class HealthBar : MonoBehaviourPun
         //photonView.RPC("SliderUpdate", RpcTarget.AllBuffered);
     }
 
+    [PunRPC]
     public void takeDamage(float damage)
     {
         hpValue -= damage;

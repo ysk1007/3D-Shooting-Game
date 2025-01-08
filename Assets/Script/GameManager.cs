@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private TextMeshProUGUI textTimer;
-    [SerializeField] private float gameTime;            // 플레이 타임
+    [SerializeField] private float gameTime;                       // 플레이 타임
     [SerializeField] private float maxGameTime = 30 * 60f;         // 최대 게임 시간
     [SerializeField] int gameLevel;
+    [SerializeField] private GameObject poolSet;
+    public bool TestMode = false;
 
     float sec = 0;
     int min = 0;
@@ -22,6 +24,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        if (TestMode) return;
+            poolSet.SetActive(true);
     }
 
     private void Update()

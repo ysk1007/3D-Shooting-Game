@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemyMemoryPool : MonoBehaviour
 {
     [SerializeField]
-    private Transform target;                               // 적의 목표 (플레이어)
+    private GameObject target;                               // 적의 목표 (플레이어)
     [SerializeField]
     private GameObject enemySpawnPointPrefab;               // 적이 등장하기 전 적의 등장 위치를 알려주는 프리팹
     [SerializeField]
@@ -92,7 +92,8 @@ public class EnemyMemoryPool : MonoBehaviour
         enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
 
-        enemy.GetComponent<EnemyFSM>().Setup(target, this);
+        //enemy.GetComponent<EnemyFSM>().Setup(target, this);
+        enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID);
 
         // 타일 오브젝트를 비활성화
         spawnPointMemoryPool.DeactivatePoolItem(point);

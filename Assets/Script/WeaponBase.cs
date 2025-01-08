@@ -11,6 +11,14 @@ public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
 [Serializable]
 public class MagazineEvent : UnityEngine.Events.UnityEvent<int> { }
 
+
+[Serializable]
+public class WeaponBaseData
+{
+    public WeaponSetting weaponSetting;
+}
+
+
 public abstract class WeaponBase : MonoBehaviour
 {
     [Header("WeaponBase")]
@@ -77,5 +85,19 @@ public abstract class WeaponBase : MonoBehaviour
                                         MaxMagazine : CurrentMagazine + magazine;
 
         onMagazineEvent.Invoke(CurrentMagazine);
+    }
+
+    public WeaponBaseData ToData()
+    {
+        return new WeaponBaseData
+        {
+            weaponSetting = this.weaponSetting
+        };
+    }
+
+    public void FromJson(string json)
+    {
+        WeaponBaseData data = JsonUtility.FromJson<WeaponBaseData>(json);
+        this.weaponSetting = data.weaponSetting;
     }
 }

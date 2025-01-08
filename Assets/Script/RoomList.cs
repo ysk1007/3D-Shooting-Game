@@ -10,7 +10,7 @@ public class RoomList : MonoBehaviourPunCallbacks
     public static RoomList instance;
 
     [SerializeField] private GameObject roomManagerGameObject;
-    [SerializeField] private RoomManager roomManager;
+    [SerializeField] private TestManager roomManager;
 
     [Header("UI")]
     [SerializeField] private Transform roomListParent;

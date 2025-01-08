@@ -123,7 +123,8 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        bool isDie = _status.DecreaseHP(damage);
+        _status.DecreaseHP(damage);
+        bool isDie = _status.isDie();
 
         if (isDie)
         {

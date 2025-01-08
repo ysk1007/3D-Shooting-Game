@@ -176,7 +176,8 @@ public class PlayerManager : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        bool isDie = status.DecreaseHP(damage);
+        status.DecreaseHP(damage);
+        bool isDie = status.isDie();
 
         if (isDie)
         {
