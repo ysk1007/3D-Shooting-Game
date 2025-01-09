@@ -21,14 +21,12 @@ public class ItemMemoryPool : MonoBehaviour
 
     private void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         instance = this;
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
         itemPool = new MemoryPool[itemPrefab.Length];
         for (int i = 0; i < itemPrefab.Length; ++i)
         {
-            itemPool[i] = new MemoryPool(itemPrefab[i],items);
+            itemPool[i] = new MemoryPool(itemPrefab[i]);
         }
     }
 
@@ -73,6 +71,7 @@ public class ItemMemoryPool : MonoBehaviour
 
     public void DeactivateItem(GameObject Item)
     {
-        itemPool[(int)Item.GetComponent<ItemBase>().itemType].DeactivatePoolItem(Item);
+        itemPool[(int)Item.GetComponent<ItemBase>().itemType]?.DeactivatePoolItem(Item);
+        Item.GetComponent<PhotonView>().RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
     }
 }

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +40,18 @@ public class WeaponSawGun : WeaponBase
 
     private void Start()
     {
-        base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+        //base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+    }
+
+    [PunRPC]
+    public override void Setup(int callerViewID)
+    {
+
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.memoryPool = callerView.GetComponent<GunMemoryPool>();
+        audioSource = GetComponent<AudioSource>();
+        animator = PlayerManager.instance.PlayerAnimatorController;
+        PlayerHUD.instance.WeaponAddListener(this);
     }
 
 

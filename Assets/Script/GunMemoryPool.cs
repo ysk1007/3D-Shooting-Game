@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunMemoryPool : MonoBehaviour
+public class GunMemoryPool : MonoBehaviourPunCallbacks
 {
     public static GunMemoryPool instance;
 
@@ -21,29 +21,26 @@ public class GunMemoryPool : MonoBehaviour
 
     private void Awake()
     {
-        //if (!PhotonNetwork.IsMasterClient) return;
-
         instance = this;
 
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
         gunPool = new MemoryPool[gunPrefab.Length];
         for (int i = 0; i < gunPrefab.Length; ++i)
         {
-            gunPool[i] = new MemoryPool(gunPrefab[i], guns);
+            gunPool[i] = new MemoryPool(gunPrefab[i]);
         }
     }
 
     // 플레이어 손 무기 생성
     public GameObject SpawnGun(WeaponSetting weaponSetting, Transform playerHnad)
     {
-        if (!PhotonNetwork.IsMasterClient) return null;
-
         GameObject gun = gunPool[(int)weaponSetting.WeaponName].ActivatePoolItem();
         gun.gameObject.SetActive(false);
         gun.transform.SetParent(playerHnad);
         gun.transform.localPosition = gunPos[(int)weaponSetting.WeaponName];
         gun.transform.localEulerAngles = gunRotation;
-        gun.GetComponent<WeaponBase>().Setup(gunPool[(int)weaponSetting.WeaponName]);
+        //gun.GetComponent<WeaponBase>().Setup(gunPool[(int)weaponSetting.WeaponName]);
+        gun.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered,photonView.ViewID);
         return gun;
     }
 
@@ -55,7 +52,13 @@ public class GunMemoryPool : MonoBehaviour
         gun.transform.SetParent(transform);
         gun.transform.localPosition = Vector3.zero;
         gun.transform.localEulerAngles = Vector3.zero;
-        gun.GetComponent<WeaponBase>().Setup(gunPool[(int)type]);
+        //gun.GetComponent<WeaponBase>().Setup(gunPool[(int)type]);
+        gun.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, photonView.ViewID);
         return weapons[(int)type].WeaponSetting;
+    }
+
+    public void DeactivateGun(GameObject gun)
+    {
+        gunPool[(int)gun.GetComponent<WeaponBase>().WeaponName].DeactivatePoolItem(gun);
     }
 }

@@ -83,7 +83,8 @@ public class PlayerHUD : MonoBehaviour
     private void SetupWeapon()
     {
         textWeaponName.text = weapon.WeaponSetting.weaponName;
-        imageWeaponIcon.sprite = weapon.WeaponSetting.weaponSprite;
+        //imageWeaponIcon.sprite = weapon.WeaponSetting.weaponSprite;
+        imageWeaponIcon.sprite = Resources.Load<Sprite>("Sprites/" + weapon.WeaponSetting.WeaponName.ToString());
         imageWeaponIcon.rectTransform.sizeDelta = sizeWeaponIcons;
         UpdateAmmoHUD(weapon.WeaponSetting.currentAmmo, weapon.WeaponSetting.maxAmmo);
         UpdateMagazineHUD(weapon.WeaponSetting.currentMagazine);

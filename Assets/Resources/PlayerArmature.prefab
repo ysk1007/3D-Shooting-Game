@@ -12812,7 +12812,7 @@ PrefabInstance:
     - target: {fileID: 2140051471247718914, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 142.8475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2140051471247718914, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
@@ -12834,6 +12834,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2692280260854565090, guid: 8d45c813cfbab9d49b69e0338335984b,
+        type: 3}
+      propertyPath: weaponSwitchSystem
+      value: 
+      objectReference: {fileID: 6201635714385770467}
     - target: {fileID: 2709742863038881231, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -12867,7 +12872,7 @@ PrefabInstance:
     - target: {fileID: 2775516196872237590, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 41.027504
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2775516196872237590, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
@@ -13307,7 +13312,7 @@ PrefabInstance:
     - target: {fileID: 7398076756676447641, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 39.8325
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7398076756676447641, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
@@ -13352,7 +13357,7 @@ PrefabInstance:
     - target: {fileID: 7565340673188775724, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 140.3475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7565340673188775724, guid: 8d45c813cfbab9d49b69e0338335984b,
         type: 3}

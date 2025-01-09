@@ -27,18 +27,13 @@ public class MemoryPool : MonoBehaviourPunCallbacks
     // 오브젝트가 임시로 보관되는 위치
     private Vector3 tempPosition = new Vector3(48, 1, 48);
 
-    private Transform parentTransform;
-    public Transform ParentTransform => parentTransform;
-
-    public MemoryPool(GameObject poolObject, Transform pool)
+    public MemoryPool(GameObject poolObject)
     {
         maxCount = 0;
         activeCount = 0;
         this.poolObject = poolObject;
 
         poolItemList = new List<PoolItem>();
-
-        parentTransform = pool;
 
         //InstantiateObjects();
     }
@@ -53,7 +48,6 @@ public class MemoryPool : MonoBehaviourPunCallbacks
         for (int i = 0; i < increaseCount; ++i)
         {
             GameObject obj = PhotonNetwork.Instantiate(poolObject.name, tempPosition, Quaternion.identity);
-            obj.transform.SetParent(parentTransform);
 
             PoolItem poolItem = new PoolItem
             {
@@ -138,7 +132,6 @@ public class MemoryPool : MonoBehaviourPunCallbacks
 
                 poolItem.isActive = false;
                 poolItem.gameObject.SetActive(false);
-                poolItem.gameObject.transform.SetParent(parentTransform);
 
                 return;
             }
@@ -174,6 +167,5 @@ public class MemoryPool : MonoBehaviourPunCallbacks
     {
         //PhotonNetwork.Destroy(gameObject);
         obj.SetActive(false);
-        obj.transform.SetParent(parentTransform);
     }
 }

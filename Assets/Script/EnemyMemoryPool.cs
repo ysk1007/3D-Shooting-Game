@@ -40,13 +40,13 @@ public class EnemyMemoryPool : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab, enemys);
+        spawnPointMemoryPool = new MemoryPool(enemySpawnPointPrefab);
 
         // Enemy 가 여러 종류이면 종류별로 memoryPool 생성
         enemyMemoryPool = new MemoryPool[enemyPrefab.Length];
         for (int i = 0; i < enemyPrefab.Length; ++i)
         {
-            enemyMemoryPool[i] = new MemoryPool(enemyPrefab[i], enemys);
+            enemyMemoryPool[i] = new MemoryPool(enemyPrefab[i]);
         }
 
         StartCoroutine("SpawnTile");

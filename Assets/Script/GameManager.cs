@@ -12,6 +12,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float maxGameTime = 30 * 60f;         // 최대 게임 시간
     [SerializeField] int gameLevel;
     [SerializeField] private GameObject poolSet;
+
+    [Space]
+    public BulletMemoryPool bulletMemoryPool;
+    public GunMemoryPool gunMemoryPool;
+    public EnemyMemoryPool enemyMemoryPool;
+    public CasingMemoryPool casingMemoryPool;
+    public ItemMemoryPool itemMemoryPool;
+    public DamageTextMemoryPool damageTextMemoryPool;
+
     public bool TestMode = false;
 
     float sec = 0;

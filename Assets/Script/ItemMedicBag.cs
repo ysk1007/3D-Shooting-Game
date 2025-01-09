@@ -57,7 +57,7 @@ public class ItemMedicBag : ItemBase
         photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
     }
 
-    public override void PickUp(int index)
+    public override void PickUp(int index, int callerViewID)
     {
 
     }

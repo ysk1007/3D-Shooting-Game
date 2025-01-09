@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Buffers;
 using System.Collections;
@@ -19,7 +20,7 @@ public class WeaponBaseData
 }
 
 
-public abstract class WeaponBase : MonoBehaviour
+public abstract class WeaponBase : MonoBehaviourPunCallbacks
 {
     [Header("WeaponBase")]
     [SerializeField]
@@ -34,7 +35,7 @@ public abstract class WeaponBase : MonoBehaviour
     protected bool isAttack = false;              // 공격 여부 체크용
     protected AudioSource audioSource;           // 사운드 재생 컴포넌트
 
-    [SerializeField] protected MemoryPool memoryPool;            // 무기 풀링
+    [SerializeField] protected GunMemoryPool memoryPool;            // 무기 풀링
 
     [SerializeField]
     protected PlayerAnimatorController animator;  // 애니메이션 재생 제어
@@ -57,7 +58,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public PlayerManager PlayerManager { get => playerManager; set => playerManager = value; }
 
-    public MemoryPool MemoryPool => memoryPool;
+    public GunMemoryPool MemoryPool => memoryPool;
 
     public abstract void StartWeaponAction(int type = 0);
     public abstract void StopWeaponAction(int type = 0);
@@ -71,13 +72,7 @@ public abstract class WeaponBase : MonoBehaviour
         audioSource.Play();         // 사운드 재생
     }
 
-    public void Setup(MemoryPool memoryPool)
-    {
-        this.memoryPool = memoryPool;
-        audioSource = GetComponent<AudioSource>();
-        animator = PlayerManager.instance.PlayerAnimatorController;
-        PlayerHUD.instance.WeaponAddListener(this);
-    }
+    public abstract void Setup(int callerViewID);
 
     public virtual void IncreaseMagazine(int magazine)
     {

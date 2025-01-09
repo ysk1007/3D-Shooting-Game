@@ -1,11 +1,12 @@
 using Cinemachine;
+using Photon.Pun;
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviourPun
 {
     public static PlayerManager instance;
     private StarterAssetsInputs input;
@@ -174,6 +175,7 @@ public class PlayerManager : MonoBehaviour
         handRig.weight = weight;
     }
 
+    [PunRPC]
     public void TakeDamage(float damage)
     {
         status.DecreaseHP(damage);
@@ -188,7 +190,7 @@ public class PlayerManager : MonoBehaviour
     public void SwitcningWeapon(WeaponBase newWeapon)
     {
         weapon = newWeapon;
-        weaponAnimatorController.runtimeAnimatorController = newWeapon.AnimatorController;
+        weaponAnimatorController.runtimeAnimatorController = weapon.AnimatorController;
     }
 
     public void SpawnGrenadeProjectile()

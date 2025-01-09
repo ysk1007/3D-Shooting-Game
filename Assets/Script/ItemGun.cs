@@ -19,7 +19,7 @@ public class ItemGun : ItemBase
 
     WeaponSwitchSystem weaponSwitchSystem;
 
-    private ItemMemoryPool itemMemoryPool;
+    ItemMemoryPool itemMemoryPool;
     private PhotonView photonView;
 
     WeaponBase weaponBase;
@@ -59,7 +59,6 @@ public class ItemGun : ItemBase
         PhotonView callerView = PhotonView.Find(callerViewID);
         this.itemMemoryPool = callerView.GetComponent<ItemMemoryPool>();
 
-        weaponSwitchSystem = WeaponSwitchSystem.instance;
         photonView = GetComponent<PhotonView>();
         photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
 
@@ -72,18 +71,24 @@ public class ItemGun : ItemBase
         }
         else
             weaponSetting = GunMemoryPool.instance.SpawnGun((WeaponName)Random.Range(0, 2), this.transform);
+    }
 
+    private void OnEnable()
+    {
         StartCoroutine("Rotate");
     }
 
-    public override void PickUp(int index)
+    [PunRPC]
+    public override void PickUp(int index, int callerViewID)//WeaponSwitchSystem _weaponSwitchSystem)
     {
-        if(weaponSwitchSystem.PickUpWeapon(weaponSetting, index))
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.weaponSwitchSystem = callerView.GetComponent<WeaponSwitchSystem>();
+        //this.weaponSwitchSystem = _weaponSwitchSystem;
+        if (weaponSwitchSystem.PickUpWeapon(weaponSetting, index))
         {
             itemMemoryPool.DeactivateItem(this.gameObject);
             GameObject gun = transform.GetComponentInChildren<WeaponBase>().gameObject;
-            gun.GetComponent<WeaponBase>().MemoryPool?.DeactivatePoolItem(gun);
-            photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
+            gun.GetComponent<WeaponBase>().MemoryPool?.DeactivateGun(gun);
         }
     }
 

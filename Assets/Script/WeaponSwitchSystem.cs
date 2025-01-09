@@ -49,7 +49,7 @@ public class WeaponSwitchSystem : MonoBehaviour
         }
 
         // Main 무기를 현재 사용 무기로 설정
-        SwitchingWeapon(WeaponType.Sub);
+        SwitchingWeapon(2);
     }
 
     private void Update()
@@ -59,42 +59,52 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     private void UpdateSwitch()
     {
-        if (!Input.anyKeyDown) return;
-
+        if (!Input.anyKeyDown || !photonView.IsMine) return;
         // 1~4 숫자키를 누르면 무기 교체
         int inputIndex = 0;
         if(int.TryParse(Input.inputString,out inputIndex) && (inputIndex > 0 && inputIndex < 5))
         {
-            SwitchingWeapon((WeaponType)(inputIndex - 1));
+            photonView.RPC("SwitchingWeapon", RpcTarget.AllBuffered, inputIndex - 1);
         }
     }
 
     public bool PickUpWeapon(WeaponSetting weaponSetting, int index)
     {
-        if (playerWeapons[index] != null) ThrowOutWeapon(index);
-
-        GameObject gun =  GunMemoryPool.instance.SpawnGun(weaponSetting, playerHand);
-        PlayerHUD.instance.WeaponAddListener(gun.GetComponent<WeaponBase>());
-        playerWeapons[index] = gun.GetComponent<WeaponBase>();
-        gun.GetComponent<WeaponBase>().WeaponSetting = weaponSetting;
-        gun.GetComponent<WeaponBase>().PlayerManager = playerController;
-        SwitchingWeapon((WeaponType)index);
+        if (playerWeapons[index] != null) { ThrowOutWeapon(index); }
+        else
+        {
+            GameObject gun = GunMemoryPool.instance.SpawnGun(weaponSetting, playerHand);
+            playerHUD.WeaponAddListener(gun.GetComponent<WeaponBase>());
+            // 여기서 오류
+            playerWeapons[index] = gun.GetComponent<WeaponBase>();
+            gun.GetComponent<WeaponBase>().WeaponSetting = weaponSetting;
+            gun.GetComponent<WeaponBase>().PlayerManager = playerController;
+            SwitchingWeapon(index);
+        }
 
         return true;
     }
 
     public void ThrowOutWeapon(int index)
     {
-        ItemMemoryPool.instance.SpawnDropGun(this.transform.position,playerWeapons[index]);
-        playerWeapons[index].MemoryPool.DeactivatePoolItem(playerWeapons[index].gameObject);
-        playerWeapons[index] = null;
-        SwitchingWeapon(WeaponType.Sub);
+        if (!photonView.IsMine) return;
+        photonView.RPC("RPC_ThrowOutWeapon", RpcTarget.AllBuffered, index);
     }
 
-    private void SwitchingWeapon(WeaponType weaponType)
+    [PunRPC]
+    public void RPC_ThrowOutWeapon(int index)
+    {
+        ItemMemoryPool.instance.SpawnDropGun(this.transform.position, playerWeapons[index]);
+        playerWeapons[index].MemoryPool.DeactivateGun(playerWeapons[index].gameObject);
+        playerWeapons[index] = null;
+        SwitchingWeapon(2);
+    }
+
+    [PunRPC]
+    private void SwitchingWeapon(int weaponType)
     {
         // 교체 가능한 무기가 없으면 종료
-        if (playerWeapons[(int)weaponType] == null)
+        if (playerWeapons[weaponType] == null)
         {
             return;
         }
@@ -106,7 +116,7 @@ public class WeaponSwitchSystem : MonoBehaviour
         }
 
         // 무기 교체
-        currentWeapon = playerWeapons[(int)weaponType];
+        currentWeapon = playerWeapons[weaponType];
 
         // 현재 사용중인 무기로 교체하려고 할 때 종료
         if (currentWeapon == previousWeapon)

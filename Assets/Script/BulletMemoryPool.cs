@@ -26,14 +26,14 @@ public class BulletMemoryPool : MonoBehaviour
         bulletPool = new MemoryPool[bulletPrefab.Length];
         for (int i = 0; i < bulletPrefab.Length; ++i)
         {
-            bulletPool[i] = new MemoryPool(bulletPrefab[i], bullets);
+            bulletPool[i] = new MemoryPool(bulletPrefab[i]);
         }
 
         // 피격 이펙트가 여러 종류이면 종류별로 memoryPool 생성
         impactPool = new MemoryPool[impactPrefab.Length];
         for (int i = 0; i < impactPrefab.Length; ++i)
         {
-            impactPool[i] = new MemoryPool(impactPrefab[i], impacts);
+            impactPool[i] = new MemoryPool(impactPrefab[i]);
         }
     }
 

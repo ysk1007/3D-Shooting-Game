@@ -16,7 +16,7 @@ public class DamageTextMemoryPool : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        textPool = new MemoryPool(textPrefab, texts);
+        textPool = new MemoryPool(textPrefab);
     }
 
     public void SpawnText(float Damage, bool critical, Vector3 position)

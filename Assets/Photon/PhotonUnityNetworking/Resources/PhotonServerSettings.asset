@@ -54,6 +54,14 @@ MonoBehaviour:
   - takeDamage
   - SetUp
   - ItemSetUp
+  - SwitcningWeapon
+  - TakeDamage
+  - MotionUpdate
+  - UpdateWeapon
+  - ChangeWeaponAnimation
+  - SwitchingWeapon
+  - PickUp
+  - RPC_ThrowOutWeapon
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

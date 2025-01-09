@@ -13,16 +13,14 @@ public class Casing : MonoBehaviour
     [SerializeField]
     private AudioClip[] audioClips;         // 탄피가 부딪혔을 때 재생되는 사운드
 
-    private Rigidbody rigidbody3D;
-    private AudioSource audioSource;
+    [SerializeField] private Rigidbody rigidbody3D;
+    [SerializeField] private AudioSource audioSource;
     private MemoryPool memoryPool;
     private PhotonView photonView;
 
     public void Setup(MemoryPool pool, Vector3 direction)
     {
         photonView = GetComponent<PhotonView>();
-        rigidbody3D = GetComponent<Rigidbody>();
-        audioSource = GetComponent<AudioSource>();
         memoryPool = pool;
 
         // 탄피의 이동 속력과 회전 속력 설정
@@ -48,14 +46,14 @@ public class Casing : MonoBehaviour
     {
         yield return new WaitForSeconds(deactivateTime);
 
-        memoryPool.DeactivatePoolItem(this.gameObject);
+        memoryPool?.DeactivatePoolItem(this.gameObject);
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
     }
 
     // RPC를 통해 네트워크에서 비활성화 동기화
     [PunRPC]
-    private void DeactivateObjectRPC()
+    private void ActivateObjectRPC(bool isActive)
     {
-        gameObject.SetActive(false);
-        gameObject.transform.SetParent(memoryPool.ParentTransform);
+        gameObject.SetActive(isActive);
     }
 }

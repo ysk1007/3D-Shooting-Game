@@ -162,8 +162,10 @@ MonoBehaviour:
     bulletSpeed: 40
     isAutomaticAttack: 0
     weaponSprite: {fileID: 21300000, guid: 6bb3070479a6ffd46b62cad869bc3ba8, type: 3}
+  playerManager: {fileID: 0}
+  memoryPool: {fileID: 0}
   animator: {fileID: 0}
-  animatorController: {fileID: 22100000, guid: b76afc4a917d9b447b975a8a17612174, type: 2}
+  animatorController: {fileID: 22100000, guid: a2b29b6598f00ed48a5d438809dd6510, type: 2}
   onAmmoEvent:
     m_PersistentCalls:
       m_Calls: []

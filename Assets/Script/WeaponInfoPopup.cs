@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,6 +8,9 @@ using UnityEngine.UI;
 
 public class WeaponInfoPopup : MonoBehaviour
 {
+    [Header("무기 교체 시스템")]
+    [SerializeField] private WeaponSwitchSystem weaponSwitchSystem;
+
     [Header("무기 스크립트")]
     [SerializeField] private WeaponSetting weapon;
 
@@ -26,6 +30,7 @@ public class WeaponInfoPopup : MonoBehaviour
 
     [SerializeField] private bool isPickupPopup;
     [SerializeField] private bool pickupPopupActive;
+    [SerializeField] private PhotonView photonView;
 
     private void Awake()
     {
@@ -55,7 +60,8 @@ public class WeaponInfoPopup : MonoBehaviour
         weaponCriticalText.text = "x"+weapon.critical.ToString();
         weaponAttackRateText.text = weapon.attackRate.ToString("F1");
         weaponAmmoText.text = weapon.maxAmmo.ToString();
-        weaponIcon.sprite = weapon.weaponSprite;
+        //weaponIcon.sprite = weapon.weaponSprite;
+        weaponIcon.sprite = Resources.Load<Sprite>("Sprites/"+ weapon.WeaponName.ToString());
 
         this.item = item;
 
@@ -79,7 +85,9 @@ public class WeaponInfoPopup : MonoBehaviour
 
     public void PickUpGun(int index)
     {
-        item.PickUp(index);
+        photonView = weaponSwitchSystem.gameObject.GetComponent<PhotonView>();
+        item.GetComponent<PhotonView>().RPC("PickUp",RpcTarget.AllBuffered,index, photonView.ViewID);
+        //item.PickUp(index, callerViewID);
         init();
     }
 }

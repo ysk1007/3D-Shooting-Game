@@ -18,7 +18,7 @@ public class CasingMemoryPool : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient) return;
 
         instance = this;
-        memoryPool = new MemoryPool(casingPrefab, casings);
+        memoryPool = new MemoryPool(casingPrefab);
     }
 
     public void SpawnCasing(Vector3 position, Vector3 direction)

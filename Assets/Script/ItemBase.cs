@@ -9,7 +9,7 @@ public abstract class ItemBase : MonoBehaviour
 
     public abstract void Use(GameObject entity);
 
-    public abstract void PickUp(int index);
+    public abstract void PickUp(int index, int callerViewID);
 
     public abstract void ItemSetUp(int callerViewID, string weaponBaseJson = null);// WeaponBase weaponBase = null);
 

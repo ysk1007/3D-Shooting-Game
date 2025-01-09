@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +39,18 @@ public class WeaponAssaultRifle : WeaponBase
 
     private void Start()
     {
-        base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+        //base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+    }
+
+    [PunRPC]
+    public override void Setup(int callerViewID)
+    {
+
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.memoryPool = callerView.GetComponent<GunMemoryPool>();
+        audioSource = GetComponent<AudioSource>();
+        animator = PlayerManager.instance.PlayerAnimatorController;
+        PlayerHUD.instance.WeaponAddListener(this);
     }
 
 
@@ -137,7 +149,7 @@ public class WeaponAssaultRifle : WeaponBase
             // 공격 사운드 재생
             PlaySound(audioClipFire);
             // 탄피 생성
-            CasingMemoryPool.instance.SpawnCasing(casingSpawnPoint.position, transform.right);
+            // CasingMemoryPool.instance.SpawnCasing(casingSpawnPoint.position, transform.right);
 
             // 광선을 발사해 원하는 위치 공격 (+Impact Effect)
             //TwoStepRayCast();

@@ -51,9 +51,9 @@ public class ItemMagazine : ItemBase
         photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
     }
 
-    public override void PickUp(int index)
+    public override void PickUp(int index, int callerViewID)
     {
-        
+
     }
 
     // RPC를 통해 네트워크에서 비활성화 동기화

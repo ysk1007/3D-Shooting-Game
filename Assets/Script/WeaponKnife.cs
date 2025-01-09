@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,19 @@ public class WeaponKnife : WeaponBase
 
     private void Start()
     {
-        base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+        //base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+    }
+
+    [PunRPC]
+    public override void Setup(int callerViewID)
+    {
+
+        PhotonView callerView = PhotonView.Find(callerViewID);
+        this.memoryPool = callerView.GetComponent<GunMemoryPool>();
+
+        audioSource = GetComponent<AudioSource>();
+        animator = PlayerManager.instance.PlayerAnimatorController;
+        PlayerHUD.instance.WeaponAddListener(this);
     }
 
     public override void StartWeaponAction(int type = 0)
