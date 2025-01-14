@@ -30,6 +30,9 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     private PhotonView photonView;
 
+    WeaponSetting tempWeaponSetting;
+    bool isTemp = false;
+
     private void Awake()
     {
         instance = this;
@@ -70,12 +73,15 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     public bool PickUpWeapon(WeaponSetting weaponSetting, int index)
     {
-        if (playerWeapons[index] != null) { ThrowOutWeapon(index); }
+        if (playerWeapons[index] != null) {
+            tempWeaponSetting = weaponSetting;
+            isTemp = true;
+            ThrowOutWeapon(index); 
+        }
         else
         {
             GameObject gun = GunMemoryPool.instance.SpawnGun(weaponSetting, playerHand);
             playerHUD.WeaponAddListener(gun.GetComponent<WeaponBase>());
-            // 여기서 오류
             playerWeapons[index] = gun.GetComponent<WeaponBase>();
             gun.GetComponent<WeaponBase>().WeaponSetting = weaponSetting;
             gun.GetComponent<WeaponBase>().PlayerManager = playerController;
@@ -98,6 +104,12 @@ public class WeaponSwitchSystem : MonoBehaviour
         playerWeapons[index].MemoryPool.DeactivateGun(playerWeapons[index].gameObject);
         playerWeapons[index] = null;
         SwitchingWeapon(2);
+
+        if(isTemp)
+        {
+            PickUpWeapon(tempWeaponSetting, index);
+            isTemp = false;
+        }
     }
 
     [PunRPC]

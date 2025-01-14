@@ -57,6 +57,7 @@ MonoBehaviour:
   weaponType: 0
   weaponSetting:
     WeaponName: 0
+    weaponLevel: 1
     weaponName: "\uC5B4\uC370\uD2B8 \uB77C\uC774\uD50C"
     damage: 50
     critical: 1.5

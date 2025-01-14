@@ -16,6 +16,8 @@ TagManager:
   - Item
   - CinemachineTarget
   - Shield
+  - Eraser
+  - OreNode
   layers:
   - Default
   - TransparentFX
@@ -31,7 +33,7 @@ TagManager:
   - Enemy
   - Item
   - Minimap
-  - 
+  - Camera
   - 
   - 
   - 

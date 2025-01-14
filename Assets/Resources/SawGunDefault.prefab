@@ -54,6 +54,7 @@ MonoBehaviour:
   weaponType: 0
   weaponSetting:
     WeaponName: 1
+    weaponLevel: 1
     weaponName: "\uB4DC\uB9B4 \uAC74"
     damage: 50
     critical: 1.5

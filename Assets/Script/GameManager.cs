@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,10 +9,14 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private TextMeshProUGUI textTimer;
+    [SerializeField] private TextMeshProUGUI waveText;
+    [SerializeField] private GameObject gameResumeButton;
     [SerializeField] private float gameTime;                       // 플레이 타임
+    [SerializeField] private float waveTime = 1 * 60f;             // 웨이브 타임
     [SerializeField] private float maxGameTime = 30 * 60f;         // 최대 게임 시간
     [SerializeField] int gameLevel;
     [SerializeField] private GameObject poolSet;
+    [SerializeField] private GameObject Erase;
 
     [Space]
     public BulletMemoryPool bulletMemoryPool;
@@ -21,6 +26,7 @@ public class GameManager : MonoBehaviour
     public ItemMemoryPool itemMemoryPool;
     public DamageTextMemoryPool damageTextMemoryPool;
 
+    public bool gamePause = false;
     public bool TestMode = false;
 
     float sec = 0;
@@ -39,13 +45,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (gamePause) return;
+
         gameTime += Time.deltaTime;
 
-        gameLevel = Mathf.FloorToInt(gameTime / 10f);
-
-        if (gameTime > maxGameTime)
+        if (gameTime > waveTime)
         {
-            gameTime = maxGameTime;
+            gameTime = 0;
+            gameLevel++;
+            gamePause = true;
+            Erase.SetActive(true);
+            if (PhotonNetwork.IsMasterClient) gameResumeButton.SetActive(true);
         }
 
         UpdateTimerText();
@@ -57,5 +67,12 @@ public class GameManager : MonoBehaviour
         sec = (int)gameTime % 60;
 
         textTimer.text = string.Format("{0:D2}:{1:D2}", min, (int)sec);
+        waveText.text = string.Format("Wave {0}",gameLevel);
+    }
+
+    public void GameResume()
+    {
+        gamePause = false;
+        Erase.SetActive(false);
     }
 }

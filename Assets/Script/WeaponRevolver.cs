@@ -47,7 +47,17 @@ public class WeaponRevolver : WeaponBase
 
     private void Start()
     {
-        //base.Setup(GunMemoryPool.instance.GunPool[(int)WeaponName]);
+        Setup(GunMemoryPool.instance);
+    }
+
+    public void Setup(GunMemoryPool gunMemoryPool)
+    {
+        this.memoryPool = gunMemoryPool;
+
+        audioSource = GetComponent<AudioSource>();
+        animator = PlayerManager.instance.PlayerAnimatorController;
+        if (PlayerManager != null)
+            PlayerManager.gameObject.GetComponent<PlayerHUD>().WeaponAddListener(this);
     }
 
     [PunRPC]
@@ -59,7 +69,8 @@ public class WeaponRevolver : WeaponBase
 
         audioSource = GetComponent<AudioSource>();
         animator = PlayerManager.instance.PlayerAnimatorController;
-        PlayerHUD.instance.WeaponAddListener(this);
+        if (PlayerManager != null)
+            PlayerManager.gameObject.GetComponent<PlayerHUD>().WeaponAddListener(this);
     }
 
     public override void StartWeaponAction(int type = 0)

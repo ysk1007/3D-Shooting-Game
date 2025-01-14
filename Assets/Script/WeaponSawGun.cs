@@ -51,7 +51,8 @@ public class WeaponSawGun : WeaponBase
         this.memoryPool = callerView.GetComponent<GunMemoryPool>();
         audioSource = GetComponent<AudioSource>();
         animator = PlayerManager.instance.PlayerAnimatorController;
-        PlayerHUD.instance.WeaponAddListener(this);
+        if (PlayerManager != null)
+            PlayerManager.gameObject.GetComponent<PlayerHUD>().WeaponAddListener(this);
     }
 
 

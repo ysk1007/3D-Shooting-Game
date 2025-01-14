@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
+using InfimaGames.LowPolyShooterPack;
 
 
 public class Bullet : MonoBehaviourPunCallbacks
@@ -39,7 +40,7 @@ public class Bullet : MonoBehaviourPunCallbacks
     // 이동 방향 설정
     public void Setup(WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool, Transform parentTransform)
     {
-        bulletSetting.bulletDamage = weaponSetting.damage;
+        bulletSetting.bulletDamage = weaponSetting.damage * (1 + weaponSetting.weaponLevel);
         bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
         bulletSetting.criticalPercent = weaponSetting.critical;
 

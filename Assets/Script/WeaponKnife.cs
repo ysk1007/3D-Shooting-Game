@@ -41,7 +41,8 @@ public class WeaponKnife : WeaponBase
 
         audioSource = GetComponent<AudioSource>();
         animator = PlayerManager.instance.PlayerAnimatorController;
-        PlayerHUD.instance.WeaponAddListener(this);
+        if (PlayerManager != null)
+            PlayerManager.gameObject.GetComponent<PlayerHUD>().WeaponAddListener(this);
     }
 
     public override void StartWeaponAction(int type = 0)

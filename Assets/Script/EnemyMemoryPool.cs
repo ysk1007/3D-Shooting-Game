@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemyMemoryPool : MonoBehaviour
 {
     [SerializeField]
-    private GameObject target;                               // 적의 목표 (플레이어)
+    private List<GameObject> targets;                               // 적의 목표 (플레이어)
     [SerializeField]
     private GameObject enemySpawnPointPrefab;               // 적이 등장하기 전 적의 등장 위치를 알려주는 프리팹
     [SerializeField]
@@ -30,6 +30,15 @@ public class EnemyMemoryPool : MonoBehaviour
 
     [SerializeField] private Transform enemys; // 관리할 부모 오브젝트
     private PhotonView photonView;
+
+    public List<GameObject> Targets => targets;
+
+    public int CurrentEnemy
+    {
+        get => currentEnemy;
+        set => currentEnemy = value;
+    }
+
 
     private void Awake()
     {
@@ -54,30 +63,22 @@ public class EnemyMemoryPool : MonoBehaviour
 
     private IEnumerator SpawnTile()
     {
-        int currentNumber = 0;
-        int maximumNumber = 5;
-
         while (true)
         {
-            // 동시에 numberOfEnemiesSpawnedAtOnce 숫자만큼 적이 생성되도록 반복문 사용
-            for (int i = 0; i < numberOfEnemiesSpawnedAtOnce; ++i)
+            if (currentEnemy < maximumEnemy && !GameManager.instance.gamePause)
             {
-                GameObject enemy = spawnPointMemoryPool.ActivatePoolItem();
+                // 동시에 numberOfEnemiesSpawnedAtOnce 숫자만큼 적이 생성되도록 반복문 사용
+                for (int i = 0; i < numberOfEnemiesSpawnedAtOnce; ++i)
+                {
+                    GameObject enemy = spawnPointMemoryPool.ActivatePoolItem();
 
-                enemy.transform.position = new Vector3(Random.Range(-mapSize.x * 0.49f, mapSize.x * 0.49f), 1,
-                                                        Random.Range(-mapSize.y * 0.49f, mapSize.y * 0.49f));
-                enemy.transform.SetParent(enemys);
-                StartCoroutine("SpawnEnemy", enemy);
+                    enemy.transform.position = new Vector3(Random.Range(-mapSize.x * 0.49f, mapSize.x * 0.49f), 1,
+                                                            Random.Range(-mapSize.y * 0.49f, mapSize.y * 0.49f));
+                    enemy.transform.SetParent(enemys);
+                    StartCoroutine("SpawnEnemy", enemy);
+                    currentEnemy++;
+                }
             }
-
-            currentNumber++;
-
-            if (currentNumber >= maximumNumber)
-            {
-                currentNumber = 0;
-                numberOfEnemiesSpawnedAtOnce++;
-            }
-
             yield return new WaitForSeconds(enemySpawnTime);
         }
     }
@@ -91,6 +92,21 @@ public class EnemyMemoryPool : MonoBehaviour
         GameObject enemy = enemyMemoryPool[(int)(EnemyType)Random.Range(0, enemyPrefab.Length)].ActivatePoolItem();
         enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
+
+        GameObject target;
+        int targetNum = 0;
+        float distance = 999999;
+        for (int i = 0; i < targets.Count; i++)
+        {
+            float td = Vector3.Distance(this.transform.position, targets[i].transform.position);
+            if (td < distance)
+            {
+                distance = td;
+                targetNum = i;
+            }
+        }
+
+        target = targets[targetNum];
 
         //enemy.GetComponent<EnemyFSM>().Setup(target, this);
         enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID);

@@ -150,6 +150,7 @@ MonoBehaviour:
   weaponType: 2
   weaponSetting:
     WeaponName: 2
+    weaponLevel: 1
     weaponName: "\uAE30\uBCF8 \uAD8C\uCD1D"
     damage: 30
     critical: 1.5

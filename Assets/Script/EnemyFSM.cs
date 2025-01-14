@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using Unity.VisualScripting;
+using static Bullet;
+using System.Buffers;
 
 public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death, Skill }
 public enum EnemyType { minion, archor , warrior}
@@ -364,10 +366,13 @@ public class EnemyFSM : MonoBehaviourPun
             //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Pursuit);
             ChangeState(EnemyState.Pursuit);
         }
-        else if  (distance >= targetRecognitionRange)
+        else if (distance >= targetRecognitionRange)
         {
             //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Wander);
-            ChangeState(EnemyState.Wander);
+
+
+            //ChangeState(EnemyState.Wander); // 배회
+            ChangeState(EnemyState.Pursuit);  // 바로 추적
         }
 
     }
@@ -412,22 +417,31 @@ public class EnemyFSM : MonoBehaviourPun
         Gizmos.DrawWireSphere(transform.position, skillRange);
     }
 
+    // 트리거 충돌 감지
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Eraser"))
+        {
+            TakeDamage(99999999);
+        }
+    }
+
     public bool TakeDamage(float damage)
     {
         targetRecognitionRange = 64;
 
         photonView.RPC("DecreaseHP", RpcTarget.AllBuffered, damage);
         enemyHpBar.photonView.RPC("takeDamage", RpcTarget.AllBuffered, damage);
+        status.isDie();
 
-        bool isDie = status.isDie();
-
-        if (isDie)
-        {
-            CollidersAble(false);
-            ChangeState(EnemyState.Death);
-            return false;
-        }
         return true;
+    }
+
+    [PunRPC]
+    public void Die()
+    {
+        CollidersAble(false);
+        ChangeState(EnemyState.Death);
     }
 
     public void Destory()
@@ -440,6 +454,7 @@ public class EnemyFSM : MonoBehaviourPun
     [PunRPC]
     private void ActivateObjectRPC(bool isActive)
     {
+        if(!isActive) enemyMemoryPool.CurrentEnemy--;
         gameObject.SetActive(isActive);
     }
 

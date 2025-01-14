@@ -98,7 +98,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emission: 1
+    - _Emission: 3
     - _Fresnel: 1
     - _FresnelEmission: 1.5
     - _GlossMapScale: 1

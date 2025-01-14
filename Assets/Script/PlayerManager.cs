@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviourPun
     private void Awake()
     {
         instance = this;
+        GameManager.instance.enemyMemoryPool.Targets.Add(gameObject);
     }
 
     // Start is called before the first frame update

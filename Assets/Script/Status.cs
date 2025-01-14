@@ -69,6 +69,7 @@ public class Status : MonoBehaviourPun
     {
         if (currentHP <= 0)
         {
+            GetComponent<EnemyFSM>().photonView.RPC("Die",RpcTarget.AllBuffered);
             return true;
         }
 

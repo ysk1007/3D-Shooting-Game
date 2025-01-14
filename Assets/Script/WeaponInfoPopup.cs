@@ -56,7 +56,7 @@ public class WeaponInfoPopup : MonoBehaviour
         uiSet.localScale = Vector3.one;
         this.weapon = weapon;
         weaponNameText.text = weapon.weaponName;
-        weaponDamageText.text = weapon.damage.ToString();
+        weaponDamageText.text = (weapon.damage * (1 + weapon.weaponLevel )).ToString();
         weaponCriticalText.text = "x"+weapon.critical.ToString();
         weaponAttackRateText.text = weapon.attackRate.ToString("F1");
         weaponAmmoText.text = weapon.maxAmmo.ToString();

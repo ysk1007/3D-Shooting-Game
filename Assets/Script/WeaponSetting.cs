@@ -8,6 +8,7 @@ public enum WeaponName { AssaultRifle = 0, SawGun, Pistol ,CombatKnife, HandGren
 public struct WeaponSetting
 {
     public WeaponName WeaponName;   // 무기 이름
+    public int weaponLevel;         // 무기 레벨
     public string weaponName;       // 무기 이름
     public float damage;            // 무기 공격력
     public float critical;          // 무기 치명타율
