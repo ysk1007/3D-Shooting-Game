@@ -38,6 +38,8 @@ public class PlayerManager : MonoBehaviourPun
 
     [SerializeField]
     private Animator weaponAnimatorController;      // 무기 별 애니메이터
+
+    public Animator aimHitAnimator;                // 총알 피격 애니메이터
     [SerializeField]
     private WeaponInfoPopup weaponInfoPopup;
 

@@ -6,6 +6,7 @@ using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
 using InfimaGames.LowPolyShooterPack;
+using Photon.Pun.Demo.PunBasics;
 
 
 public class Bullet : MonoBehaviourPunCallbacks
@@ -31,6 +32,8 @@ public class Bullet : MonoBehaviourPunCallbacks
     private MemoryPool impactMemoryPool;
     private PhotonView photonView;
 
+    PlayerManager playerManager;
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -38,8 +41,9 @@ public class Bullet : MonoBehaviourPunCallbacks
     }
 
     // 이동 방향 설정
-    public void Setup(WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool, Transform parentTransform)
+    public void Setup(PlayerManager player, WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool, Transform parentTransform)
     {
+        playerManager = player;
         bulletSetting.bulletDamage = weaponSetting.damage * (1 + weaponSetting.weaponLevel);
         bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
         bulletSetting.criticalPercent = weaponSetting.critical;
@@ -77,9 +81,12 @@ public class Bullet : MonoBehaviourPunCallbacks
 
             float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
 
-            if(other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
+            if (other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
+            {
                 // 충돌한 위치에 텍스트 생성
                 DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
+                playerManager.aimHitAnimator.SetTrigger("Show");
+            }
         }
         else if (other.transform.CompareTag("InteractionObject"))
         {
