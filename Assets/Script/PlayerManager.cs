@@ -1,10 +1,14 @@
 using Cinemachine;
 using Photon.Pun;
 using StarterAssets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+
+[Serializable]
+public class CoinEvent : UnityEngine.Events.UnityEvent<int> { }
 
 public class PlayerManager : MonoBehaviourPun
 {
@@ -47,8 +51,14 @@ public class PlayerManager : MonoBehaviourPun
     private PlayerAnimatorController playerAnimatorController; // 플레이어 애니메이터 컨트롤러
     private Status status;                         // 이동속도 등의 플레이어 정보
     private WeaponBase weapon;                      // 모든 무기가 상속받는 기반 클래스
+    [SerializeField] private ShopUi shopUi;
     [SerializeField]
     private WeaponGrenade weaponGrenade;
+
+    [SerializeField] private int coin = 0;
+
+    // 외부에서 이벤트 함수 등록을 할 수 있도록 public 선언
+    [HideInInspector] public CoinEvent onCoinEvent = new CoinEvent();
 
     public Transform AimObj => aimObj.transform;
 
@@ -56,6 +66,9 @@ public class PlayerManager : MonoBehaviourPun
 
     public PlayerAnimatorController PlayerAnimatorController => playerAnimatorController;
     public WeaponInfoPopup WeaponInfoPopup => weaponInfoPopup;
+
+    public int Coin => coin;
+
     private void Awake()
     {
         instance = this;
@@ -207,5 +220,17 @@ public class PlayerManager : MonoBehaviourPun
         {
             other.GetComponent<ItemBase>().Use(gameObject);
         }
+    }
+
+    public void CoinUpdate(int value)
+    {
+        coin += value;
+        onCoinEvent.Invoke(coin);
+    }
+
+    public void ShopUi(bool open, List<WeaponSetting> weaponList)
+    {
+        shopUi.Shop(open);
+        shopUi.ProductUpdate(weaponList);
     }
 }

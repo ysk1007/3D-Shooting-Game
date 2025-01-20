@@ -1,9 +1,14 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
+[Serializable]
+public class ExpEvent : UnityEngine.Events.UnityEvent<float> { }
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -17,6 +22,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] int gameLevel;
     [SerializeField] private GameObject poolSet;
     [SerializeField] private GameObject Erase;
+
+    [SerializeField] private float exp;
+    [SerializeField] private Slider expSlider;
+    [SerializeField] private TextMeshProUGUI expText;
+
+    // 외부에서 이벤트 함수 등록을 할 수 있도록 public 선언
+    [HideInInspector] public ExpEvent onExpEvent = new ExpEvent();
 
     [Space]
     public BulletMemoryPool bulletMemoryPool;
@@ -39,6 +51,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        onExpEvent.AddListener(UpdateExpSlider);
         if (TestMode) return;
             poolSet.SetActive(true);
     }
@@ -74,5 +87,17 @@ public class GameManager : MonoBehaviour
     {
         gamePause = false;
         Erase.SetActive(false);
+    }
+
+    private void UpdateExpSlider(float value)
+    {
+        expSlider.value = (exp / expSlider.maxValue) * 100;
+        expText.text = String.Format("{0}%", expSlider.value);
+    }
+
+    public void UpdateExp(float value)
+    {
+        exp += value;
+        onExpEvent.Invoke(exp);
     }
 }

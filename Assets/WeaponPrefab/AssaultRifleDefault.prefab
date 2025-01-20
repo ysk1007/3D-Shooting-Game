@@ -55,6 +55,7 @@ MonoBehaviour:
   weaponType: 0
   weaponSetting:
     WeaponName: 0
+    weaponLevel: 0
     weaponName: "\uC5B4\uC370\uD2B8 \uB77C\uC774\uD50C"
     damage: 50
     critical: 1.5
@@ -67,6 +68,8 @@ MonoBehaviour:
     bulletSpeed: 40
     isAutomaticAttack: 1
     weaponSprite: {fileID: 21300000, guid: 7121006b9fb21704699a360f01d27d38, type: 3}
+  playerManager: {fileID: 0}
+  memoryPool: {fileID: 0}
   animator: {fileID: 0}
   animatorController: {fileID: 22100000, guid: b2c593e04f974d244837722e3f5c8e40, type: 2}
   onAmmoEvent:

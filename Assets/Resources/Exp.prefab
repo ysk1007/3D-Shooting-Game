@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6479088389706289423}
   - component: {fileID: 1340164071703713322}
   - component: {fileID: 3028637164191608473}
-  - component: {fileID: 7214083480636627667}
+  - component: {fileID: 5436985673212862826}
   - component: {fileID: 99358581657438071}
   - component: {fileID: 4603287409734229105}
   m_Layer: 0
@@ -199,7 +199,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7214083480636627667
+--- !u!114 &5436985673212862826
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,13 +208,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1051264607039675534}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53bec4ebac62bc94fb3af1bb84925902, type: 3}
+  m_Script: {fileID: 11500000, guid: bf820a8b58919de4a95e419f127044fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 4
   target: {fileID: 0}
   rigidbody: {fileID: 1340164071703713322}
   photonView: {fileID: 99358581657438071}
+  value: 5
   speed: 8
   moveAwayDistance: 4
   duration: 0.2

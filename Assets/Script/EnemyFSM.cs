@@ -440,6 +440,8 @@ public class EnemyFSM : MonoBehaviourPun
     [PunRPC]
     public void Die()
     {
+        ItemMemoryPool.instance.SpawnItem(transform.localPosition, ItemType.Coin);
+        ItemMemoryPool.instance.SpawnItem(transform.localPosition, ItemType.Exp);
         CollidersAble(false);
         ChangeState(EnemyState.Death);
     }

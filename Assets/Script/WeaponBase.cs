@@ -56,6 +56,8 @@ public abstract class WeaponBase : MonoBehaviourPunCallbacks
     public int MaxMagazine => weaponSetting.maxMagazine;
     public WeaponSetting WeaponSetting { get => weaponSetting; set => weaponSetting = value; }
 
+    public int WeaponLevel { get => weaponSetting.weaponLevel; set => weaponSetting.weaponLevel = value; }
+
     public PlayerManager PlayerManager { get => playerManager; set => playerManager = value; }
 
     public GunMemoryPool MemoryPool => memoryPool;

@@ -216,6 +216,7 @@ MonoBehaviour:
   target: {fileID: 0}
   rigidbody: {fileID: 1340164071703713322}
   photonView: {fileID: 99358581657438071}
+  value: 5
   speed: 8
   moveAwayDistance: 4
   duration: 0.2

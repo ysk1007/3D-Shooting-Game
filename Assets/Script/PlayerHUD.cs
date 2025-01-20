@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
-    //public static PlayerHUD instance;
     [Header("Compents")]
     [SerializeField]
     private WeaponBase weapon;                  // 현재 정보가 출력되는 무기
@@ -47,12 +46,17 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField]
     private AnimationCurve curveBloodScreen;
 
+    [Header("Coin")]
+    [SerializeField]
+    private TextMeshProUGUI textCoin;               // 플레이어의 코인을 출력하는 Text
+
     private void Awake()
     {
         //instance = this;
         // 메소드가 등록되어 있는 이벤트 클래스(weapon.xx)의
         // Invoke() 메소드가 호출될 때 등록된 메소드(매개변수)가 실행된다
         status.onHPEvent.AddListener(UpdateHPHUD);
+        GetComponent<PlayerManager>().onCoinEvent.AddListener(UpdateCoinHUD);
     }
 
     public void SetupAllWeapons(WeaponBase[] weapons)
@@ -135,6 +139,12 @@ public class PlayerHUD : MonoBehaviour
             StartCoroutine("OnBloodScreen");
         }
     }
+
+    private void UpdateCoinHUD(int value)
+    {
+        textCoin.text = value.ToString();
+    }
+
 
     private IEnumerator OnBloodScreen()
     {

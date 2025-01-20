@@ -1,3 +1,4 @@
+using InfimaGames.LowPolyShooterPack;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ public class WeaponSwitchSystem : MonoBehaviour
     private WeaponBase[] weapons;        // 사용가능한 무기들
 
     [SerializeField] private List<WeaponBase> playerWeapons;    // 소지중인 무기 3종류
+
+    [SerializeField]
+    private WeaponInfoPopup[] weaponInfoPopup;  // 상점 무기 정보 ui
 
     [SerializeField]
     private WeaponBase currentWeapon;   // 현재 사용중인 무기
@@ -175,5 +179,16 @@ public class WeaponSwitchSystem : MonoBehaviour
                 playerWeapons[i].IncreaseMagazine(magazine);
             }
         }
+    }
+    public void ProductBuy(WeaponSetting weaponSetting)
+    {
+        WeaponBase weaponBase = weapons[(int)weaponSetting.WeaponName];
+        ItemMemoryPool.instance.SpawnDropGun(this.transform.position, weaponBase, weaponSetting);
+    }
+
+    [PunRPC]
+    public void UpgradeWeapon(int index)
+    {
+        playerWeapons[index].WeaponLevel += 1;
     }
 }

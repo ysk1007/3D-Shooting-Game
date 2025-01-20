@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
-public enum ItemType { HealthItem = 0, MagazineItem = 1, DropGun = 2}
+public enum ItemType { HealthItem = 0, MagazineItem = 1, DropGun = 2, Coin = 3, Exp = 4}
 
 public class ItemMemoryPool : MonoBehaviour
 {
@@ -40,7 +40,7 @@ public class ItemMemoryPool : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient) return;
 
         GameObject item = itemPool[(int)itemType].ActivatePoolItem();
-        item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
+        item.transform.position = new Vector3(pos.x, 0.5f, pos.z);
         item.transform.SetParent(items);
         //item.GetComponent<ItemBase>().SetUp(itemPool[(int)itemType].GetComponent<PhotonView>().ViewID);
         item.GetComponent<PhotonView>().RPC("ItemSetUp", RpcTarget.AllBuffered, photonView.ViewID, null);//itemPool[(int)itemType].GetComponent<PhotonView>().ViewID);
@@ -55,6 +55,20 @@ public class ItemMemoryPool : MonoBehaviour
         item.transform.position = pos;
         item.transform.SetParent(items);
         //item.GetComponent<ItemBase>().SetUp(itemPool[(int)ItemType.DropGun], weaponBase);
+        string weaponBaseJson = JsonUtility.ToJson(weaponBase.ToData());
+        item.GetComponent<PhotonView>().RPC("ItemSetUp", RpcTarget.AllBuffered, photonView.ViewID, weaponBaseJson);
+    }
+
+    public void SpawnDropGun(Vector3 pos, WeaponBase weaponBase, WeaponSetting weaponSetting)
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem();
+        //item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
+        item.transform.position = pos;
+        item.transform.SetParent(items);
+
+        weaponBase.WeaponSetting = weaponSetting;
         string weaponBaseJson = JsonUtility.ToJson(weaponBase.ToData());
         item.GetComponent<PhotonView>().RPC("ItemSetUp", RpcTarget.AllBuffered, photonView.ViewID, weaponBaseJson);
     }

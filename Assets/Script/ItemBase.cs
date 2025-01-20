@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class ItemBase : MonoBehaviour
 {
-    public enum ItemType { HealthItem, MagazineItem, DropGunItem, Gold, Exp}
+    public enum ItemType { HealthItem, MagazineItem, DropGunItem, Coin, Exp}
 
     public abstract void Use(GameObject entity);
 

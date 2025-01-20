@@ -23,6 +23,9 @@ public class WeaponInfoPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI weaponCriticalText;        // 무기 연사 속도 텍스트
     [SerializeField] private TextMeshProUGUI weaponAttackRateText;      // 무기 연사 속도 텍스트
     [SerializeField] private TextMeshProUGUI weaponAmmoText;            // 탄창 용량 텍스트
+    [SerializeField] private TextMeshProUGUI weaponLevelText;           // 무기 레벨 텍스트
+
+    [SerializeField] private TextMeshProUGUI weaponPriceText;           // 무기 가격 텍스트
 
     [SerializeField] private ItemBase item;
 
@@ -31,6 +34,8 @@ public class WeaponInfoPopup : MonoBehaviour
     [SerializeField] private bool isPickupPopup;
     [SerializeField] private bool pickupPopupActive;
     [SerializeField] private PhotonView photonView;
+
+    public WeaponSetting weaponSetting => weapon;
 
     private void Awake()
     {
@@ -60,8 +65,11 @@ public class WeaponInfoPopup : MonoBehaviour
         weaponCriticalText.text = "x"+weapon.critical.ToString();
         weaponAttackRateText.text = weapon.attackRate.ToString("F1");
         weaponAmmoText.text = weapon.maxAmmo.ToString();
+        weaponLevelText.text = "+" + weapon.weaponLevel.ToString();
         //weaponIcon.sprite = weapon.weaponSprite;
         weaponIcon.sprite = Resources.Load<Sprite>("Sprites/"+ weapon.WeaponName.ToString());
+        if (weaponPriceText != null)
+            weaponPriceText.text = weapon.GetPrice.ToString() + " 원";
 
         this.item = item;
 

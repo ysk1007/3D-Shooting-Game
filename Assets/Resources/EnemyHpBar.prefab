@@ -84,7 +84,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1811694285354133796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,7 +687,7 @@ MonoBehaviour:
   easeHpSlider: {fileID: 2736345660451551598}
   maxValue: 100
   hpValue: 0
-  lerpSpeed: 0.05
+  lerpSpeed: 0.025
   photonView: {fileID: 5187160442469016447}
 --- !u!114 &6358575389505274437
 MonoBehaviour:
