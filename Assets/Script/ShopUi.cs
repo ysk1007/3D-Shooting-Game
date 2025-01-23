@@ -39,8 +39,13 @@ public class ShopUi : MonoBehaviour
     }
 
     public void WeaponUpgrade(int index)
-    { 
-        weaponSwitchSystem.gameObject.GetComponent<PhotonView>().RPC("UpgradeWeapon", RpcTarget.AllBuffered, index);
+    {
+        WeaponSetting weaponSetting = weaponInfoPopups[index].weaponSetting;
+        if (player.Coin >= weaponSetting.GetUpgradePrice)
+        {
+            player.CoinUpdate(-weaponSetting.GetUpgradePrice);
+            weaponSwitchSystem.gameObject.GetComponent<PhotonView>().RPC("UpgradeWeapon", RpcTarget.AllBuffered, index);
+        }
     }
 
     public void Shop(bool open)
@@ -57,7 +62,10 @@ public class ShopUi : MonoBehaviour
         if (player.Coin >= weaponSetting.GetPrice)
         {
             player.CoinUpdate(-weaponSetting.GetPrice);
-            weaponSwitchSystem.ProductBuy(weaponSetting);
+
+            string weaponBaseJson = JsonUtility.ToJson(weaponSetting.ToData());
+            player.photonView.RPC("DropProduct", RpcTarget.AllBuffered, weaponBaseJson);
+            //weaponSwitchSystem.ProductBuy(weaponSetting);
             productInfoPopups[index].SetUpEmpty();
         }
     }

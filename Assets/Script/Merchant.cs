@@ -6,6 +6,7 @@ public class Merchant : MonoBehaviour
 {
     [SerializeField] private GunMemoryPool gunMemoryPool;
     [SerializeField] private List<WeaponSetting> weaponList;
+    [SerializeField] private GameObject keyDesc;
 
     private void OnEnable()
     {
@@ -16,7 +17,19 @@ public class Merchant : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.GetComponent<PlayerManager>().ShopUi(true, weaponList);
+            keyDesc.SetActive(true);
+            other.GetComponent<PlayerManager>().ShopUi(weaponList);
+            other.GetComponent<PlayerManager>().visitShop = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            keyDesc.SetActive(false);
+            other.GetComponent<PlayerManager>().visitShop = false;
+            other.GetComponent<PlayerManager>().VisitShop();
         }
     }
 

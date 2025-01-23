@@ -105,6 +105,7 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        PlayerManager playerManager;
 
         private const float _threshold = 0.01f;
 
@@ -128,6 +129,7 @@ namespace StarterAssets
 
         private void Awake()
         {
+            playerManager = GetComponent<PlayerManager>();
             // get a reference to our main camera
             if (_mainCamera == null)
             {

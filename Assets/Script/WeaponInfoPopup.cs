@@ -26,6 +26,7 @@ public class WeaponInfoPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI weaponLevelText;           // 무기 레벨 텍스트
 
     [SerializeField] private TextMeshProUGUI weaponPriceText;           // 무기 가격 텍스트
+    [SerializeField] private TextMeshProUGUI upgradePriceText;          // 무기 업그레이드 가격 텍스트
 
     [SerializeField] private ItemBase item;
 
@@ -69,7 +70,10 @@ public class WeaponInfoPopup : MonoBehaviour
         //weaponIcon.sprite = weapon.weaponSprite;
         weaponIcon.sprite = Resources.Load<Sprite>("Sprites/"+ weapon.WeaponName.ToString());
         if (weaponPriceText != null)
-            weaponPriceText.text = weapon.GetPrice.ToString() + " 원";
+            weaponPriceText.text = "가격 : " + weapon.GetPrice.ToString() + " 원";
+
+        if (upgradePriceText != null)
+            upgradePriceText.text = "비용 : " + weapon.GetUpgradePrice.ToString() + " 원";
 
         this.item = item;
 

@@ -2,6 +2,7 @@ using InfimaGames.LowPolyShooterPack;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -29,6 +30,9 @@ public class WeaponSwitchSystem : MonoBehaviour
 
     [SerializeField]
     private Transform playerHand;       // 플레이어 손
+
+    WeaponBase productWeaponBase;
+    WeaponSetting productWeaponSetting;
 
     public List<WeaponBase> PlayerWeapons => playerWeapons;
 
@@ -180,11 +184,14 @@ public class WeaponSwitchSystem : MonoBehaviour
             }
         }
     }
-    public void ProductBuy(WeaponSetting weaponSetting)
+
+    [PunRPC]
+    public void DropProduct(string weaponBaseJson)
     {
-        WeaponBase weaponBase = weapons[(int)weaponSetting.WeaponName];
-        ItemMemoryPool.instance.SpawnDropGun(this.transform.position, weaponBase, weaponSetting);
+        WeaponBaseData data = JsonUtility.FromJson<WeaponBaseData>(weaponBaseJson);
+        ItemMemoryPool.instance.SpawnDropGun(this.transform.position, weapons[(int)data.weaponSetting.WeaponName], data.weaponSetting);
     }
+
 
     [PunRPC]
     public void UpgradeWeapon(int index)

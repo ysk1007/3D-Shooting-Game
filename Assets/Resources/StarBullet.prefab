@@ -55,6 +55,7 @@ MonoBehaviour:
     bulletDamage: 0
     criticalPercent: 0
     bulletSpeed: 0
+    bulletPenetration: 0
 --- !u!135 &955278920346574173
 SphereCollider:
   m_ObjectHideFlags: 0

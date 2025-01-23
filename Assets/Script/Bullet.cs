@@ -20,6 +20,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         public float bulletDamage;      // 총알 대미지
         public float criticalPercent;   // 치명타 배율
         public float bulletSpeed;       // 총알 속도
+        public int bulletPenetration; // 총알 관통력
     }
 
     [SerializeField]
@@ -33,6 +34,9 @@ public class Bullet : MonoBehaviourPunCallbacks
     private PhotonView photonView;
 
     PlayerManager playerManager;
+    
+    private HashSet<GameObject> hitObjects = new HashSet<GameObject>(); // 이미 충돌한 객체를 저장
+    int PenetrationCount;
 
     private void Awake()
     {
@@ -47,6 +51,8 @@ public class Bullet : MonoBehaviourPunCallbacks
         bulletSetting.bulletDamage = weaponSetting.damage * (1 + weaponSetting.weaponLevel);
         bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
         bulletSetting.criticalPercent = weaponSetting.critical;
+        PenetrationCount = bulletSetting.bulletPenetration;
+        hitObjects = new HashSet<GameObject>();
 
         memoryPool = BulletMemoryPool;
         bulletMemoryPool = bulletPool;
@@ -77,9 +83,16 @@ public class Bullet : MonoBehaviourPunCallbacks
         bool critical = false;
         if (other.transform.CompareTag("Enemy"))
         {
+            // 이미 충돌한 객체인지 확인
+            if (hitObjects.Contains(other.transform.parent.gameObject))
+                return;
+
+            hitObjects.Add(other.transform.parent.gameObject); // 충돌한 객체 등록
+
             if (other.gameObject.name == "Weakness") critical = true;
 
             float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
+            PenetrationCount--;
 
             if (other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
             {
@@ -94,8 +107,9 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
 
         // 충돌한 위치에 이펙트 생성
-        memoryPool?.SpawnImpact(0, transform.position, Quaternion.identity); 
+        memoryPool?.SpawnImpact(0, transform.position, Quaternion.identity);
 
+        if (PenetrationCount >= 0) return;
         // 총알 오브젝트 제거
         bulletMemoryPool?.DeactivatePoolItem(this.gameObject);
         photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);

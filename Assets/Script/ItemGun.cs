@@ -70,7 +70,7 @@ public class ItemGun : ItemBase
             GunMemoryPool.instance.SpawnGun(weaponSetting.WeaponName, this.transform);
         }
         else
-            weaponSetting = GunMemoryPool.instance.SpawnGun((WeaponName)Random.Range(0, 2), this.transform);
+            weaponSetting = GunMemoryPool.instance.SpawnGun((WeaponName)Random.Range(0, 3), this.transform);
     }
 
     private void OnEnable()

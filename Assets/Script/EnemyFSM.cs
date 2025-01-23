@@ -59,6 +59,9 @@ public class EnemyFSM : MonoBehaviourPun
     [SerializeField]  private Transform target;         // 적의 공격 대상 (플레이어)
     private EnemyMemoryPool enemyMemoryPool;            // 적 메모리 풀 (적 오브젝트 비활성화에 사용)
 
+    Vector3 coinDropPos = new Vector3(0.3f, 0, 0);
+    Vector3 expDropPos = new Vector3(-0.3f, 0, 0);
+
     public EnemyType EnemyType => enemyType;
 
     [PunRPC]
@@ -440,8 +443,8 @@ public class EnemyFSM : MonoBehaviourPun
     [PunRPC]
     public void Die()
     {
-        ItemMemoryPool.instance.SpawnItem(transform.localPosition, ItemType.Coin);
-        ItemMemoryPool.instance.SpawnItem(transform.localPosition, ItemType.Exp);
+        ItemMemoryPool.instance.SpawnItem(transform.localPosition + coinDropPos, ItemType.Coin);
+        ItemMemoryPool.instance.SpawnItem(transform.localPosition + expDropPos, ItemType.Exp);
         CollidersAble(false);
         ChangeState(EnemyState.Death);
     }

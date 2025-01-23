@@ -31,6 +31,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2040680938521274598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4074503860449865904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8038857814070794346}
+  m_Layer: 6
+  m_Name: BulletSpawnPointAR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8038857814070794346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074503860449865904}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000059604645, y: -0.000000029802322, z: -0.000000059604645,
+    w: 1}
+  m_LocalPosition: {x: 0.002, y: 0.053, z: 0.964}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6300645645030411522}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7053166867135393623
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,6 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6300645645030411522}
+  - component: {fileID: -2411300631942547712}
   - component: {fileID: 1848293177401438958}
   m_Layer: 6
   m_Name: ShotgunDefault
@@ -63,8 +96,53 @@ Transform:
   m_Children:
   - {fileID: 2040680938521274598}
   - {fileID: 6876855902830615021}
+  - {fileID: 8038857814070794346}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2411300631942547712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7053166867135393623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3483a5b0263d134478b444e74317fabc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 0
+  weaponSetting:
+    WeaponName: 3
+    weaponLevel: 0
+    weaponName: "\uC0F7\uAC74"
+    damage: 30
+    critical: 1.5
+    currentMagazine: 6
+    maxMagazine: 6
+    currentAmmo: 8
+    maxAmmo: 8
+    attackRate: 0.6
+    attackDistance: 15
+    bulletSpeed: 30
+    isAutomaticAttack: 0
+    weaponSprite: {fileID: 21300000, guid: 6b8b330a23376cc42bac327f3e88c245, type: 3}
+  playerManager: {fileID: 0}
+  memoryPool: {fileID: 0}
+  animator: {fileID: 0}
+  animatorController: {fileID: 0}
+  onAmmoEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onMagazineEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  muzzleFlashEffect: {fileID: 0}
+  casingSpawnPoint: {fileID: 0}
+  bulletSpawnPoint: {fileID: 8038857814070794346}
+  audioClipTakeOutWeapon: {fileID: 0}
+  audioClipFire: {fileID: 8300000, guid: 9e9480b4d07646942b555fd43f2a0f71, type: 3}
+  audioClipReload: {fileID: 8300000, guid: 778c7be53403f9e45804f5a61a13a3e6, type: 3}
 --- !u!95 &1848293177401438958
 Animator:
   serializedVersion: 5

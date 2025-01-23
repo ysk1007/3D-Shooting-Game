@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class CoinEvent : UnityEngine.Events.UnityEvent<int> { }
@@ -54,6 +55,7 @@ public class PlayerManager : MonoBehaviourPun
     [SerializeField] private ShopUi shopUi;
     [SerializeField]
     private WeaponGrenade weaponGrenade;
+    public bool visitShop = false;
 
     [SerializeField] private int coin = 0;
 
@@ -87,6 +89,10 @@ public class PlayerManager : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        if (visitShop && Input.GetKey(KeyCode.F))
+        {
+            VisitShop();
+        }
         AimCheck();
     }
 
@@ -228,9 +234,13 @@ public class PlayerManager : MonoBehaviourPun
         onCoinEvent.Invoke(coin);
     }
 
-    public void ShopUi(bool open, List<WeaponSetting> weaponList)
+    public void ShopUi(List<WeaponSetting> weaponList)
     {
-        shopUi.Shop(open);
         shopUi.ProductUpdate(weaponList);
+    }
+
+    public void VisitShop()
+    {
+        shopUi.Shop(visitShop);
     }
 }

@@ -21,6 +21,8 @@ public class EnemyMemoryPool : MonoBehaviour
     private int currentEnemy = 0;                           // 생성된 적의 숫자
     [SerializeField]
     private int maximumEnemy = 5;                           // 최대 생성할 수 
+    [SerializeField]
+    private int ableSpawnNumber = 0;                        // 소환할 수 있는 몬스터 종류
 
     private MemoryPool spawnPointMemoryPool;                // 적 등장 알림 오브젝트 활성/비활성 관리
     private MemoryPool[] enemyMemoryPool;                     // 적 생성, 활성/비활성 관리
@@ -89,7 +91,7 @@ public class EnemyMemoryPool : MonoBehaviour
         yield return new WaitForSeconds(enemySpawnLatency);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
-        GameObject enemy = enemyMemoryPool[(int)(EnemyType)Random.Range(0, enemyPrefab.Length)].ActivatePoolItem();
+        GameObject enemy = enemyMemoryPool[(int)(EnemyType)Random.Range(0, ableSpawnNumber)].ActivatePoolItem();
         enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
 
@@ -113,6 +115,14 @@ public class EnemyMemoryPool : MonoBehaviour
 
         // 타일 오브젝트를 비활성화
         spawnPointMemoryPool.DeactivatePoolItem(point);
+    }
+
+    public void DifficultyUpdate(List<float> difficulty)
+    {
+        maximumEnemy = (int)difficulty[0];
+        numberOfEnemiesSpawnedAtOnce = (int)difficulty[1];
+        enemySpawnTime = difficulty[2];
+        ableSpawnNumber = (int)difficulty[3];
     }
 
     public void DeactivateEnemy(GameObject enemy)
