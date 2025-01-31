@@ -119,13 +119,13 @@ MonoBehaviour:
     WeaponName: 2
     weaponLevel: 0
     weaponName: "\uC0F7\uAC74"
-    damage: 30
+    damage: 20
     critical: 1.5
-    currentMagazine: 6
-    maxMagazine: 6
-    currentAmmo: 8
-    maxAmmo: 8
-    attackRate: 0.6
+    currentMagazine: 4
+    maxMagazine: 4
+    currentAmmo: 5
+    maxAmmo: 5
+    attackRate: 1.1
     attackDistance: 15
     bulletSpeed: 30
     isAutomaticAttack: 0

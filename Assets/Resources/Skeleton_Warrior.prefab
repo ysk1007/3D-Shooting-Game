@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 7349368384541998612}
   m_Layer: 11
   m_Name: Skeleton_Warrior
-  m_TagString: Enemy
+  m_TagString: EnemyFSM
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -970,6 +970,7 @@ MonoBehaviour:
   enemyState: -1
   lastAttackTime: 0
   lastSkillTime: 0
+  isSkilling: 0
   enemyHpBar: {fileID: 6575302347598190535}
   status: {fileID: 3398043567919386710}
   colliders:
@@ -2788,6 +2789,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382081747194776006, guid: 21c66ac3223c32248bd94c35f4333ea5,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

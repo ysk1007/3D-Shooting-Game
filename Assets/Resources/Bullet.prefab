@@ -51,10 +51,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSetting:
-    BulletName: 0
+    weaponName: 0
     bulletDamage: 0
     criticalPercent: 0
     bulletSpeed: 0
+    bulletPenetration: 0
 --- !u!54 &6557723660640879568
 Rigidbody:
   m_ObjectHideFlags: 0

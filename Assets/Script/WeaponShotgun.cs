@@ -159,7 +159,7 @@ public class WeaponShotgun : WeaponBase
             //TwoStepRayCast();
             for (int i = 0; i < 15; i++)
             {
-                Vector3 vc = playerManager.TargetPosition + new Vector3(Random.Range(-0.6f,0.6f), Random.Range(-0.6f, 0.6f), Random.Range(-0.6f, 0.6f));
+                Vector3 vc = playerManager.TargetPosition + new Vector3(Random.Range(-0.8f,0.8f), Random.Range(-0.8f, 0.8f), Random.Range(-0.8f, 0.8f));
                 BulletMemoryPool.instance.SpawnBullet(playerManager, weaponSetting, bulletSpawnPoint.position, bulletSpawnPoint.rotation, vc);
             }
         }

@@ -13,9 +13,11 @@ public class Status : MonoBehaviourPun
     [Header("Walk, Run Speed")]
     [SerializeField]
     private float walkSpeed;
+    private float walkSpeedTemp;
 
     [SerializeField]
     private float runSpeed;
+    private float runSpeedTemp;
 
     [Header("HP")]
     [SerializeField]
@@ -27,10 +29,10 @@ public class Status : MonoBehaviourPun
     [SerializeField]
     private float damage;
 
-    public float WalkSpeed => walkSpeed;
-    public float RunSpeed => runSpeed;
+    public float WalkSpeed { get => walkSpeed; set => walkSpeed = value; }
+    public float RunSpeed { get => runSpeed; set => runSpeed = value; }
 
-    public float CurrentHP => currentHP;
+public float CurrentHP => currentHP;
     public float MaxHP => maxHP;
 
     public float Damage => damage;
@@ -38,11 +40,15 @@ public class Status : MonoBehaviourPun
     private void Awake()
     {
         currentHP = maxHP;
+        runSpeedTemp = runSpeed;
+        walkSpeedTemp = walkSpeed;
     }
 
     private void OnEnable()
     {
         currentHP = maxHP;
+        runSpeedTemp = runSpeed;
+        walkSpeedTemp = walkSpeed;
     }
 
     [PunRPC]

@@ -8,7 +8,7 @@ using static Bullet;
 using System.Buffers;
 
 public enum EnemyState { None = -1, Idle = 0, Wander, Pursuit, Attack, Death, Skill }
-public enum EnemyType { minion, archor , warrior}
+public enum EnemyType { minion, archor , warrior, wizard, necromancer }
 
 /// <summary>
 /// Enemy 배회 스크립트
@@ -45,6 +45,7 @@ public class EnemyFSM : MonoBehaviourPun
 
     [SerializeField]  private float lastAttackTime = 0; // 공격 주기 계산용 변수
     [SerializeField]  private float lastSkillTime = 0;  // 특수 공격 주기 계산용 변수
+    public bool isSkilling = false;
 
 
     [SerializeField] private HealthBar enemyHpBar;
@@ -63,6 +64,7 @@ public class EnemyFSM : MonoBehaviourPun
     Vector3 expDropPos = new Vector3(-0.3f, 0, 0);
 
     public EnemyType EnemyType => enemyType;
+    public EnemyState EnemyState => enemyState;
 
     [PunRPC]
     public void Setup(int targetViewID, int callerViewID)// EnemyMemoryPool enemyMemoryPool)
@@ -215,7 +217,7 @@ public class EnemyFSM : MonoBehaviourPun
         while (true)
         {
             // 이동 속도 설정 (배회할 때는 걷는 속도로 이동. 추적할 때는 뛰는 속도로 이동)
-            navMeshAgent.speed = status.RunSpeed;
+            navMeshAgent.speed = isSkilling ? 0 : status.RunSpeed;
 
             // 애니메이션을 뛰기로 설정
             animator.SetFloat("Movement", 1f);
@@ -243,7 +245,7 @@ public class EnemyFSM : MonoBehaviourPun
 
     private IEnumerator Attack()
     {
-        if (enemyType != EnemyType.warrior)
+        if (enemyType != EnemyType.warrior || enemyType != EnemyType.necromancer)
         // 애니메이션을 대기로 설정
         animator.SetFloat("Movement", 0);
 
@@ -263,7 +265,10 @@ public class EnemyFSM : MonoBehaviourPun
                 lastAttackTime = Time.time;
 
                 // 공격 애니메이션 재생
-                animator.SetFloat("AttackStrategy", 0f);
+
+                if(enemyType == EnemyType.warrior || enemyType == EnemyType.necromancer)
+                    animator.SetFloat("AttackStrategy", 0f);
+
                 animator.Play("Attack", -1, 0);
             }
 
@@ -273,27 +278,63 @@ public class EnemyFSM : MonoBehaviourPun
 
     private IEnumerator Skill()
     {
-        if (enemyType != EnemyType.warrior)
-            // 애니메이션을 대기로 설정
-            animator.SetFloat("Movement", 0);
-
-        // 공격할 때는 이동을 멈추도록 설정
-        navMeshAgent.speed = 0;
-        while (true)
+        switch (enemyType)
         {
-            // 타겟 방향 주시
-            LookRotationToTarget();
+            case EnemyType.minion:
+            case EnemyType.archor:
+            case EnemyType.wizard:
+                animator.SetFloat("Movement", 0);
+                break;
+            case EnemyType.warrior:
+                while (true)
+                {
+                    // 타겟 방향 주시
+                    LookRotationToTarget();
 
-            // 타겟과의 거리에 따라 행동 선택 (배회, 추격, 원거리 공격)
-            CalculateDistanceToTargetAndSelectState();
+                    // 타겟과의 거리에 따라 행동 선택 (배회, 추격, 원거리 공격)
+                    CalculateDistanceToTargetAndSelectState();
 
-            // 공격 애니메이션 재생
-            animator.SetFloat("AttackStrategy", 1f);
-            animator.Play("Attack", -1, 0);
-            StartCoroutine(JumpToTarget(1f, 2f));
+                    // 공격 애니메이션 재생
+                    animator.SetFloat("AttackStrategy", 1f);
+                    animator.Play("Attack", -1, 0);
+                    StartCoroutine(JumpToTarget(1f, 2f));
 
-            yield return null;
+                    yield return null;
+                }
+
+            case EnemyType.necromancer:
+                while (true)
+                {
+                    // 타겟 방향 주시
+                    LookRotationToTarget();
+
+                    // 타겟과의 거리에 따라 행동 선택 (배회, 추격, 원거리 공격)
+                    CalculateDistanceToTargetAndSelectState();
+
+                    // 공격 애니메이션 재생
+                    animator.SetFloat("AttackStrategy", 1f);
+                    animator.Play("Attack", -1, 0);
+
+                    yield return null;
+                }
+            default:
+                break;
         }
+    }
+
+    public void StartSkill()
+    {
+        isSkilling = true;
+    }
+
+    public void StopSkill()
+    {
+        isSkilling = false;
+    }
+
+    public void CallMinion()
+    {
+        enemyMemoryPool.CallMinion(this.transform.position);
     }
 
     // 점프 코루틴
@@ -386,9 +427,11 @@ public class EnemyFSM : MonoBehaviourPun
         {
             case EnemyType.minion:
             case EnemyType.warrior:
+            case EnemyType.necromancer:
                 attackCollider.StartCollider(status.Damage);
                 break;
             case EnemyType.archor:
+            case EnemyType.wizard:
                 // 발사체 생성
                 Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
                 break;
@@ -436,6 +479,14 @@ public class EnemyFSM : MonoBehaviourPun
         photonView.RPC("DecreaseHP", RpcTarget.AllBuffered, damage);
         enemyHpBar.photonView.RPC("takeDamage", RpcTarget.AllBuffered, damage);
         status.isDie();
+
+        return true;
+    }
+
+    public bool Healing(float damage)
+    {
+        photonView.RPC("IncreaseHp", RpcTarget.AllBuffered, damage);
+        enemyHpBar.photonView.RPC("takeDamage", RpcTarget.AllBuffered, -damage);
 
         return true;
     }

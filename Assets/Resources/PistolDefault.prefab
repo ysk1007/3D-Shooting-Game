@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 2
   weaponSetting:
-    WeaponName: 3
+    WeaponName: 5
     weaponLevel: 1
     weaponName: "\uAE30\uBCF8 \uAD8C\uCD1D"
     damage: 30

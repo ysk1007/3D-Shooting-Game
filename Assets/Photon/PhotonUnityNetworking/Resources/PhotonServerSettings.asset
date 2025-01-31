@@ -67,6 +67,8 @@ MonoBehaviour:
   - UpgradeWeapon
   - DropProduct
   - GameResume
+  - CallEnemy
+  - CallMinion
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

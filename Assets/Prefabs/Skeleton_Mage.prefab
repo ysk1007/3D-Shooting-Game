@@ -1808,7 +1808,7 @@ GameObject:
   - component: {fileID: 1251413133186608237}
   - component: {fileID: 5904297969155023117}
   m_Layer: 0
-  m_Name: Skeleton_Mage_Skull
+  m_Name: Weakness
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

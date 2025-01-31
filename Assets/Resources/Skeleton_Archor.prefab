@@ -2242,6 +2242,7 @@ GameObject:
   - component: {fileID: 3410693085510285758}
   - component: {fileID: 4805704276413666715}
   - component: {fileID: 4280419353507221127}
+  - component: {fileID: 815917328885149967}
   - component: {fileID: 1225343582706808920}
   - component: {fileID: 537290288045969772}
   - component: {fileID: 1058141003993891561}
@@ -2250,7 +2251,7 @@ GameObject:
   - component: {fileID: 8991530220328777555}
   m_Layer: 11
   m_Name: Skeleton_Archor
-  m_TagString: Enemy
+  m_TagString: EnemyFSM
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2362,6 +2363,27 @@ MonoBehaviour:
   navMeshAgent: {fileID: 537290288045969772}
   animator: {fileID: 3410693085510285758}
   target: {fileID: 0}
+--- !u!65 &815917328885149967
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171325950884888224}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.657309, z: 1}
+  m_Center: {x: 0, y: 0.82865465, z: 0}
 --- !u!54 &1225343582706808920
 Rigidbody:
   m_ObjectHideFlags: 0

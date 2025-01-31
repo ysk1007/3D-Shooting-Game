@@ -48,7 +48,7 @@ public class HealthBar : MonoBehaviourPun
     [PunRPC]
     public void takeDamage(float damage)
     {
-        hpValue -= damage;
+        hpValue = hpValue - damage >= maxValue ? maxValue : hpValue - damage;
     }
 
     // RPC를 통해 네트워크에서 동기화

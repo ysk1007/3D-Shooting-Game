@@ -2224,6 +2224,7 @@ GameObject:
   - component: {fileID: 3410693085510285758}
   - component: {fileID: 4805704276413666715}
   - component: {fileID: 4280419353507221127}
+  - component: {fileID: -180013225655252757}
   - component: {fileID: 1225343582706808920}
   - component: {fileID: 537290288045969772}
   - component: {fileID: 8085956671351820059}
@@ -2232,7 +2233,7 @@ GameObject:
   - component: {fileID: 5074163388798208945}
   m_Layer: 11
   m_Name: Skeleton_Minion
-  m_TagString: Enemy
+  m_TagString: EnemyFSM
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2331,6 +2332,7 @@ MonoBehaviour:
   enemyState: -1
   lastAttackTime: 0
   lastSkillTime: 0
+  isSkilling: 0
   enemyHpBar: {fileID: 553666881628779017}
   status: {fileID: 4805704276413666715}
   colliders:
@@ -2346,6 +2348,27 @@ MonoBehaviour:
   navMeshAgent: {fileID: 537290288045969772}
   animator: {fileID: 3410693085510285758}
   target: {fileID: 0}
+--- !u!65 &-180013225655252757
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171325950884888224}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.657309, z: 1}
+  m_Center: {x: 0, y: 0.82865465, z: 0}
 --- !u!54 &1225343582706808920
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2621,6 +2644,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382081747194776006, guid: 21c66ac3223c32248bd94c35f4333ea5,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

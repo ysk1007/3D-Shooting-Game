@@ -11,12 +11,10 @@ using Photon.Pun.Demo.PunBasics;
 
 public class Bullet : MonoBehaviourPunCallbacks
 {
-    public enum BulletName { AssaultRifle = 0 }
-
     [Serializable]
     public struct BulletSetting
     {
-        public BulletName BulletName;   // 총알 이름
+        public WeaponName weaponName;   // 총알 이름
         public float bulletDamage;      // 총알 대미지
         public float criticalPercent;   // 치명타 배율
         public float bulletSpeed;       // 총알 속도
@@ -48,6 +46,7 @@ public class Bullet : MonoBehaviourPunCallbacks
     public void Setup(PlayerManager player, WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool, Transform parentTransform)
     {
         playerManager = player;
+        bulletSetting.weaponName = weaponSetting.WeaponName;
         bulletSetting.bulletDamage = weaponSetting.damage * (1 + weaponSetting.weaponLevel);
         bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
         bulletSetting.criticalPercent = weaponSetting.critical;
@@ -107,7 +106,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
 
         // 충돌한 위치에 이펙트 생성
-        memoryPool?.SpawnImpact(0, transform.position, Quaternion.identity);
+        memoryPool?.SpawnImpact(bulletSetting.weaponName, transform.position, Quaternion.identity);
 
         if (PenetrationCount >= 0) return;
         // 총알 오브젝트 제거

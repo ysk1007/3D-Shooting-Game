@@ -85,6 +85,49 @@ public class EnemyMemoryPool : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    public void CallMinion(Vector3 pos)
+    {
+        GameObject enemy = spawnPointMemoryPool.ActivatePoolItem();
+
+        enemy.transform.position = pos;
+        enemy.transform.SetParent(enemys);
+        StartCoroutine("SpawnMinion", enemy);
+    }
+
+
+    private IEnumerator SpawnMinion(GameObject point)
+    {
+
+        yield return new WaitForSeconds(enemySpawnLatency);
+
+        // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
+        GameObject enemy = enemyMemoryPool[2].ActivatePoolItem();
+        enemy.transform.SetParent(enemys);
+        enemy.transform.position = point.transform.position;
+
+        GameObject target;
+        int targetNum = 0;
+        float distance = 999999;
+        for (int i = 0; i < targets.Count; i++)
+        {
+            float td = Vector3.Distance(this.transform.position, targets[i].transform.position);
+            if (td < distance)
+            {
+                distance = td;
+                targetNum = i;
+            }
+        }
+
+        target = targets[targetNum];
+
+        //enemy.GetComponent<EnemyFSM>().Setup(target, this);
+        enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID);
+
+        // 타일 오브젝트를 비활성화
+        spawnPointMemoryPool.DeactivatePoolItem(point);
+    }
+
     private IEnumerator SpawnEnemy(GameObject point)
     {
 
