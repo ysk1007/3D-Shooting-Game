@@ -5489,7 +5489,7 @@ MonoBehaviour:
   enemyType: 3
   targetRecognitionRange: 8
   pursuitLimitRange: 10
-  skillRange: 0
+  skillRange: -1
   projectilePrefab: {fileID: 1213529451062198, guid: 7b0344bfde5632f459c134b23ab6e97b,
     type: 3}
   projectileSpawnPoint: {fileID: 442169714527258730}
@@ -5500,6 +5500,7 @@ MonoBehaviour:
   enemyState: -1
   lastAttackTime: 0
   lastSkillTime: 0
+  isSkilling: 0
   enemyHpBar: {fileID: 6850064157627526372}
   status: {fileID: -1099008166338014089}
   colliders:

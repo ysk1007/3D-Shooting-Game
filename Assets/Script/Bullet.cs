@@ -24,12 +24,17 @@ public class Bullet : MonoBehaviourPunCallbacks
     [SerializeField]
     BulletSetting bulletSetting;
 
+    [SerializeField] private ParticleSystem ps;
+
     private Rigidbody rigidbody;
     private AudioSource audioSource;
     private BulletMemoryPool memoryPool;
     private MemoryPool bulletMemoryPool;
     private MemoryPool impactMemoryPool;
     private PhotonView photonView;
+
+    private ParticleSystem.TriggerModule triggerModule;
+    private List<ParticleSystem.Particle> particles;
 
     PlayerManager playerManager;
     
@@ -40,6 +45,14 @@ public class Bullet : MonoBehaviourPunCallbacks
     {
         rigidbody = GetComponent<Rigidbody>();
         photonView = GetComponent<PhotonView>();
+
+        if (ps != null)
+        {
+            triggerModule = ps.trigger;
+
+            // "Enemy" 태그가 있는 Collider와의 충돌을 감지하도록 설정
+            triggerModule.SetCollider(0, GameObject.FindWithTag("EnemyFSM").GetComponent<Collider>());
+        }
     }
 
     // 이동 방향 설정
@@ -69,11 +82,43 @@ public class Bullet : MonoBehaviourPunCallbacks
     // 충돌 감지
     void OnCollisionEnter(Collision collision)
     {
-        // 충돌한 위치에 이펙트 생성
-        memoryPool.SpawnImpact(0, transform.position, Quaternion.identity);
+        bool critical = false;
+        if (collision.transform.CompareTag("EnemyFSM"))
+        {
+            // 이미 충돌한 객체인지 확인
+            if (hitObjects.Contains(collision.transform.parent.gameObject))
+                return;
 
+            hitObjects.Add(collision.transform.parent.gameObject); // 충돌한 객체 등록
+
+            if (collision.gameObject.name == "Weakness") critical = true;
+
+            float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
+            PenetrationCount--;
+
+            if (collision.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
+            {
+                // 충돌한 위치에 텍스트 생성
+                DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
+                //playerManager.aimHitAnimator.SetTrigger("Show");
+            }
+        }
+        else if (collision.transform.CompareTag("InteractionObject"))
+        {
+            collision.transform.GetComponent<InteractionObject>().TakeDamage(bulletSetting.bulletDamage);
+        }
+        else if (collision.transform.CompareTag("Shield"))
+        {
+            PenetrationCount--;
+        }
+
+        // 충돌한 위치에 이펙트 생성
+        memoryPool?.SpawnImpact(bulletSetting.weaponName, transform.position, Quaternion.identity);
+
+        if (PenetrationCount >= 0) return;
         // 총알 오브젝트 제거
-        bulletMemoryPool.DeactivatePoolItem(this.gameObject);
+        bulletMemoryPool?.DeactivatePoolItem(this.gameObject);
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
     }
 
     // 트리거 충돌 감지
@@ -83,8 +128,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         if (other.transform.CompareTag("Enemy"))
         {
             // 이미 충돌한 객체인지 확인
-            if (hitObjects.Contains(other.transform.parent.gameObject))
-                return;
+            if (hitObjects.Contains(other.transform.parent.gameObject)) return;
 
             hitObjects.Add(other.transform.parent.gameObject); // 충돌한 객체 등록
 
@@ -104,6 +148,10 @@ public class Bullet : MonoBehaviourPunCallbacks
         {
             other.transform.GetComponent<InteractionObject>().TakeDamage(bulletSetting.bulletDamage);
         }
+        else if (other.transform.CompareTag("Shield"))
+        {
+            PenetrationCount--;
+        }
 
         // 충돌한 위치에 이펙트 생성
         memoryPool?.SpawnImpact(bulletSetting.weaponName, transform.position, Quaternion.identity);
@@ -113,6 +161,27 @@ public class Bullet : MonoBehaviourPunCallbacks
         bulletMemoryPool?.DeactivatePoolItem(this.gameObject);
         photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
     }
+
+    void OnParticleTrigger()
+    {
+        if (particles == null || particles.Count < ps.main.maxParticles)
+        {
+            particles = new List<ParticleSystem.Particle>(ps.main.maxParticles);
+        }
+
+        int numEnter = ps.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, particles);
+
+        for (int i = 0; i < numEnter; i++)
+        {
+            Debug.Log("파티클이 Enemy와 충돌함!");
+        }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        Debug.Log("파티클 컬리전 충돌");
+    }
+
 
     private void BulletMove()
     {

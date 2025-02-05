@@ -24,7 +24,7 @@ public class DamageText : MonoBehaviour
     public void Destroy()
     {
         // 텍스트 제거
-        memoryPool?.DeactivatePoolItem(this.gameObject);
+        memoryPool?.DeactivatePoolItem(transform.parent.gameObject);
         photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
     }
 
@@ -32,7 +32,7 @@ public class DamageText : MonoBehaviour
     [PunRPC]
     private void ActivateObjectRPC(bool isActive)
     {
-        gameObject.SetActive(isActive);
+        transform.parent.gameObject.SetActive(isActive);
         //gameObject.transform.SetParent(memoryPool.ParentTransform);
     }
 

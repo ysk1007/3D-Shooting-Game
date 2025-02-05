@@ -9,6 +9,7 @@ public class WeaponFlameThrower : WeaponBase
     [Header("Fire Effects")]
     [SerializeField]
     private GameObject muzzleFlashEffect;       // 총구 이펙트 (On/Off)
+    [SerializeField] private Flame falme;       // 화염 이펙트
 
     [Header("Spawn Points")]
     [SerializeField]
@@ -52,7 +53,10 @@ public class WeaponFlameThrower : WeaponBase
         audioSource = GetComponent<AudioSource>();
         animator = PlayerManager.instance.PlayerAnimatorController;
         if (PlayerManager != null)
+        {
             PlayerManager.gameObject.GetComponent<PlayerHUD>().WeaponAddListener(this);
+            falme.Setup(PlayerManager, weaponSetting);
+        }
     }
 
 
@@ -67,6 +71,8 @@ public class WeaponFlameThrower : WeaponBase
 
         // 무기가 활성화될 때 해당 무기의 탄 수 정보를 갱신하다
         onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+
+        falme.Setup(PlayerManager, weaponSetting);
     }
 
     public override void StartWeaponAction(int type = 0)
@@ -93,6 +99,7 @@ public class WeaponFlameThrower : WeaponBase
     public override void StopWeaponAction(int type = 0)
     {
         muzzleFlashEffect.SetActive(false);
+        falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
         // 마우스 왼쪽 클릭 (공격 종료)
         if (type == 0)
         {
@@ -137,6 +144,7 @@ public class WeaponFlameThrower : WeaponBase
             // 탄 수가 없으면 공격 불가능
             if (weaponSetting.currentAmmo <= 0)
             {
+                falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
                 return;
             }
 
@@ -148,7 +156,8 @@ public class WeaponFlameThrower : WeaponBase
             animator.Play("Fire", -1, 0);
 
             // 총구 이펙트 재생
-            muzzleFlashEffect.SetActive(true);
+            //muzzleFlashEffect.SetActive(true);
+            falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
 
             // 공격 사운드 재생
             PlaySound(audioClipFire);
@@ -169,6 +178,7 @@ public class WeaponFlameThrower : WeaponBase
         // 재장전 애니메이션, 사운드 재생
         animator.OnReload();
         PlaySound(audioClipReload);
+        falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
 
         while (true)
         {
@@ -193,37 +203,4 @@ public class WeaponFlameThrower : WeaponBase
             yield return null;
         }
     }
-
-    /*private void TwoStepRayCast()
-    {
-        Ray ray;
-        RaycastHit hit;
-        Vector3 targetPoint = Vector3.zero;
-
-        // 화면의 중앙 좌표 (Aim 기준으로 Raycast 연산)
-        ray = mainCamera.ViewportPointToRay(Vector2.one * 0.5f);
-
-        // 공격 사거리(attackDistance) 안에 부딪히는 오브젝트가 있으면 targetPoint는 광선에 부딪힌 위치
-        if (Physics.Raycast(ray, out hit, weaponSetting.attackDistance))
-        {
-            targetPoint = hit.point;
-        }
-        // 공격 사거리 안에 부딪히는 오브젝트가 없으면 targetPoint는 최대 사거리 위치
-        else
-        {
-            targetPoint = ray.origin + ray.direction * weaponSetting.attackDistance;
-        }
-        Debug.DrawRay(ray.origin, ray.direction * weaponSetting.attackDistance, Color.red);
-
-        // 첫번째 Raycast연산으로 얻어진 targetpoint를 목표지점으로 설정하고,
-        // 총구를 시작지점으로 하여 Raycast 연산
-        Vector3 attackDirection = (targetPoint - bulletSpawnPoint.position).normalized;
-        if (Physics.Raycast(bulletSpawnPoint.position, attackDirection, out hit, weaponSetting.attackDistance))
-        {
-            //impactMemoryPool.SpawnImpact(hit);
-        }
-        Debug.DrawRay(bulletSpawnPoint.position, attackDirection * weaponSetting.attackDistance, Color.blue);
-
-        bulletMemoryPool.SpawnBullet(weaponSetting.WeaponName, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-    }*/
 }

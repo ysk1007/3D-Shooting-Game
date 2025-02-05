@@ -2321,7 +2321,7 @@ MonoBehaviour:
   enemyType: 0
   targetRecognitionRange: 8
   pursuitLimitRange: 10
-  skillRange: 0
+  skillRange: -1
   projectilePrefab: {fileID: 1835938022181820, guid: 79ff1cd966e6f114b92fcabbd0f9f78f,
     type: 3}
   projectileSpawnPoint: {fileID: 8271571614524562840}

@@ -90,7 +90,7 @@ public class EnemyMemoryPool : MonoBehaviour
     {
         GameObject enemy = spawnPointMemoryPool.ActivatePoolItem();
 
-        enemy.transform.position = pos;
+        enemy.transform.position = new Vector3(pos.x, 1,pos.z);
         enemy.transform.SetParent(enemys);
         StartCoroutine("SpawnMinion", enemy);
     }
@@ -102,7 +102,7 @@ public class EnemyMemoryPool : MonoBehaviour
         yield return new WaitForSeconds(enemySpawnLatency);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
-        GameObject enemy = enemyMemoryPool[2].ActivatePoolItem();
+        GameObject enemy = enemyMemoryPool[0].ActivatePoolItem();
         enemy.transform.SetParent(enemys);
         enemy.transform.position = point.transform.position;
 
@@ -122,7 +122,7 @@ public class EnemyMemoryPool : MonoBehaviour
         target = targets[targetNum];
 
         //enemy.GetComponent<EnemyFSM>().Setup(target, this);
-        enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID);
+        enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID,true);
 
         // 타일 오브젝트를 비활성화
         spawnPointMemoryPool.DeactivatePoolItem(point);
@@ -154,7 +154,7 @@ public class EnemyMemoryPool : MonoBehaviour
         target = targets[targetNum];
 
         //enemy.GetComponent<EnemyFSM>().Setup(target, this);
-        enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID);
+        enemy.GetComponent<PhotonView>().RPC("Setup", RpcTarget.AllBuffered, target.GetComponent<PhotonView>().ViewID, photonView.ViewID,false);
 
         // 타일 오브젝트를 비활성화
         spawnPointMemoryPool.DeactivatePoolItem(point);

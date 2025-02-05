@@ -28,7 +28,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI expText;
 
     [SerializeField] private GameObject merchant;                   // 상인
-    
+
+    [Space]
+    [Header("최대 소환량")]
+    [SerializeField] private List<int> maxSpawnEnemy;
+
     PhotonView photonView;
 
     // 외부에서 이벤트 함수 등록을 할 수 있도록 public 선언
@@ -122,10 +126,10 @@ public class GameManager : MonoBehaviour
         List<float> difficulty = new List<float>();
 
         // 최대 소환량
-        if (gameLevel < 2) difficulty.Add(15);
-        else if (gameLevel < 4) difficulty.Add(20);
-        else if (gameLevel < 6) difficulty.Add(20);
-        else if (gameLevel < 8) difficulty.Add(25);
+        if (gameLevel < 2) difficulty.Add(maxSpawnEnemy[0]);
+        else if (gameLevel < 4) difficulty.Add(maxSpawnEnemy[1]);
+        else if (gameLevel < 6) difficulty.Add(maxSpawnEnemy[2]);
+        else if (gameLevel < 8) difficulty.Add(maxSpawnEnemy[3]);
         else difficulty.Add(30);
 
         // 한 번에 소환되는 적

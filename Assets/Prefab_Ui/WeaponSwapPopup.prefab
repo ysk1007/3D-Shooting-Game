@@ -2047,6 +2047,8 @@ MonoBehaviour:
   weaponAttackRateText: {fileID: 6973071542512526162}
   weaponAmmoText: {fileID: 8586695728189736044}
   weaponLevelText: {fileID: 6484546510255896183}
+  weaponPriceText: {fileID: 0}
+  upgradePriceText: {fileID: 0}
   item: {fileID: 0}
   uiSet: {fileID: 7520816389708151902}
   isPickupPopup: 1

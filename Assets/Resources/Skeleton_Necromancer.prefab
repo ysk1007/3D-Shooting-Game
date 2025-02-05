@@ -1914,14 +1914,14 @@ MonoBehaviour:
   enemyType: 4
   targetRecognitionRange: 8
   pursuitLimitRange: 10
-  skillRange: 6
+  skillRange: 0
   projectilePrefab: {fileID: 1835938022181820, guid: 79ff1cd966e6f114b92fcabbd0f9f78f,
     type: 3}
   projectileSpawnPoint: {fileID: 4242490208292670196}
   attackCollider: {fileID: 940884034380468217}
   attackRange: 2
   attackRate: 1.5
-  skillRate: 15
+  skillRate: 10
   enemyState: -1
   lastAttackTime: 0
   lastSkillTime: 0

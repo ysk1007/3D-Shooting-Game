@@ -75,14 +75,12 @@ public class ItemMemoryPool : MonoBehaviour
 
     public void TestSpawn()
     {
-        SpawnItem(new Vector3(7, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(5, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(3, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(1, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(-1, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(-3, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(-5, 0.5f, 3), ItemType.DropGun);
-        SpawnItem(new Vector3(-7, 0.5f, 3), ItemType.DropGun);
+        SpawnDropGun(new Vector3(7, 0.5f, 3), GunMemoryPool.instance.Weapons[0], GunMemoryPool.instance.Weapons[0].WeaponSetting);
+        SpawnDropGun(new Vector3(5, 0.5f, 3), GunMemoryPool.instance.Weapons[1], GunMemoryPool.instance.Weapons[1].WeaponSetting);
+        SpawnDropGun(new Vector3(3, 0.5f, 3), GunMemoryPool.instance.Weapons[2], GunMemoryPool.instance.Weapons[2].WeaponSetting);
+        SpawnDropGun(new Vector3(1, 0.5f, 3), GunMemoryPool.instance.Weapons[3], GunMemoryPool.instance.Weapons[3].WeaponSetting);
+        SpawnDropGun(new Vector3(-1, 0.5f, 3), GunMemoryPool.instance.Weapons[4], GunMemoryPool.instance.Weapons[4].WeaponSetting);
+        SpawnDropGun(new Vector3(-3, 0.5f, 3), GunMemoryPool.instance.Weapons[5], GunMemoryPool.instance.Weapons[5].WeaponSetting);
         //SpawnItem(new Vector3(2, 0.5f, 3), ItemType.MagazineItem);
         //SpawnItem(new Vector3(-2, 0.5f, 3), ItemType.HealthItem);
     }

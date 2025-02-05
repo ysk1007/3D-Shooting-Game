@@ -60,6 +60,8 @@ public class EnemyFSM : MonoBehaviourPun
     [SerializeField]  private Transform target;         // 적의 공격 대상 (플레이어)
     private EnemyMemoryPool enemyMemoryPool;            // 적 메모리 풀 (적 오브젝트 비활성화에 사용)
 
+    bool isSummoner = false;                            // 소환수인지 확인
+
     Vector3 coinDropPos = new Vector3(0.3f, 0, 0);
     Vector3 expDropPos = new Vector3(-0.3f, 0, 0);
 
@@ -67,12 +69,14 @@ public class EnemyFSM : MonoBehaviourPun
     public EnemyState EnemyState => enemyState;
 
     [PunRPC]
-    public void Setup(int targetViewID, int callerViewID)// EnemyMemoryPool enemyMemoryPool)
+    public void Setup(int targetViewID, int callerViewID, bool Summoner)// EnemyMemoryPool enemyMemoryPool)
     {
         PhotonView targetView = PhotonView.Find(targetViewID);
         PhotonView callerView = PhotonView.Find(callerViewID);
         this.target = targetView.GetComponent<Transform>();
         this.enemyMemoryPool = callerView.GetComponent<EnemyMemoryPool>();
+        isSummoner = Summoner;
+        lastSkillTime = Time.time;
 
         // NavMeshAgent 컴포넌트에서 회전을 업데이트하지 않도록 설정
         navMeshAgent.updateRotation = false;
@@ -265,11 +269,10 @@ public class EnemyFSM : MonoBehaviourPun
                 lastAttackTime = Time.time;
 
                 // 공격 애니메이션 재생
-
                 if(enemyType == EnemyType.warrior || enemyType == EnemyType.necromancer)
                     animator.SetFloat("AttackStrategy", 0f);
 
-                animator.Play("Attack", -1, 0);
+                animator.Play("Attack", 0, 0);
             }
 
             yield return null;
@@ -330,6 +333,7 @@ public class EnemyFSM : MonoBehaviourPun
     public void StopSkill()
     {
         isSkilling = false;
+        CalculateDistanceToTargetAndSelectState();
     }
 
     public void CallMinion()
@@ -392,9 +396,9 @@ public class EnemyFSM : MonoBehaviourPun
         // 플레이어(Target)와 적의 거리 계산 후 거리에 따라 행동 선택
         float distance = Vector3.Distance(target.position, transform.position);
 
-        if(distance <= skillRange && (Time.time - lastSkillTime > skillRate))
+        if((skillRange == 0 || distance <= skillRange) && (Time.time - lastSkillTime > skillRate))
         {   
-            // 공격주기가 되어야 공격할 수 있도록 하기 위해 현재 시간 저장
+            // 스킬주기가 되어야 공격할 수 있도록 하기 위해 현재 시간 저장
             lastSkillTime = Time.time;
 
             //photonView.RPC("ChangeState", RpcTarget.AllBuffered, EnemyState.Skill);
@@ -494,6 +498,8 @@ public class EnemyFSM : MonoBehaviourPun
     [PunRPC]
     public void Die()
     {
+        if (enemyState == EnemyState.Death) return;
+
         ItemMemoryPool.instance.SpawnItem(transform.localPosition + coinDropPos, ItemType.Coin);
         ItemMemoryPool.instance.SpawnItem(transform.localPosition + expDropPos, ItemType.Exp);
         CollidersAble(false);
@@ -510,7 +516,7 @@ public class EnemyFSM : MonoBehaviourPun
     [PunRPC]
     private void ActivateObjectRPC(bool isActive)
     {
-        if(!isActive) enemyMemoryPool.CurrentEnemy--;
+        if(!isActive && !isSummoner) enemyMemoryPool.CurrentEnemy--;
         gameObject.SetActive(isActive);
     }
 
