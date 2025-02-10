@@ -50,12 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b74578bf1d2974abdded688a817ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSetting:
-    weaponName: 0
-    bulletDamage: 0
-    criticalPercent: 0
-    bulletSpeed: 0
-    bulletPenetration: 0
+  hitEffect: {fileID: 0}
 --- !u!135 &955278920346574173
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -94,4 +94,24 @@ public class ItemCoin : ItemBase
         if(!isActive) target.parent.GetComponent<PlayerManager>().CoinUpdate(value);
         gameObject.SetActive(isActive);
     }
+
+    /// <summary>
+    /// 모든 클라이언트에서 오브젝트 비활성화
+    /// </summary>
+    [PunRPC]
+    public void DeactivateObjectRPC(int viewID)
+    {
+        //itemMemoryPool.ActiveCount--;
+        PhotonView targetPhotonView = PhotonNetwork.GetPhotonView(viewID);
+
+        if (targetPhotonView != null)
+        {
+            GameObject targetObject = targetPhotonView.gameObject;
+            targetObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"[MemoryPool] DeactivateObjectRPC: PhotonView with ID {viewID} not found.");
+        }
+    }
 }

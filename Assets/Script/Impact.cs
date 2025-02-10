@@ -1,42 +1,61 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
+using System.Buffers;
 using UnityEngine;
 
+[RequireComponent(typeof(ParticleSystem), typeof(PhotonView))]
 public class Impact : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private ParticleSystem particle;
-    [SerializeField] private MemoryPool memoryPool;
-    [SerializeField] private PhotonView photonView;
+    private ParticleSystem particle;
+    private MemoryPool memoryPool;
 
     private void Awake()
     {
         particle = GetComponent<ParticleSystem>();
-        photonView = GetComponent<PhotonView>();
     }
 
     public void SetUp(MemoryPool pool)
     {
         memoryPool = pool;
-        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
+        photonView.RPC(nameof(ActivateObjectRPC), RpcTarget.AllBuffered, true);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // 파티클이 재생중이 아니면 삭제
-        if (particle.isPlaying == false)
+        if (!particle.IsAlive(true)) // 파티클이 완전히 종료되었는지 확인
         {
-            // 임펙트 오브젝트 제거
-            memoryPool?.DeactivatePoolItem(this.gameObject);
-            photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
+            DeactivateImpact();
         }
     }
 
-    // RPC를 통해 네트워크에서 비활성화 동기화
+    private void DeactivateImpact()
+    {
+        memoryPool?.DeactivatePoolItem(gameObject);
+        photonView.RPC(nameof(ActivateObjectRPC), RpcTarget.AllBuffered, false);
+    }
+
     [PunRPC]
     private void ActivateObjectRPC(bool isActive)
     {
         gameObject.SetActive(isActive);
+    }
+
+    /// <summary>
+    /// 모든 클라이언트에서 오브젝트 비활성화
+    /// </summary>
+    [PunRPC]
+    public void DeactivateObjectRPC(int viewID)
+    {
+        memoryPool.ActiveCount--;
+        PhotonView targetPhotonView = PhotonNetwork.GetPhotonView(viewID);
+
+        if (targetPhotonView != null)
+        {
+            GameObject targetObject = targetPhotonView.gameObject;
+            targetObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"[MemoryPool] DeactivateObjectRPC: PhotonView with ID {viewID} not found.");
+        }
     }
 }

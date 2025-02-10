@@ -24,7 +24,7 @@ public class ImpactMemoryPool : MonoBehaviour
 
     public void SpawnImpact(WeaponName type, Vector3 position, Quaternion rotation)
     {
-        GameObject item = memoryPool[(int)type].ActivatePoolItem();
+        GameObject item = memoryPool[(int)type].ActivatePoolItem(position);
         item.transform.position = position;
         item.transform.rotation = rotation;
         item.GetComponent<Impact>().SetUp(memoryPool[(int)type]);

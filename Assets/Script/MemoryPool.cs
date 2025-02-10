@@ -1,109 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using Photon.Pun;
 
 public class MemoryPool : MonoBehaviourPunCallbacks
 {
-    // 메모리 풀로 관리되는 오브젝트 정보
     private class PoolItem
     {
-        public bool isActive;               // "gameObject"의 활성화/비활성화 정보
-        public GameObject gameObject;       // 화면에 보이는 실제 게임 오브젝트
+        public GameObject gameObject;
+        public PhotonView photonView;  // 네트워크 동기화를 위한 PhotonView 참조
     }
 
-    private int increaseCount = 1;          // 오브젝트가 부족할 때 Instantiate()로 추가 생성되는 오브젝트 개수
-    private int maxCount;                   // 현재 리스트에 등록되어 있는 오브젝트 개수
-    private int activeCount;                // 현재 게임에 사용되고 있는(활성화) 오브젝트 개수
+    private int increaseCount = 1; // 한번에 생성하는 오브젝트 개수
+    private int maxCount;
+    private int activeCount;
 
-    private GameObject poolObject;          // 오브젝트 풀링에서 관리하는 게임 오브젝트 프리팹
+    private GameObject poolObjectPrefab; // 오브젝트 프리팹
+    private List<PoolItem> poolItemList;
 
-    private List<PoolItem> poolItemList;    // 관리되는 모든 오브젝트를 저장하는 리스트
+    public int MaxCount => maxCount;
+    public int ActiveCount { 
+        get => activeCount; 
+        set => activeCount = value;
+    }
 
-    public int MaxCount => maxCount;        // 외부에서 현재 리스트에 등록되어 있는 오브젝트 개수 확인을 위한 프로퍼티
-    public int ActiveCount => activeCount;  // 외부에서 현재 활성화 되어 있는 오브젝트 개수 확인을 위한 프로퍼티
-
-    // 오브젝트가 임시로 보관되는 위치
     private Vector3 tempPosition = new Vector3(48, 1, 48);
 
-    public MemoryPool(GameObject poolObject)
+    public MemoryPool(GameObject poolObjectPrefab)
     {
         maxCount = 0;
         activeCount = 0;
-        this.poolObject = poolObject;
+        this.poolObjectPrefab = poolObjectPrefab;
 
         poolItemList = new List<PoolItem>();
-
-        //InstantiateObjects();
     }
 
     /// <summary>
-    /// increaseCount 단위로 오브젝트를 생성
+    /// 새로운 오브젝트 생성 (포톤 네트워크 동기화 포함)
     /// </summary>
     public void InstantiateObjects()
     {
         maxCount += increaseCount;
 
-        for (int i = 0; i < increaseCount; ++i)
+        for (int i = 0; i < increaseCount; i++)
         {
-            GameObject obj = PhotonNetwork.Instantiate(poolObject.name, tempPosition, Quaternion.identity);
+            GameObject obj = PhotonNetwork.Instantiate(poolObjectPrefab.name, tempPosition, Quaternion.identity);
+            PhotonView photonView = obj.GetComponent<PhotonView>();
 
             PoolItem poolItem = new PoolItem
             {
-                isActive = false,
-                gameObject = obj
+                gameObject = obj,
+                photonView = photonView
             };
 
-            obj.SetActive(false); // 비활성화
+            obj.SetActive(false);
             poolItemList.Add(poolItem);
         }
-        
     }
 
     /// <summary>
-    /// 현재 관리중인(활성/비활성) 모든 오브젝트를 삭제
+    /// 특정 오브젝트를 풀에서 활성화
     /// </summary>
-    public void DestoryObjects()
-    {
-        if (poolItemList == null) return;
-
-        int count = poolItemList.Count;
-        for (int i = 0; i < count; ++i)
-        {
-            GameObject.Destroy(poolItemList[i].gameObject);
-        }
-
-        poolItemList.Clear();
-    }
-
-
-    /// <summary>
-    /// poolItemList에 저장되어 있는 오브젝트를 활성화해서 사용
-    /// 현재 모든 오브젝트가 사용중이면 InstatiateObjeects()로 추가 생성
-    /// </summary>
-    public GameObject ActivatePoolItem()
+    public GameObject ActivatePoolItem(Vector3 position)
     {
         if (poolItemList == null) return null;
 
-        // 현재 생성해서 관리하는 모든 오브젝트 개수와 현재 활성화 상태인 오브젝트 개수 비교
-        // 모든 오브젝트가 활성화 상태이면 새로운 오브젝트 필요
-        if( maxCount == activeCount)
+        if (maxCount == activeCount)
         {
             InstantiateObjects();
         }
 
-        int count = poolItemList.Count;
-        for (int i = 0; i < count; ++i)
+        foreach (var poolItem in poolItemList)
         {
-            PoolItem poolItem = poolItemList[i];
-
-            if (poolItem.isActive == false)
+            if (!poolItem.gameObject.activeInHierarchy)
             {
                 activeCount++;
 
-                poolItem.gameObject.transform.position = tempPosition;
-                poolItem.isActive = true;
+                poolItem.gameObject.transform.position = position;
                 poolItem.gameObject.SetActive(true);
 
                 return poolItem.gameObject;
@@ -114,58 +87,57 @@ public class MemoryPool : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// 현재 사용이 완료된 오브젝트를 비활성화 상태로 결정
+    /// 사용이 완료된 오브젝트를 비활성화 (RPC 호출)
     /// </summary>
-    [PunRPC]
-    public void DeactivatePoolItem(GameObject removeObject)
+    public void DeactivatePoolItem(GameObject obj)
     {
-        if (poolItemList == null || removeObject == null) return;
+        if (obj == null) return;
 
-        int count = poolItemList.Count;
-        for (int i = 0; i < count; ++i)
+        PhotonView pv = obj.GetComponent<PhotonView>();
+
+        if (pv != null && pv.ViewID != 0)
         {
-            PoolItem poolItem = poolItemList[i];
-
-            if (poolItem.gameObject == removeObject)
-            {
-                activeCount--;
-
-                poolItem.isActive = false;
-                poolItem.gameObject.SetActive(false);
-
-                return;
-            }
+            pv.RPC("DeactivateObjectRPC", RpcTarget.AllBuffered, pv.ViewID);
+        }
+        else
+        {
+            Debug.LogWarning($"[MemoryPool] DeactivatePoolItem: PhotonView is null or ViewID is invalid. Deactivating locally.");
+            obj.SetActive(false); // 로컬에서만 비활성화
         }
     }
 
     /// <summary>
-    /// 게임에 사용중인 모든 오브젝트를 비활성화 상태로 결정
+    /// 모든 클라이언트에서 오브젝트 비활성화
     /// </summary>
-    public void DeactivateAllPoolItem(GameObject removeObject)
+    [PunRPC]
+    public void DeactivateObjectRPC(int viewID)
     {
-        if (poolItemList == null) return;
+        PhotonView targetPhotonView = PhotonNetwork.GetPhotonView(viewID);
 
-        int count = poolItemList.Count;
-        for (int i = 0; i < count; ++i)
+        if (targetPhotonView != null)
         {
-            PoolItem poolItem = poolItemList[i];
+            GameObject targetObject = targetPhotonView.gameObject;
+            targetObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"[MemoryPool] DeactivateObjectRPC: PhotonView with ID {viewID} not found.");
+        }
+    }
 
-            if (poolItem.gameObject != null && poolItem.isActive == true)
+    /// <summary>
+    /// 모든 오브젝트 제거 (게임 종료 시)
+    /// </summary>
+    public void DestroyObjects()
+    {
+        foreach (var poolItem in poolItemList)
+        {
+            if (poolItem.gameObject != null)
             {
-                poolItem.gameObject.transform.position = tempPosition;
-                poolItem.isActive = false;
-                poolItem.gameObject.SetActive(false);
+                PhotonNetwork.Destroy(poolItem.gameObject);
             }
         }
 
-        activeCount = 0;
-    }
-
-    // RPC를 통해 네트워크에서 비활성화 동기화
-    [PunRPC]
-    private void DeactivateObjectRPC(GameObject obj)
-    {
-        //PhotonNetwork.Destroy(gameObject);
-        obj.SetActive(false);
+        poolItemList.Clear();
     }
 }

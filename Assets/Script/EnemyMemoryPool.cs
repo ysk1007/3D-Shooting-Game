@@ -72,10 +72,12 @@ public class EnemyMemoryPool : MonoBehaviour
                 // 동시에 numberOfEnemiesSpawnedAtOnce 숫자만큼 적이 생성되도록 반복문 사용
                 for (int i = 0; i < numberOfEnemiesSpawnedAtOnce; ++i)
                 {
-                    GameObject enemy = spawnPointMemoryPool.ActivatePoolItem();
+                    GameObject enemy = spawnPointMemoryPool.ActivatePoolItem(new Vector3(Random.Range(-mapSize.x * 0.49f, mapSize.x * 0.49f), 1,
+                                                            Random.Range(-mapSize.y * 0.49f, mapSize.y * 0.49f)));
 
-                    enemy.transform.position = new Vector3(Random.Range(-mapSize.x * 0.49f, mapSize.x * 0.49f), 1,
-                                                            Random.Range(-mapSize.y * 0.49f, mapSize.y * 0.49f));
+                    /*enemy.transform.position = new Vector3(Random.Range(-mapSize.x * 0.49f, mapSize.x * 0.49f), 1,
+                                                            Random.Range(-mapSize.y * 0.49f, mapSize.y * 0.49f));*/
+
                     enemy.transform.SetParent(enemys);
                     StartCoroutine("SpawnEnemy", enemy);
                     currentEnemy++;
@@ -88,9 +90,9 @@ public class EnemyMemoryPool : MonoBehaviour
     [PunRPC]
     public void CallMinion(Vector3 pos)
     {
-        GameObject enemy = spawnPointMemoryPool.ActivatePoolItem();
+        GameObject enemy = spawnPointMemoryPool.ActivatePoolItem(new Vector3(pos.x, 1, pos.z));
 
-        enemy.transform.position = new Vector3(pos.x, 1,pos.z);
+        //enemy.transform.position = new Vector3(pos.x, 1,pos.z);
         enemy.transform.SetParent(enemys);
         StartCoroutine("SpawnMinion", enemy);
     }
@@ -102,9 +104,9 @@ public class EnemyMemoryPool : MonoBehaviour
         yield return new WaitForSeconds(enemySpawnLatency);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
-        GameObject enemy = enemyMemoryPool[0].ActivatePoolItem();
+        GameObject enemy = enemyMemoryPool[0].ActivatePoolItem(point.transform.position);
         enemy.transform.SetParent(enemys);
-        enemy.transform.position = point.transform.position;
+        //enemy.transform.position = point.transform.position;
 
         GameObject target;
         int targetNum = 0;
@@ -134,9 +136,9 @@ public class EnemyMemoryPool : MonoBehaviour
         yield return new WaitForSeconds(enemySpawnLatency);
 
         // 적 오브젝트를 생성하고, 적의 위치를 point의 위치로 설정
-        GameObject enemy = enemyMemoryPool[(int)(EnemyType)Random.Range(0, ableSpawnNumber)].ActivatePoolItem();
+        GameObject enemy = enemyMemoryPool[(int)(EnemyType)Random.Range(0, ableSpawnNumber)].ActivatePoolItem(point.transform.position);
         enemy.transform.SetParent(enemys);
-        enemy.transform.position = point.transform.position;
+        //enemy.transform.position = point.transform.position;
 
         GameObject target;
         int targetNum = 0;

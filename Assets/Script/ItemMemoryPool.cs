@@ -32,6 +32,7 @@ public class ItemMemoryPool : MonoBehaviour
 
     private void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
         TestSpawn();
     }
 
@@ -39,7 +40,7 @@ public class ItemMemoryPool : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        GameObject item = itemPool[(int)itemType].ActivatePoolItem();
+        GameObject item = itemPool[(int)itemType].ActivatePoolItem(pos);
         item.transform.position = new Vector3(pos.x, 0.5f, pos.z);
         item.transform.SetParent(items);
         //item.GetComponent<ItemBase>().SetUp(itemPool[(int)itemType].GetComponent<PhotonView>().ViewID);
@@ -50,7 +51,7 @@ public class ItemMemoryPool : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem();
+        GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem(pos);
         //item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.position = pos;
         item.transform.SetParent(items);
@@ -63,7 +64,7 @@ public class ItemMemoryPool : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem();
+        GameObject item = itemPool[(int)ItemType.DropGun].ActivatePoolItem(pos);
         //item.transform.position = new Vector3(pos.x, 0.5f, pos.y);
         item.transform.position = pos;
         item.transform.SetParent(items);
@@ -75,6 +76,7 @@ public class ItemMemoryPool : MonoBehaviour
 
     public void TestSpawn()
     {
+        Debug.Log("테스트 무기 스폰");
         SpawnDropGun(new Vector3(7, 0.5f, 3), GunMemoryPool.instance.Weapons[0], GunMemoryPool.instance.Weapons[0].WeaponSetting);
         SpawnDropGun(new Vector3(5, 0.5f, 3), GunMemoryPool.instance.Weapons[1], GunMemoryPool.instance.Weapons[1].WeaponSetting);
         SpawnDropGun(new Vector3(3, 0.5f, 3), GunMemoryPool.instance.Weapons[2], GunMemoryPool.instance.Weapons[2].WeaponSetting);

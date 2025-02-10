@@ -1,13 +1,8 @@
 using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using Unity.VisualScripting;
-using InfimaGames.LowPolyShooterPack;
-using Photon.Pun.Demo.PunBasics;
-
 
 public class Bullet : MonoBehaviourPunCallbacks
 {
@@ -18,180 +13,128 @@ public class Bullet : MonoBehaviourPunCallbacks
         public float bulletDamage;      // 총알 대미지
         public float criticalPercent;   // 치명타 배율
         public float bulletSpeed;       // 총알 속도
-        public int bulletPenetration; // 총알 관통력
+        public int bulletPenetration;   // 총알 관통력
     }
 
-    [SerializeField]
-    BulletSetting bulletSetting;
+    private BulletSetting bulletSetting;
 
-    [SerializeField] private ParticleSystem ps;
-
+    [SerializeField] private ParticleSystem hitEffect;
     private Rigidbody rigidbody;
-    private AudioSource audioSource;
-    private BulletMemoryPool memoryPool;
     private MemoryPool bulletMemoryPool;
-    private MemoryPool impactMemoryPool;
     private PhotonView photonView;
 
-    private ParticleSystem.TriggerModule triggerModule;
-    private List<ParticleSystem.Particle> particles;
-
-    PlayerManager playerManager;
-    
     private HashSet<GameObject> hitObjects = new HashSet<GameObject>(); // 이미 충돌한 객체를 저장
-    int PenetrationCount;
+    private int penetrationCount;
+    private float lifeTimer;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
         photonView = GetComponent<PhotonView>();
-
-        if (ps != null)
-        {
-            triggerModule = ps.trigger;
-
-            // "Enemy" 태그가 있는 Collider와의 충돌을 감지하도록 설정
-            triggerModule.SetCollider(0, GameObject.FindWithTag("EnemyFSM").GetComponent<Collider>());
-        }
     }
 
-    // 이동 방향 설정
-    public void Setup(PlayerManager player, WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, MemoryPool impactPool, Transform parentTransform)
+    // 초기 설정
+    public void Setup(BulletSetting setting, MemoryPool bulletPool, Transform parentTransform)
     {
-        playerManager = player;
-        bulletSetting.weaponName = weaponSetting.WeaponName;
-        bulletSetting.bulletDamage = weaponSetting.damage * (1 + weaponSetting.weaponLevel);
-        bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
-        bulletSetting.criticalPercent = weaponSetting.critical;
-        PenetrationCount = bulletSetting.bulletPenetration;
-        hitObjects = new HashSet<GameObject>();
+        bulletSetting = setting;
+        penetrationCount = bulletSetting.bulletPenetration;
+        hitObjects.Clear();
+        lifeTimer = 0f;
 
-        memoryPool = BulletMemoryPool;
         bulletMemoryPool = bulletPool;
-        impactMemoryPool = impactPool;
+        transform.SetParent(parentTransform);
 
-        gameObject.transform.SetParent(parentTransform);
-        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
+        photonView.RPC(nameof(ActivateObjectRPC), RpcTarget.AllBuffered, true);
     }
 
     private void Update()
     {
         BulletMove();
-    }
+        lifeTimer += Time.deltaTime;
 
-    // 충돌 감지
-    void OnCollisionEnter(Collision collision)
-    {
-        bool critical = false;
-        if (collision.transform.CompareTag("EnemyFSM"))
+        if (lifeTimer > 3f) // 총알 유지 시간 초과 시 제거
         {
-            // 이미 충돌한 객체인지 확인
-            if (hitObjects.Contains(collision.transform.parent.gameObject))
-                return;
-
-            hitObjects.Add(collision.transform.parent.gameObject); // 충돌한 객체 등록
-
-            if (collision.gameObject.name == "Weakness") critical = true;
-
-            float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
-            PenetrationCount--;
-
-            if (collision.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
-            {
-                // 충돌한 위치에 텍스트 생성
-                DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
-                //playerManager.aimHitAnimator.SetTrigger("Show");
-            }
-        }
-        else if (collision.transform.CompareTag("InteractionObject"))
-        {
-            collision.transform.GetComponent<InteractionObject>().TakeDamage(bulletSetting.bulletDamage);
-        }
-        else if (collision.transform.CompareTag("Shield"))
-        {
-            PenetrationCount--;
-        }
-
-        // 충돌한 위치에 이펙트 생성
-        memoryPool?.SpawnImpact(bulletSetting.weaponName, transform.position, Quaternion.identity);
-
-        if (PenetrationCount >= 0) return;
-        // 총알 오브젝트 제거
-        bulletMemoryPool?.DeactivatePoolItem(this.gameObject);
-        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
-    }
-
-    // 트리거 충돌 감지
-    void OnTriggerEnter(Collider other)
-    {
-        bool critical = false;
-        if (other.transform.CompareTag("Enemy"))
-        {
-            // 이미 충돌한 객체인지 확인
-            if (hitObjects.Contains(other.transform.parent.gameObject)) return;
-
-            hitObjects.Add(other.transform.parent.gameObject); // 충돌한 객체 등록
-
-            if (other.gameObject.name == "Weakness") critical = true;
-
-            float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
-            PenetrationCount--;
-
-            if (other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
-            {
-                // 충돌한 위치에 텍스트 생성
-                DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
-                playerManager.aimHitAnimator.SetTrigger("Show");
-            }
-        }
-        else if (other.transform.CompareTag("InteractionObject"))
-        {
-            other.transform.GetComponent<InteractionObject>().TakeDamage(bulletSetting.bulletDamage);
-        }
-        else if (other.transform.CompareTag("Shield"))
-        {
-            PenetrationCount--;
-        }
-
-        // 충돌한 위치에 이펙트 생성
-        memoryPool?.SpawnImpact(bulletSetting.weaponName, transform.position, Quaternion.identity);
-
-        if (PenetrationCount >= 0) return;
-        // 총알 오브젝트 제거
-        bulletMemoryPool?.DeactivatePoolItem(this.gameObject);
-        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
-    }
-
-    void OnParticleTrigger()
-    {
-        if (particles == null || particles.Count < ps.main.maxParticles)
-        {
-            particles = new List<ParticleSystem.Particle>(ps.main.maxParticles);
-        }
-
-        int numEnter = ps.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, particles);
-
-        for (int i = 0; i < numEnter; i++)
-        {
-            Debug.Log("파티클이 Enemy와 충돌함!");
+            DeactivateBullet();
         }
     }
-
-    private void OnParticleCollision(GameObject other)
-    {
-        Debug.Log("파티클 컬리전 충돌");
-    }
-
 
     private void BulletMove()
     {
         rigidbody.velocity = transform.forward * bulletSetting.bulletSpeed;
     }
 
-    // RPC를 통해 네트워크에서 비활성화 동기화
+    private void OnCollisionEnter(Collision collision)
+    {
+        HandleHit(collision.gameObject, collision.contacts[0].point);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        HandleHit(other.gameObject, transform.position);
+    }
+
+    private void HandleHit(GameObject hitObject, Vector3 hitPoint)
+    {
+        bool isCritical = hitObject.name == "Weakness";
+        float damage = isCritical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
+
+        if (hitObject.CompareTag("EnemyFSM") || hitObject.CompareTag("Enemy"))
+        {
+            if (!hitObjects.Add(hitObject.transform.parent.gameObject)) return;
+
+            if (hitObject.GetComponentInParent<EnemyFSM>().TakeDamage(damage))
+            {
+                DamageTextMemoryPool.instance.SpawnText(damage, isCritical, hitPoint);
+            }
+        }
+        else if (hitObject.CompareTag("InteractionObject"))
+        {
+            hitObject.GetComponent<InteractionObject>()?.TakeDamage(bulletSetting.bulletDamage);
+        }
+        else if (hitObject.CompareTag("Shield"))
+        {
+            penetrationCount--;
+        }
+
+        // 피격 이펙트 생성
+        BulletMemoryPool.instance.SpawnImpact(bulletSetting.weaponName, hitPoint, Quaternion.identity);
+
+        // 총알 삭제 여부 확인
+        if (--penetrationCount < 0)
+        {
+            DeactivateBullet();
+        }
+    }
+
+    private void DeactivateBullet()
+    {
+        bulletMemoryPool?.DeactivatePoolItem(gameObject);
+        photonView.RPC(nameof(ActivateObjectRPC), RpcTarget.AllBuffered, false);
+    }
+
     [PunRPC]
     private void ActivateObjectRPC(bool isActive)
     {
         gameObject.SetActive(isActive);
+    }
+
+    /// <summary>
+    /// 모든 클라이언트에서 오브젝트 비활성화
+    /// </summary>
+    [PunRPC]
+    public void DeactivateObjectRPC(int viewID)
+    {
+        bulletMemoryPool.ActiveCount--;
+        PhotonView targetPhotonView = PhotonNetwork.GetPhotonView(viewID);
+
+        if (targetPhotonView != null)
+        {
+            GameObject targetObject = targetPhotonView.gameObject;
+            targetObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"[MemoryPool] DeactivateObjectRPC: PhotonView with ID {viewID} not found.");
+        }
     }
 }

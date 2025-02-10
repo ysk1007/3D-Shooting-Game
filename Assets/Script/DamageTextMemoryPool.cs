@@ -21,7 +21,7 @@ public class DamageTextMemoryPool : MonoBehaviour
 
     public void SpawnText(float Damage, bool critical, Vector3 position)
     {
-        GameObject Text = textPool.ActivatePoolItem();
+        GameObject Text = textPool.ActivatePoolItem(position);
         Text.transform.SetParent(texts);
         Text.transform.position = position;
         Text.GetComponentInChildren<DamageText>().SetUp(textPool, Damage, critical);

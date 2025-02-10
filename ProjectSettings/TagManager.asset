@@ -19,6 +19,7 @@ TagManager:
   - Eraser
   - OreNode
   - EnemyFSM
+  - GunMemoryPool
   layers:
   - Default
   - TransparentFX

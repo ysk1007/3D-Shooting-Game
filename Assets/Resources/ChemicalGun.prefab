@@ -114,6 +114,7 @@ MonoBehaviour:
     attackRate: 0.5
     attackDistance: 30
     bulletSpeed: 40
+    bulletPenetration: 0
     isAutomaticAttack: 1
     weaponSprite: {fileID: 21300000, guid: 7c31644af5732ce4da7db9563c8e45a1, type: 3}
   playerManager: {fileID: 0}

@@ -9,7 +9,6 @@ public class WeaponFlameThrower : WeaponBase
     [Header("Fire Effects")]
     [SerializeField]
     private GameObject muzzleFlashEffect;       // 총구 이펙트 (On/Off)
-    [SerializeField] private Flame falme;       // 화염 이펙트
 
     [Header("Spawn Points")]
     [SerializeField]
@@ -55,7 +54,6 @@ public class WeaponFlameThrower : WeaponBase
         if (PlayerManager != null)
         {
             PlayerManager.gameObject.GetComponent<PlayerHUD>().WeaponAddListener(this);
-            falme.Setup(PlayerManager, weaponSetting);
         }
     }
 
@@ -71,8 +69,6 @@ public class WeaponFlameThrower : WeaponBase
 
         // 무기가 활성화될 때 해당 무기의 탄 수 정보를 갱신하다
         onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
-
-        falme.Setup(PlayerManager, weaponSetting);
     }
 
     public override void StartWeaponAction(int type = 0)
@@ -99,7 +95,6 @@ public class WeaponFlameThrower : WeaponBase
     public override void StopWeaponAction(int type = 0)
     {
         muzzleFlashEffect.SetActive(false);
-        falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
         // 마우스 왼쪽 클릭 (공격 종료)
         if (type == 0)
         {
@@ -144,7 +139,6 @@ public class WeaponFlameThrower : WeaponBase
             // 탄 수가 없으면 공격 불가능
             if (weaponSetting.currentAmmo <= 0)
             {
-                falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
                 return;
             }
 
@@ -157,8 +151,6 @@ public class WeaponFlameThrower : WeaponBase
 
             // 총구 이펙트 재생
             //muzzleFlashEffect.SetActive(true);
-            falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
-
             // 공격 사운드 재생
             PlaySound(audioClipFire);
 
@@ -167,7 +159,7 @@ public class WeaponFlameThrower : WeaponBase
 
             // 광선을 발사해 원하는 위치 공격 (+Impact Effect)
             //TwoStepRayCast();
-            //BulletMemoryPool.instance.SpawnBullet(playerManager, weaponSetting, bulletSpawnPoint.position, bulletSpawnPoint.rotation, playerManager.TargetPosition);
+            BulletMemoryPool.instance.SpawnBullet(playerManager, weaponSetting, bulletSpawnPoint.position, bulletSpawnPoint.rotation, playerManager.TargetPosition);
         }
     }
 
@@ -178,8 +170,6 @@ public class WeaponFlameThrower : WeaponBase
         // 재장전 애니메이션, 사운드 재생
         animator.OnReload();
         PlaySound(audioClipReload);
-        falme.photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
-
         while (true)
         {
             // 사운드가 재생중이 아니고, 현재 애니메이션이 Idle Walk Run Blend 이면

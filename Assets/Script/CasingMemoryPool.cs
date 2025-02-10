@@ -25,7 +25,7 @@ public class CasingMemoryPool : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        GameObject item = memoryPool.ActivatePoolItem();
+        GameObject item = memoryPool.ActivatePoolItem(position);
         item.transform.SetParent(casings);
         item.transform.position = position;
         item.transform.rotation = Random.rotation;

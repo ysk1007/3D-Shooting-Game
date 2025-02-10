@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,47 +12,94 @@ public class Flame : MonoBehaviourPunCallbacks
 
     [SerializeField] private ParticleSystem ps;
 
-    private AudioSource audioSource;
-    private PhotonView photonView;
+    [SerializeField] private PhotonView photonView;
 
     private ParticleSystem.TriggerModule triggerModule;
     private List<ParticleSystem.Particle> particles;
 
-    BoxCollider boxCollider;
+    private HashSet<GameObject> hitObjects = new HashSet<GameObject>(); // 이미 충돌한 객체를 저장
+
+    private BulletMemoryPool memoryPool;
+    private MemoryPool bulletMemoryPool;
+
+    [SerializeField] private BoxCollider boxCollider;
     float stayInterval = 0.05f; // 0.05초마다 실행
     bool canCheck = true;
     PlayerManager playerManager;
 
     private void Awake()
     {
-        photonView = GetComponent<PhotonView>();
-        boxCollider = GetComponent<BoxCollider>(); // 현재 오브젝트의 BoxCollider 가져오기
-
-        if (ps != null)
+        /*if (ps != null)
         {
             triggerModule = ps.trigger;
-
             // "Enemy" 태그가 있는 Collider와의 충돌을 감지하도록 설정
             triggerModule.SetCollider(0, GameObject.FindWithTag("EnemyFSM").GetComponent<Collider>());
-        }
+        }*/
     }
 
     // 이동 방향 설정
-    public void Setup(PlayerManager player, WeaponSetting weaponSetting)
+    public void Setup(PlayerManager player, WeaponSetting weaponSetting, BulletMemoryPool BulletMemoryPool, MemoryPool bulletPool, Transform parentTransform)
     {
         playerManager = player;
         bulletSetting.weaponName = weaponSetting.WeaponName;
         bulletSetting.bulletDamage = weaponSetting.damage * (1 + weaponSetting.weaponLevel);
         bulletSetting.bulletSpeed = weaponSetting.bulletSpeed;
         bulletSetting.criticalPercent = weaponSetting.critical;
+        hitObjects = new HashSet<GameObject>();
+
+        memoryPool = BulletMemoryPool;
+        bulletMemoryPool = bulletPool;
+
+        gameObject.transform.SetParent(parentTransform);
+        photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, true);
     }
 
     private void Update()
     {
-
+        if (!ps.isPlaying)
+        {
+            // 총알 오브젝트 제거
+            bulletMemoryPool?.DeactivatePoolItem(this.gameObject);
+            photonView.RPC("ActivateObjectRPC", RpcTarget.AllBuffered, false);
+        }
     }
 
-    private void OnTriggerStay(Collider other)
+    // 트리거 충돌 감지
+    void OnTriggerEnter(Collider other)
+    {
+        bool critical = false;
+        if (other.transform.CompareTag("Enemy"))
+        {
+            // 이미 충돌한 객체인지 확인
+            if (hitObjects.Contains(other.transform.parent.gameObject)) return;
+
+            hitObjects.Add(other.transform.parent.gameObject); // 충돌한 객체 등록
+
+            if (other.gameObject.name == "Weakness") critical = true;
+
+            float Damage = critical ? bulletSetting.bulletDamage * bulletSetting.criticalPercent : bulletSetting.bulletDamage;
+
+            if (other.transform.GetComponentInParent<EnemyFSM>().TakeDamage(Damage))
+            {
+                // 충돌한 위치에 텍스트 생성
+                DamageTextMemoryPool.instance.SpawnText(Damage, critical, transform.position);
+                playerManager.aimHitAnimator.SetTrigger("Show");
+            }
+        }
+        else if (other.transform.CompareTag("InteractionObject"))
+        {
+            other.transform.GetComponent<InteractionObject>().TakeDamage(bulletSetting.bulletDamage);
+        }
+        else if (other.transform.CompareTag("Shield"))
+        {
+           
+        }
+
+        // 충돌한 위치에 이펙트 생성
+        //memoryPool?.SpawnImpact(bulletSetting.weaponName, transform.position, Quaternion.identity);
+    }
+
+    /*private void OnTriggerStay(Collider other)
     {
         if (canCheck)
         {
@@ -109,7 +157,7 @@ public class Flame : MonoBehaviourPunCallbacks
         {
             
         }
-    }
+    }*/
 
     void ResetCheck()
     {
@@ -120,8 +168,26 @@ public class Flame : MonoBehaviourPunCallbacks
     [PunRPC]
     private void ActivateObjectRPC(bool isActive)
     {
-        if(isActive) ps.Play();
-        boxCollider.enabled = isActive;
-        //gameObject.SetActive(isActive);
+        gameObject.SetActive(isActive);
+    }
+
+    /// <summary>
+    /// 모든 클라이언트에서 오브젝트 비활성화
+    /// </summary>
+    [PunRPC]
+    public void DeactivateObjectRPC(int viewID)
+    {
+        bulletMemoryPool.ActiveCount--;
+        PhotonView targetPhotonView = PhotonNetwork.GetPhotonView(viewID);
+
+        if (targetPhotonView != null)
+        {
+            GameObject targetObject = targetPhotonView.gameObject;
+            targetObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"[MemoryPool] DeactivateObjectRPC: PhotonView with ID {viewID} not found.");
+        }
     }
 }
